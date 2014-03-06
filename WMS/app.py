@@ -17,3 +17,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s:%s/%s' % \
 app.debug = True
 app.secret_key = 'guesswhatkeyitis'
 db.init_app(app)
+
+from WMS.controllers.accounts import accounts
+
+app.register_blueprint(accounts, url_prefix="/accounts")
