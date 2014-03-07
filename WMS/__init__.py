@@ -1,2 +1,2 @@
-from app import db
-from app import app
+from WMS.app import db
+from WMS.app import app

@@ -1,4 +1,4 @@
-from WMS.app import app
+from WMS import app
 
 if __name__ == "__main__":
     app.run()
