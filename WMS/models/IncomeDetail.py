@@ -10,7 +10,7 @@ class IncomeDetail(db.Model):
     retail_price = db.Column(db.Float)
     whole_sell_price = db.Column(db.Float)
     total = db.Column(db.Float)
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey('income.id'))
 
     def __init__(self, number, size, description, amount):
         self.number = number
