@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from WMS import app
 from WMS import db
 
