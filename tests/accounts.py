@@ -21,6 +21,8 @@ class AccountsTest(unittest.TestCase):
         with app.test_request_context():
             db.create_all(app = app)
             set_up_data(db)
+            
+        print "\n"
 
     def tearDown(self):
         os.close(self.db_fd)
@@ -36,6 +38,5 @@ class AccountsTest(unittest.TestCase):
                 user_no=case["no"],
                 user_ps=case["ps"]
             ), follow_redirects=True)
-            print "\n test with data: %s \n" % str(case)
-            print "\n test result: %s \n" % str(rv.data)
+            print "test with data: %s " % str(case)
             self.assertTrue('you have log in!' in rv.data)
