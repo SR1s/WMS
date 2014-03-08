@@ -1,8 +1,9 @@
 {% extends "basic.html" %}
 {% block body %}
 <form method="post">
-  <input type="text" name="user_no"/>
-  <input type="password" name="user_ps"/>
+  {{ form.hidden_tag() }}
+  {{ form.user_no }}
+  {{ form.user_ps }}
   <button type="submit">log in!</button>
 </form>
 {% endblock %}
