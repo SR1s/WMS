@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config.from_object(app_config)
 db.init_app(app)
 
-from WMS.controllers.accounts import accounts
+from WMS.views.accounts import accounts
 
 app.register_blueprint(accounts, url_prefix="/accounts")
 
