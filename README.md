@@ -15,7 +15,8 @@ REQUIRE
 CONFIG
 ===
 
-config files on WMS/config/database.py
+1. app : WMS/config/app_config.py
+1. database: WMS/config/database.py
 
 RUN
 ===
