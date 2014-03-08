@@ -13,11 +13,10 @@ from WMS.views.accounts import accounts
 def create_app(config=None):
     app = Flask(__name__)
     app.register_blueprint(accounts, url_prefix="/accounts")
+    app.config.from_object(app_config)
     
     if config:
-        app.config.from_object(config)
-    else:
-        app.config.from_object(app_config)
+        app.config.update(config)
 
     db.init_app(app)
     set_up(app)

@@ -1,15 +1,22 @@
 import os
 import unittest
 import tempfile
-from WMS.app import app, db
+from WMS import create_app, db
 from tests.set_test_data import set_up_data
 
 class AccountsTest(unittest.TestCase):
     def setUp(self):
         self.db_fd, self.db_path = tempfile.mkstemp()
+        config = {
+            'TESTING': True,
+            'WTF_CSRF_ENABLED': False,
+            'SQLALCHEMY_DATABASE_URI': "sqlite:////" + self.db_path,
+        }
+        app = create_app(config)
         app.config['SQLALCHEMY_DATABASE_URI'] = \
             "sqlite:////" + self.db_path
         app.config['TESTING'] = True
+        app.config["CSRF_ENABLED"] = False
         self.app = app.test_client()
         with app.test_request_context():
             db.create_all(app = app)
@@ -30,4 +37,5 @@ class AccountsTest(unittest.TestCase):
                 user_ps=case["ps"]
             ), follow_redirects=True)
             print "\n test with data: %s \n" % str(case)
+            print "\n test result: %s \n" % str(rv.data)
             self.assertTrue('you have log in!' in rv.data)
