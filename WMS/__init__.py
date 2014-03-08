@@ -1,2 +1,4 @@
+from WMS.app import create_app
 from WMS.app import db
-from WMS.app import app
+
+app = create_app()
