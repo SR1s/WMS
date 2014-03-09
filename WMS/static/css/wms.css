@@ -20,23 +20,57 @@ header .nav {
     height: 62px;
     margin-left: auto;
     margin-right: auto;
-    line-height: 62px;
+    vertical-align: middle;
 }
 
 header .nav .left {
     width: 29%;
+    height: 100%;
     text-align: left;
+    float: left;
+}
+
+header .nav .left a.menu {
+    width: 30px;
+    height: 30px;
     display: inline-block;
+    background-size: 30px 30px;
+    background-image: url('/static/images/menu.png');
+    margin: 15px 15px 15px 0;
 }
 
 header .nav .center {
     width: 40%;
+    height: 100%;
     text-align: center;
-    display: inline-block;
+    vertical-align: middle;
+    float: left;
+}
+
+header .nav .center .app-title {
+    background-image: url('/static/images/logo.png');
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 55px;
+    height: 50px;
+    width: 222px;
+    color: #888;
+    font-family: Verdana, Arial, "微软雅黑", "黑体";
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    line-height: 50px;
+    text-align: left;
+    display: block;
 }
 
 header .nav .right {
     width: 29%;
+    height: 100%;
     text-align: right;
-    display: inline-block;
+    float: left;
 }
