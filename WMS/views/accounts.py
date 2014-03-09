@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, abort, request, session
+from flask import Blueprint, render_template, abort, flash, \
+                    request, session, redirect, url_for
 from WMS.app import db
 from WMS.forms.accounts import LoginForm
 from WMS.models import Place, Account
@@ -15,7 +16,8 @@ def login():
 @accounts.route("/login", methods=['POST'])
 def perform_login():
     form = LoginForm(request.form)
-    messages = list()
+    message = None
+    status = "normal"
     if form.validate():
         user_no = request.form['user_no']
         user_ps = md5(request.form['user_ps'])
@@ -23,12 +25,13 @@ def perform_login():
         if user:
             session["user_no"] = user_no
             session["status"] = "logined"
-            messages.append(dict(status="normal", 
-                message="You have logined!"))
+            message = "You have logined!"
         else:
-            messages.append(dict(status="normal", 
-                message="Error! Wrong username or password."))
-    return render_template("basic.html", form=form, messages=messages)
+            status = "error"
+            message = "Error! Wrong username or password."
+    if message and status :
+        flash(message, category=status)
+    return redirect(url_for("index"))
 
 @accounts.route("/create")
 @verify_login

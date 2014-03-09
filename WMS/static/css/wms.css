@@ -102,6 +102,6 @@ div.main .message .normal {
     background-color: #50BCB6;
 }
 
-div.main .message .danger {
+div.main .message .danger, div.main .message .error{
     background-color: #d9534f;
 }

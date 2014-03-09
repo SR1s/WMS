@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN" class="ua-mac ua-webkit">
   <head>
-    <title>5291 进销存管理系统</title>
+    <title>5291进销存管理系统</title>
     <link rel="stylesheet" type="text/css" href='{{ url_for("static",filename="css/reset.css") }}'>
     <link rel="stylesheet" type="text/css" href='{{ url_for("static",filename="css/wms.css") }}'>
     <script type="text/javascript" src='{{ url_for("static",filename="js/jquery-1.11.0.min.js") }}'></script>
@@ -32,8 +32,8 @@
     </header>
     <div class="main">
       <div class="message">
-        {% for message in messages%}
-        <div class="item {{ message.status }}">{{ message.message }}</div>
+        {% for status, message in get_flashed_messages(with_categories=True) %}
+        <div class="item {{ status }}">{{ message }}</div>
         {% endfor %}
       </div>
       {% block body %}{% endblock %}
