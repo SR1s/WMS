@@ -1,38 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh-CN" class="ua-mac ua-webkit">
-    <head>
-        <title>5291 Warehouse Manage System</title>
-        <link rel="stylesheet" type="text/css" href='{{ url_for("static",filename="bootstrap/css/bootstrap.min.css") }}'>
-        <link rel="stylesheet" type="text/css" href='{{ url_for("static",filename="css/wms.css") }}'>
-    </head>
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navigator">
-                <div class="navbar-header">
-                    <a href="/" class="navbar-brand">5291 Warehouse Manage System</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav"><!--
-                        <li class="active"><a>left-band-1</a></li>
-                        <li><a href="/mine/">left-band-2</a></li>-->
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="add">Log in!</a></li>
-                        <li><a href="add">添加记录</a></li>
-                        <li class="dropdown">
-                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">SR1<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="">退出登录</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+  <head>
+    <title>5291 进销存管理系统</title>
+    <link rel="stylesheet" type="text/css" href='{{ url_for("static",filename="css/reset.css") }}'>
+    <link rel="stylesheet" type="text/css" href='{{ url_for("static",filename="css/wms.css") }}'>
+  </head>
+  <body>
+    <header>
+      <div class="orange"></div>
+      <div class="nav">
+        <div class="navigator">
         </div>
-        <div class="main span12">
+      </div>
+    </header>
+    <div class="main">
             {% block body %}{% endblock %}
         </div>
         <script type="text/javascript" src='{{ url_for("static",filename="js/jquery-1.11.0.min.js") }}'></script>
-        <script type="text/javascript" src='{{ url_for("static",filename="bootstrap/js/bootstrap.min.js") }}'></script>
     </body>
 </html>
