@@ -39,4 +39,4 @@ class AccountsTest(unittest.TestCase):
                 user_ps=case["ps"]
             ), follow_redirects=True)
             print "test with data: %s " % str(case)
-            self.assertTrue('you have log in!' in rv.data)
+            self.assertTrue('You have logined' in rv.data)
