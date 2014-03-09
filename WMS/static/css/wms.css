@@ -1,6 +1,7 @@
 body {
     background-color: #f1f1f1;
     color: #2e2e2e;
+    font-family: Verdana, Arial, "微软雅黑", "黑体";
 }
 
 header {
@@ -55,7 +56,6 @@ header .nav .center .app-title {
     height: 50px;
     width: 250px;
     color: #888;
-    font-family: Verdana, Arial, "微软雅黑", "黑体";
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
@@ -79,4 +79,29 @@ div.main {
     width: 933px;
     padding-top: 70px;
     margin: 0 auto;
+}
+
+div.main .message {
+    width: 933px;
+    z-index: 100;
+    position: fixed;
+}
+
+div.main .message .item {
+    width: 800px;
+    padding: 10px;
+    color: #f1f1f1;
+    margin: 5px auto 2px auto;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #50BCB6;
+    box-shadow: 1px 1px 2px rgba(0,0,0,.2),0 2px 7px rgba(0,0,0,.15);
+}
+
+div.main .message .normal {
+    background-color: #50BCB6;
+}
+
+div.main .message .danger {
+    background-color: #d9534f;
 }

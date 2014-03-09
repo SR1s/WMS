@@ -15,6 +15,7 @@ def login():
 @accounts.route("/login", methods=['POST'])
 def perform_login():
     form = LoginForm(request.form)
+    messages = list()
     if form.validate():
         user_no = request.form['user_no']
         user_ps = md5(request.form['user_ps'])
@@ -22,10 +23,12 @@ def perform_login():
         if user:
             session["user_no"] = user_no
             session["status"] = "logined"
-            return "you have log in!"
+            messages.append(dict(status="normal", 
+                message="You have logined!"))
         else:
-            return "error no or password"
-    return render_template("login.html", form=form)
+            messages.append(dict(status="normal", 
+                message="Error! Wrong username or password."))
+    return render_template("basic.html", form=form, messages=messages)
 
 @accounts.route("/create")
 @verify_login
