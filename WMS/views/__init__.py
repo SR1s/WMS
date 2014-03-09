@@ -1,4 +1,4 @@
-from flask import session, render_template
+from flask import session, render_template, url_for, redirect
 import functools
 
 def verify_login(func):
@@ -7,5 +7,5 @@ def verify_login(func):
         if session["status"]:
             return func()
         else:
-            return render_template("404.html"), 404
+            return redirect(url_for('accounts.login'))
     return wrappper
