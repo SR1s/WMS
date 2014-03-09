@@ -1,20 +1,42 @@
 body {
-	background-color: #f1f1f1;
-	color: #2e2e2e;
+    background-color: #f1f1f1;
+    color: #2e2e2e;
 }
 
 header {
-	position: fixed;
-	width: 100%;
-	box-shadow: 0 1px 0 rgba(0,0,0,.2),0 2px 7px rgba(0,0,0,.15);
+    position: fixed;
+    width: 100%;
+    box-shadow: 0 1px 0 rgba(0,0,0,.2),0 2px 7px rgba(0,0,0,.15);
 }
 
 header .orange{
-	width: 100%;
-	height: 4px;
-	background-color: #50BCB6;
+    width: 100%;
+    height: 4px;
+    background-color: #50BCB6;
 }
 
 header .nav {
-	height: 62px;
+    width: 933px;
+    height: 62px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 62px;
+}
+
+header .nav .left {
+    width: 29%;
+    text-align: left;
+    display: inline-block;
+}
+
+header .nav .center {
+    width: 40%;
+    text-align: center;
+    display: inline-block;
+}
+
+header .nav .right {
+    width: 29%;
+    text-align: right;
+    display: inline-block;
 }
