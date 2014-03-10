@@ -93,6 +93,7 @@ div.main .message .item {
     color: #f1f1f1;
     margin: 5px auto 2px auto;
     text-align: center;
+    text-shadow: rgba(0,0,0,.2) 1px 1px 2px;
     border-radius: 5px;
     background-color: #50BCB6;
     box-shadow: 1px 1px 2px rgba(0,0,0,.2),0 2px 7px rgba(0,0,0,.15);
