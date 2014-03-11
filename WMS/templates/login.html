@@ -1,9 +1,14 @@
 {% extends "basic.html" %}
 {% block body %}
-<form method="post">
+<div class="login-form">
+  <h1>登录</h1>
+  <hr/>
+  <form method="post">
   {{ form.hidden_tag() }}
-  {{ form.user_no }}
-  {{ form.user_ps }}
-  <button type="submit">log in!</button>
+    <ul>
+      <li><span>工号：</span><input type="text" name="user_no" /></li>
+      <li><span>密码：</span><input type="password" name="user_ps" /></li>
+      <li><button type="submit">登录</button></li>
+    </ul>
 </form>
 {% endblock %}
