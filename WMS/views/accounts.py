@@ -16,21 +16,18 @@ def login():
 @accounts.route("/login", methods=['POST'])
 def perform_login():
     form = LoginForm(request.form)
-    message = None
-    status = "normal"
+    status = "error"
+    message = "Error! Wrong username or password."
     if form.validate():
         user_no = request.form['user_no']
         user_ps = md5(request.form['user_ps'])
         user = Account.query.filter_by(user_no=user_no,user_ps=user_ps).first()
         if user:
+            status = "normal"
             session["user_no"] = user_no
             session["status"] = "logined"
             message = "You have logined!"
-        else:
-            status = "error"
-            message = "Error! Wrong username or password."
-    if message and status :
-        flash(message, category=status)
+    flash(message, category=status)
     return redirect(url_for("index"))
 
 @accounts.route("/create")
