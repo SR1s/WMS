@@ -206,8 +206,13 @@ div.all-status .item {
 }
 
 div.all-status .item h1{
-    font-size: 1.5em;
     text-align: center;
+}
+
+div.item-list {
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #fff;
 }
 
 hr {
@@ -216,4 +221,61 @@ hr {
     height: 1px; 
     border-width: 0;
     background-color: #bcbcbc;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+table {
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    border-color: #bcbcbc;
+    border-style: solid;
+    border-width: 1px;
+}
+
+td {
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #fff;
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-color: #bcbcbc;
+    border-style: solid;
+}
+
+thead td, tr.size td {
+    background-color: #fff8c8;
+}
+
+td:last-child {
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+    border-width: 1px 1px 0 1px;
+    border-color: #bcbcbc;
+    border-style: solid;
+}
+
+tr:last-child td{
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+    border-width: 1px 0px 1px 1px;
+    border-color: #bcbcbc;
+    border-style: solid;
+}
+
+tr:last-child td:last-child{
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+    border-width: 1px;
+    border-color: #bcbcbc;
+    border-style: solid;
 }

@@ -1,0 +1,42 @@
+{% extends "basic.html" %}
+{% block body %}
+<div class="item-list">
+    <h1>库存状态</h1>
+    <hr/>
+    <table>
+      <thead>
+        <tr>
+          <td>商品编号</td>
+          <td>商品名称</td>
+          <td colspan="6">尺码</td>
+          <td>总量</td>
+          <td>上次进货时间</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="size">
+          <td colspan="2"></td>
+          <td>XS</td>
+          <td>S</td>
+          <td>M</td>
+          <td>L</td>
+          <td>XL</td>
+          <td>XXL</td>
+          <td colspan="2"></td>
+        </tr>
+        <tr>
+          <td>G75187</td>
+          <td>AFA A JSY</td>
+          <td></td>
+          <td>4</td>
+          <td>4</td>
+          <td>2</td>
+          <td>1</td>
+          <td></td>
+          <td>11</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+{% endblock %}
