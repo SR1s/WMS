@@ -1,6 +1,6 @@
 body {
     background-color: #f1f1f1;
-    color: #2e2e2e;
+    color: #888;
     font-family: Verdana, Arial, "微软雅黑", "黑体";
 }
 
@@ -105,4 +105,115 @@ div.main .message .normal {
 
 div.main .message .danger, div.main .message .error{
     background-color: #d9534f;
+}
+
+div.login-form {
+    width: 300px;
+    margin: 10px auto 0 auto;
+}
+
+div.login-form h1 {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+div.login-form ul {
+    padding: 5px;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: #bcbcbc;
+    border-style: solid;
+}
+
+div.login-form ul>li:first-child {
+    background-color: #fff;
+    padding: 10px; 
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    border-width: 1px;
+    border-color: #bcbcbc;
+    border-style: solid;
+}
+
+div.login-form ul>li {
+    background-color: #fff;
+    padding: 10px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-color: #bcbcbc;
+    border-style: solid;
+}
+
+div.login-form ul>li:last-child {
+    background-color: #fff;
+    padding: 10px; 
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-color: #bcbcbc;
+    border-style: solid;
+}
+
+div.login-form ul>li button {
+    width: 100px;
+    height: 30px;
+    margin: 0 80px;
+    color: #eee;
+    background-color: #50BCB6;
+    border-radius: 5px;
+    border-width: 0px;
+    border-color: #bcbcbc;
+}
+
+div.login-form ul>li input {
+    width: 180px;
+    padding: 5px;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #f1f1f1;
+}
+
+div.login-form ul>li:hover {
+    background-color: #fff8c8;
+}
+
+div.all-status{
+
+} 
+
+div.all-status .item:first-child {
+    background-color: #fff;
+    width: 33%;
+    height: 100px;
+    float: left;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #bcbcbc;
+}
+
+div.all-status .item {
+    padding: 10px;
+    background-color: #fff;
+    width: 30%;
+    height: 100px;
+    float: left;
+    border-width: 1px 1px 1px 0;
+    border-style: solid;
+    border-color: #bcbcbc;
+}
+
+div.all-status .item h1{
+    font-size: 1.5em;
+    text-align: center;
+}
+
+hr {
+    width: 100%;
+    margin: 5px 0;
+    height: 1px; 
+    border-width: 0;
+    background-color: #bcbcbc;
 }
