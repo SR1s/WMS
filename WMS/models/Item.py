@@ -8,7 +8,7 @@ class Item(db.Model):
     description = db.Column(db.String(255))
     place = db.Column(db.String(255))
     amount = db.Column(db.Integer)
-    last_upadte = db.Column(db.DateTime, default=datetime.utcnow)
+    last_update = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, number, size, description, amount):
         self.number = number
