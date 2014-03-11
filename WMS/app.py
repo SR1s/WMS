@@ -3,7 +3,7 @@ import sys, os
 reload(sys)  
 sys.setdefaultencoding('utf8')
 
-from flask import Flask, render_template
+from flask import Flask, render_template, session, redirect, url_for
 from WMS.models import db
 from WMS.models.Income import Income
 from WMS.config import app_config
@@ -27,7 +27,10 @@ def create_app(config=None):
 def set_up(app):
     @app.route('/')
     def index():
-        return render_template('basic.html')
+        if "status" in session and session["status"] == "logined":
+            return render_template('status.html')
+        else:
+            return redirect(url_for("accounts.login"))
 
     @app.errorhandler(404)
     def page_not_found(e):
