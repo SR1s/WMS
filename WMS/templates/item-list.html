@@ -24,18 +24,20 @@
           <td>XXL</td>
           <td colspan="2"></td>
         </tr>
+        {% for item in items %}
         <tr>
-          <td>G75187</td>
-          <td>AFA A JSY</td>
-          <td></td>
-          <td>4</td>
-          <td>4</td>
-          <td>2</td>
-          <td>1</td>
-          <td></td>
-          <td>11</td>
-          <td></td>
+          <td>{{ item }}</td>
+          <td>{{ items[item]['info'].description }}</td>
+          <td>{{ items[item]['XS'] }}</td>
+          <td>{{ items[item]['S'] }}</td>
+          <td>{{ items[item]['M'] }}</td>
+          <td>{{ items[item]['L'] }}</td>
+          <td>{{ items[item]['XL'] }}</td>
+          <td>{{ items[item]['XXL'] }}</td>
+          <td>{{ items[item]['XS'] + items[item]['S'] + items[item]['M'] + items[item]['L']+ items[item]['XL']+ items[item]['XXL'] }}</td>
+          <td>{{ items[item]['info'].last_update }}</td>
         </tr>
+        {% endfor%}
       </tbody>
     </table>
 </div>
