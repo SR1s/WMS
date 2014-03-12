@@ -1,4 +1,4 @@
-from WMS.models import Place, Account, Item
+from WMS.models import Place, Account, Item, Order, OrderDetail
 
 def set_up_data(db):
     # add 4 places
@@ -77,4 +77,12 @@ def set_up_data(db):
     db.session.add(item_4_L)
     db.session.add(item_4_XL)
     db.session.add(item_4_XXL)
+    db.session.commit()
+
+    order = Order("10000")
+    db.session.add(order)
+    db.session.commit()
+
+    od_1 = OrderDetail("G75187", "S", "AFA A JSY", 4, order.id)
+    db.session.add(od_1)
     db.session.commit()
