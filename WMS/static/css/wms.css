@@ -81,6 +81,19 @@ div.main {
     margin: 0 auto;
 }
 
+div.main .content{
+    padding: 10px;
+    background-color: #fff;
+    width: 100%;
+    border-color: #bcbcbc;
+    border-width: 1px;
+    border-style: solid;
+}
+
+div.main .content h1{
+    text-align: center;
+}
+
 div.main .message {
     width: 933px;
     z-index: 100;
@@ -226,6 +239,36 @@ hr {
 h1 {
     font-size: 1.5em;
 }
+
+form {
+    margin: 10px;
+    padding: 3px;
+    background-color: #f1f1f1;
+    border-color: #bcbcbc;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+}
+
+form>div {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 3px;
+    border-color: #bcbcbc;
+    border-width: 1px;
+    border-style: solid;
+}
+
+form tr input {
+    width: 100%;
+}
+
+input {
+    text-align: center;
+    border-width: 0 0 1px 0;
+    border-color: #bcbcbc;
+}
+
 
 table {
     width: 100%;
