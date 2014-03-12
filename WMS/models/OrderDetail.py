@@ -12,11 +12,12 @@ class OrderDetail(db.Model):
     total = db.Column(db.Float)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
 
-    def __init__(self, number, size, description, amount):
+    def __init__(self, number, size, description, amount, order_id):
         self.number = number
         self.size = size
         self.description = description
         self.amount = amount
+        self.order_id = order_id
 
     def __repr__(self):
         return "<OrderDetail: \n    number: %s \n    size: %s \n    amount: %s \n>" % \

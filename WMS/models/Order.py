@@ -6,3 +6,8 @@ class Order(db.Model):
     order_no = db.Column(db.String(255), unique=True)
     date = db.Column(db.DateTime,default=datetime.utcnow)
     details = db.relationship("OrderDetail", backref="order", lazy='dynamic')
+
+    def __init__(self, order_no, date=None):
+    	self.order_no = order_no
+    	if date :
+    		self.date = date
