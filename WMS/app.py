@@ -10,11 +10,13 @@ from WMS.config import app_config
 
 from WMS.views.accounts import accounts
 from WMS.views.items import items
+from WMS.views.order import order
 
 def create_app(config=None):
     app = Flask(__name__)
     app.register_blueprint(accounts, url_prefix="/accounts")
     app.register_blueprint(items, url_prefix="/items")
+    app.register_blueprint(order, url_prefix="/order")
     app.config.from_object(app_config)
     
     if config:

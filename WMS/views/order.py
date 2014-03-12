@@ -5,18 +5,18 @@ from WMS.views import verify_login
 
 order = Blueprint('order', __name__)
 
-@order.route('/all')
+@order.route('/list')
 @verify_login
-def all():
+def list():
     orders = Order.query.all()
-    return str(orders)
+    return None
 
-@orders.route('/create')
+@order.route('/create')
 @verify_login
 def create():
-    pass
+    return render_template("create-order.html")
 
-@orders.route('/create', methods=['POST'])
+@order.route('/create', methods=['POST'])
 @verify_login
 def perform_create():
-    pass
+    return render_template("create-order.html")
