@@ -5,8 +5,8 @@
   <hr/>
   <form method="post">
     <div>
-      <span>订单号：</span><input type="text" name="user_no" />
-      <span>时间：</span><input type="password" name="user_ps" />
+      <span>订单号：</span><input type="text" name="order_no" />
+      <span>时间：</span><input type="text" name="order_date" />
       <hr/>
       <table width="100%">
         <thead>
@@ -20,7 +20,7 @@
             <td width="10%">总计(RMB)</td>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="details">
           <tr class="size">
             <td colspan="2"></td>
             <td width="5%">XS</td>
@@ -31,22 +31,29 @@
             <td width="5%">XXL</td>
             <td colspan="4"></td>
           </tr>
-          <tr>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
+          <tr class="data">
+            <td><input type="text" name="number" value="222"/></td>
+            <td><input type="text" name="description"/></td>
+            <td><input type="text" name="size1"/></td>
+            <td><input type="text" name="size2"/></td>
+            <td><input type="text" name="size3"/></td>
+            <td><input type="text" name="size4"/></td>
+            <td><input type="text" name="size5"/></td>
+            <td><input type="text" name="size6"/></td>
             <td></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
+            <td><input type="text" name="retail"/></td>
+            <td><input type="text" name="whole"/></td>
+            <td><input type="text" name="total"/></td>
+          </tr>
+          <tr>
+            <td colspan="12"><button type="button" onclick="add_SML(this)">Add new Size row</button></td>
           </tr>
          </tbody>
       </table>
+      <div style="display:none;">
+        <textarea name="details" id="details-data"></textarea>
+      </div>
+      <button type="button" onclick="get_details()">Submit</button>
     </div>
 </form>
 {% endblock %}

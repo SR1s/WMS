@@ -227,6 +227,9 @@ div.item-list {
     margin: 10px 0;
     background-color: #fff;
 }
+div#hide_template {
+    display: none;
+}
 
 hr {
     width: 100%;
