@@ -8,6 +8,10 @@ class Order(db.Model):
     details = db.relationship("OrderDetail", backref="order", lazy='dynamic')
 
     def __init__(self, order_no, date=None):
-    	self.order_no = order_no
-    	if date :
-    		self.date = date
+        self.order_no = order_no
+        if date :
+            self.date = date
+
+    def __repr__(self):
+        return "[Order no: %s \n Date : %s \n]" % \
+                (self.order_no, self.date)

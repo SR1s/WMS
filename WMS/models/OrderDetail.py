@@ -20,6 +20,6 @@ class OrderDetail(db.Model):
         self.order_id = order_id
 
     def __repr__(self):
-        return "<OrderDetail: \n    number: %s \n    size: %s \n    amount: %s \n>" % \
+        return "{OrderDetail: \n    number: %s \n    size: %s \n    amount: %s \n}" % \
                 (self.number, self.size, self.amount)
 
