@@ -14,28 +14,28 @@
         </tr>
       </thead>
       <tbody>
+        {% for item in items %}
         <tr class="size">
           <td colspan="2"></td>
-          <td width="5%">XS</td>
-          <td width="5%">S</td>
-          <td width="5%">M</td>
-          <td width="5%">L</td>
-          <td width="5%">XL</td>
-          <td width="5%">XXL</td>
+          <td width="5%">{{ item.size1 }}</td>
+          <td width="5%">{{ item.size2 }}</td>
+          <td width="5%">{{ item.size3 }}</td>
+          <td width="5%">{{ item.size4 }}</td>
+          <td width="5%">{{ item.size5 }}</td>
+          <td width="5%">{{ item.size6 }}</td>
           <td colspan="2"></td>
         </tr>
-        {% for item in items %}
         <tr>
-          <td>{{ item }}</td>
-          <td>{{ items[item]['info'].description }}</td>
-          <td>{{ items[item]['XS'] }}</td>
-          <td>{{ items[item]['S'] }}</td>
-          <td>{{ items[item]['M'] }}</td>
-          <td>{{ items[item]['L'] }}</td>
-          <td>{{ items[item]['XL'] }}</td>
-          <td>{{ items[item]['XXL'] }}</td>
-          <td>{{ items[item]['XS'] + items[item]['S'] + items[item]['M'] + items[item]['L']+ items[item]['XL']+ items[item]['XXL'] }}</td>
-          <td>{{ items[item]['info'].last_update }}</td>
+          <td>{{ item.number }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.amount1 }}</td>
+          <td>{{ item.amount2 }}</td>
+          <td>{{ item.amount3 }}</td>
+          <td>{{ item.amount4 }}</td>
+          <td>{{ item.amount5 }}</td>
+          <td>{{ item.amount6 }}</td>
+          <td>{{ item.amount1 + item.amount2 + item.amount3 + item.amount4 + item.amount5 + item.amount6 }}</td>
+          <td>{{ item.last_update }}</td>
         </tr>
         {% endfor%}
       </tbody>
