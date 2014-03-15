@@ -23,60 +23,22 @@ def set_up_data(db):
     db.session.add(a_shanghai)
     db.session.commit()
 
-    item_1_XS = Item("G75187", "XS", "AFA A JSY", 0)
-    item_1_S  = Item("G75187", "S",  "AFA A JSY", 4)
-    item_1_M  = Item("G75187", "M",  "AFA A JSY", 4)
-    item_1_L  = Item("G75187", "L",  "AFA A JSY", 2)
-    item_1_XL = Item("G75187", "XL", "AFA A JSY", 1)
-    item_1_XXL= Item("G75187", "XXL","AFA A JSY", 0)
-    db.session.add(item_1_XS)
-    db.session.add(item_1_S)
-    db.session.add(item_1_M)
-    db.session.add(item_1_L)
-    db.session.add(item_1_XL)
-    db.session.add(item_1_XXL)
-    db.session.commit()
+    i1 = Item("G75189", "AFA A SHO", \
+              "XS", 0, "S", 2, "M", 2, \
+              "L", 1, "XL", 1, "XXL", 0, \
+              shenzhen.id)
+    i2 = Item("G74569", "AFA F JSY", \
+              "XS", 0, "S", 10, "M", 10, \
+              "L", 5, "XL", 3, "XXL", 1, \
+              guangzhou.id)
+    i3 = Item("G75185", "AFA H JSY W", \
+              "XS", 10, "S", 10, "M", 5, \
+              "L", 1, "XL", 0, "XXL", 0, \
+              shanghai.id)
 
-    item_2_XS = Item("G75189", "XS", "AFA A SHO", 0)
-    item_2_S  = Item("G75189", "S",  "AFA A SHO", 2)
-    item_2_M  = Item("G75189", "M",  "AFA A SHO", 2)
-    item_2_L  = Item("G75189", "L",  "AFA A SHO", 1)
-    item_2_XL = Item("G75189", "XL", "AFA A SHO", 1)
-    item_2_XXL= Item("G75189","XXL", "AFA A SHO", 0)
-    db.session.add(item_2_XS)
-    db.session.add(item_2_S)
-    db.session.add(item_2_M)
-    db.session.add(item_2_L)
-    db.session.add(item_2_XL)
-    db.session.add(item_2_XXL)
-    db.session.commit()
-
-    item_3_XS = Item("G74569", "XS", "AFA H JSY", 0)
-    item_3_S  = Item("G74569", "S",  "AFA H JSY", 10)
-    item_3_M  = Item("G74569", "M",  "AFA H JSY", 10)
-    item_3_L  = Item("G74569", "L",  "AFA H JSY", 5)
-    item_3_XL = Item("G74569", "XL", "AFA H JSY", 3)
-    item_3_XXL= Item("G74569","XXL", "AFA H JSY", 1)
-    db.session.add(item_3_XS)
-    db.session.add(item_3_S)
-    db.session.add(item_3_M)
-    db.session.add(item_3_L)
-    db.session.add(item_3_XL)
-    db.session.add(item_3_XXL)
-    db.session.commit()
-
-    item_4_XS = Item("G75185", "XS", "AFA H JSY W", 10)
-    item_4_S  = Item("G75185", "S",  "AFA H JSY W", 10)
-    item_4_M  = Item("G75185", "M",  "AFA H JSY W", 5)
-    item_4_L  = Item("G75185", "L",  "AFA H JSY W", 1)
-    item_4_XL = Item("G75185", "XL", "AFA H JSY W", 0)
-    item_4_XXL= Item("G75185","XXL", "AFA H JSY W", 0)
-    db.session.add(item_4_XS)
-    db.session.add(item_4_S)
-    db.session.add(item_4_M)
-    db.session.add(item_4_L)
-    db.session.add(item_4_XL)
-    db.session.add(item_4_XXL)
+    db.session.add(i1)
+    db.session.add(i2)
+    db.session.add(i3)
     db.session.commit()
 
     order = Order("10000")
