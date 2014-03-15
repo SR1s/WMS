@@ -24,7 +24,6 @@ function get_details(){
   var postdata = new Array();
   for (var i=0;i<data.length;i++)
   {
-    alert(data.length);
     if($(data[i]).prop("class")=="size"){
       size1 = $($(data[i]).children()[1]).text();
       size2 = $($(data[i]).children()[2]).text();
@@ -33,7 +32,7 @@ function get_details(){
       size5 = $($(data[i]).children()[5]).text();
       size6 = $($(data[i]).children()[6]).text();
     }else if ($(data[i]).prop("class")=="data"){
-      d = new Array();
+      d = new Object();
       d["number"] = $($($(data[i]).children()[0]).children()[0]).val();
       d["description"] = $($($(data[i]).children()[1]).children()[0]).val();
       d["siez1"] = size1;
@@ -54,5 +53,6 @@ function get_details(){
       postdata.push(d);
     }
   }
-  console.log(postdata);
+  console.log(JSON.stringify(postdata));
+  $("#details-data").val(JSON.stringify(postdata));
 }
