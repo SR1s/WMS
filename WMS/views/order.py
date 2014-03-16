@@ -23,7 +23,7 @@ def list_all():
 @order.route('/create')
 @verify_login
 def create():
-    return render_template("create-order.html")
+    return render_template("order-create.html")
 
 @order.route('/create', methods=['POST'])
 @verify_login
@@ -35,26 +35,16 @@ def perform_create():
     db.session.commit()
     details = json.loads(request.form['details'])
     for detail in details:
-        d1 = OrderDetail(detail['number'], detail['size1'], detail['description'], \
-                         detail['amount1'], order.id)
-        d2 = OrderDetail(detail['number'], detail['size2'], detail['description'], \
-                         detail['amount2'], order.id)
-        d3 = OrderDetail(detail['number'], detail['size3'], detail['description'], \
-                         detail['amount3'], order.id)
-        d4 = OrderDetail(detail['number'], detail['size4'], detail['description'], \
-                         detail['amount4'], order.id)
-        d5 = OrderDetail(detail['number'], detail['size5'], detail['description'], \
-                         detail['amount5'], order.id)
-        d6 = OrderDetail(detail['number'], detail['size6'], detail['description'], \
-                         detail['amount6'], order.id)
-        db.session.add(d1)
-        db.session.add(d2)
-        db.session.add(d3)
-        db.session.add(d4)
-        db.session.add(d5)
-        db.session.add(d6)
+        d = OrderDetail(detail['number'], detail['description'], order.id, \
+                        detail['size1'], detail['amount1'], \
+                        detail['size2'], detail['amount2'], \
+                        detail['size3'], detail['amount3'], \
+                        detail['size4'], detail['amount4'], \
+                        detail['size5'], detail['amount5'], \
+                        detail['size6'], detail['amount6'], \
+                        detail['retail'], detail['whole'], detail['total'] )
+        db.session.add(d)
     db.session.commit()
     
     newOrder = Order.query.filter_by(id=order.id).first()
-    return str(newOrder) + str(newOrder.details.all())
-    return render_template("create-order.html")
+    return render_template("order-detail.html", order=newOrder)
