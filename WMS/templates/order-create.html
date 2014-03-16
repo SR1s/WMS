@@ -46,14 +46,18 @@
             <td><input type="text" name=""/></td>
           </tr>
           <tr>
-            <td colspan="12"><button type="button" onclick="add_SML(this)">Add new Size row</button></td>
+            <td colspan="12">
+              <button type="button" onclick="add_SML(this, 'clothes')">添加服饰栏目</button>
+              <button type="button" onclick="add_SML(this, 'shoes')">添加鞋靴栏目</button>
+              <button type="button" onclick="add_SML(this, 'customs')">添加自定义栏目</button>
+            </td>
           </tr>
          </tbody>
       </table>
       <div style="display:none;">
         <textarea name="details" id="details-data"></textarea>
       </div>
-      <button type="submit" onclick="get_details()">Submit</button>
+      <button type="submit" onclick="get_details()">提交订单</button>
     </div>
 </form>
 {% endblock %}

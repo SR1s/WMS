@@ -9,8 +9,18 @@ function close_message(){
   }
 }
 
-function add_SML(obj){
-  var template = '<tr class="size"><td colspan="2"></td><td width="5%">XS</td><td width="5%">S</td><td width="5%">M</td><td width="5%">L</td><td width="5%">XL</td><td width="5%">XXL</td><td colspan="4"></td></tr><tr class="data"><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td></tr><tr><td colspan="12"><button type="button" onclick="add_SML(this)">Add new Size row</button></td></tr>';
+function add_SML(obj, type){
+  var temp_clothes = '<tr class="size"><td colspan="2"></td><td width="5%">XS</td><td width="5%">S</td><td width="5%">M</td><td width="5%">L</td><td width="5%">XL</td><td width="5%">XXL</td><td colspan="4"></td></tr><tr class="data"><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td></tr><tr><td colspan="12"><button type="button" onclick="add_SML(this, \'clothes\')">添加服饰栏目</button><button type="button" onclick="add_SML(this, \'shoes\')">添加鞋靴栏目</button><button type="button" onclick="add_SML(this, \'customs\')">添加自定义栏目</button></td></tr>';
+  var temp_shoes = '<tr class="size"><td colspan="2"></td><td width="5%">3739</td><td width="5%">4042</td><td width="5%">4345</td><td width="5%">1922</td><td width="5%">2730</td><td width="5%"></td><td colspan="4"></td></tr><tr class="data"><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td></tr><tr><td colspan="12"><button type="button" onclick="add_SML(this, \'clothes\')">添加服饰栏目</button><button type="button" onclick="add_SML(this, \'shoes\')">添加鞋靴栏目</button><button type="button" onclick="add_SML(this, \'customs\')">添加自定义栏目</button></td></tr>';
+  var temp_customs = '<tr class="size"><td colspan="2"></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td colspan="4"></td></tr><tr class="data"><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td></tr><tr><td colspan="12"><button type="button" onclick="add_SML(this, \'clothes\')">添加服饰栏目</button><button type="button" onclick="add_SML(this, \'shoes\')">添加鞋靴栏目</button><button type="button" onclick="add_SML(this, \'customs\')">添加自定义栏目</button></td></tr>';
+  
+  if(type=="clothes")
+    template = temp_clothes;
+  else if (type=="shoes")
+    template = temp_shoes;
+  else
+    template = temp_customs;
+
   var parent = $(obj).parent().parent().parent();
   var add = $(obj).parent().parent();
   var addHTML = $(add).html()
