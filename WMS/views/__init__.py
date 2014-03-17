@@ -4,7 +4,7 @@ import functools
 def verify_login(func):
     @functools.wraps(func)
     def wrappper():
-        if session["status"]:
+        if session["status"] == "logined":
             return func()
         else:
             return redirect(url_for('accounts.login'))
