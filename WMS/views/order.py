@@ -13,6 +13,12 @@ def list_all():
     orders = Order.query.all()
     return render_template("order-list.html", orders=orders)
 
+@order.route('/detail/<order_no>')
+def detail(order_no):
+    if session["status"] == "logined":
+        order = Order.query.filter_by(order_no=order_no).first()
+        return render_template("order-detail.html", order=order)
+    return redirect(url_for('accounts.login')) 
 @order.route('/create')
 @verify_login
 def create():
