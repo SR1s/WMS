@@ -12,7 +12,7 @@ function close_message(){
 function add_SML(obj, type){
   var temp_clothes = '<tr class="size"><td colspan="2"></td><td width="5%">XS</td><td width="5%">S</td><td width="5%">M</td><td width="5%">L</td><td width="5%">XL</td><td width="5%">XXL</td><td colspan="4"></td></tr><tr class="data"><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td></tr><tr><td colspan="12"><button type="button" onclick="add_SML(this, \'clothes\')">添加服饰栏目</button><button type="button" onclick="add_SML(this, \'shoes\')">添加鞋靴栏目</button><button type="button" onclick="add_SML(this, \'customs\')">添加自定义栏目</button></td></tr>';
   var temp_shoes = '<tr class="size"><td colspan="2"></td><td width="5%">3739</td><td width="5%">4042</td><td width="5%">4345</td><td width="5%">1922</td><td width="5%">2730</td><td width="5%"></td><td colspan="4"></td></tr><tr class="data"><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td></tr><tr><td colspan="12"><button type="button" onclick="add_SML(this, \'clothes\')">添加服饰栏目</button><button type="button" onclick="add_SML(this, \'shoes\')">添加鞋靴栏目</button><button type="button" onclick="add_SML(this, \'customs\')">添加自定义栏目</button></td></tr>';
-  var temp_customs = '<tr class="size"><td colspan="2"></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td colspan="4"></td></tr><tr class="data"><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td></tr><tr><td colspan="12"><button type="button" onclick="add_SML(this, \'clothes\')">添加服饰栏目</button><button type="button" onclick="add_SML(this, \'shoes\')">添加鞋靴栏目</button><button type="button" onclick="add_SML(this, \'customs\')">添加自定义栏目</button></td></tr>';
+  var temp_customs = '<tr class="size customs"><td colspan="2"></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td width="5%"><input type="text" /></td><td colspan="4"></td></tr><tr class="data"><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td></tr><tr><td colspan="12"><button type="button" onclick="add_SML(this, \'clothes\')">添加服饰栏目</button><button type="button" onclick="add_SML(this, \'shoes\')">添加鞋靴栏目</button><button type="button" onclick="add_SML(this, \'customs\')">添加自定义栏目</button></td></tr>';
   
   if(type=="clothes")
     template = temp_clothes;
@@ -34,7 +34,14 @@ function get_details(){
   var postdata = new Array();
   for (var i=0;i<data.length;i++)
   {
-    if($(data[i]).prop("class")=="size"){
+    if($(data[i]).prop("class")=="size customs"){
+      size1 = $($($(data[i]).children()[1]).children()[0]).val();
+      size2 = $($($(data[i]).children()[2]).children()[0]).val();
+      size3 = $($($(data[i]).children()[3]).children()[0]).val();
+      size4 = $($($(data[i]).children()[4]).children()[0]).val();
+      size5 = $($($(data[i]).children()[5]).children()[0]).val();
+      size6 = $($($(data[i]).children()[6]).children()[0]).val();
+    }else if($(data[i]).prop("class")=="size"){
       size1 = $($(data[i]).children()[1]).text();
       size2 = $($(data[i]).children()[2]).text();
       size3 = $($(data[i]).children()[3]).text();
