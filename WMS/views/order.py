@@ -10,15 +10,8 @@ order = Blueprint('order', __name__)
 @order.route('/list')
 @verify_login
 def list_all():
-    orders_raw = Order.query.all()
-    orders = list()
-    for order_raw in orders_raw:
-        order = dict()
-        order['order_no'] = order_raw.order_no
-        order['date'] = order_raw.date
-        order['details'] = order_raw.details.all()
-        orders.append(order)
-    return str(orders)
+    orders = Order.query.all()
+    return render_template("order-list.html", orders=orders)
 
 @order.route('/create')
 @verify_login

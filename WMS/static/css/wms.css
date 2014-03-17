@@ -228,6 +228,19 @@ div.item-list {
     margin: 10px 0;
     background-color: #fff;
 }
+
+div.order-item {
+    width: 48%;
+    height: 60px;
+    margin: 2px;
+    padding: 5px;
+    display: inline-block;
+    background-color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #bcbcbc;
+}
+
 div#hide_template {
     display: none;
 }
