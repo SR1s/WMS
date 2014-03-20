@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, abort, request, \
                   session, redirect, flash
 from WMS.app import db
-from WMS.models import Item, income, Order
+from WMS.models import Item, Income, Order
 from WMS.views import verify_login
 
 
@@ -90,7 +90,7 @@ def perform_create():
     order = Order.query.filter_by(order_no=no).first()
     if isFinished:
         order.isFinished = 1
-    else
+    else:
         order.isFinished = 0
     db.session.commit()
     return redirect(url_for('income.create'))
