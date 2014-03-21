@@ -12,7 +12,7 @@ income = Blueprint("income", __name__)
 @verify_login
 def list():
     incomes = Income.query.all()
-    return render_template("order-list.html")
+    return render_template("income-list.html", incomes=incomes)
 
 @income.route('/create')
 @verify_login
@@ -20,6 +20,13 @@ def create():
     orders = Order.query.all()
     return render_template('income-create.html', orders=orders)
 
+@income.route('/detail/<int:income_id>')
+def detail(income_id):
+    income = Income.query.filter_by(id=income_id).first()
+    return render_template('income-detail.html', income=income)
+
+
+# need rework
 @income.route('/create', methods=['POST'])
 @verify_login
 def perform_create():
