@@ -2,10 +2,11 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-from Account import Account
-from Income import Income
-from IncomeDetail import IncomeDetail
-from Item import Item
-from Order import Order
-from OrderDetail import OrderDetail
-from Place import Place
+from WMS.models.Account import Account
+from WMS.models.Income import Income
+from WMS.models.IncomeDetail import IncomeDetail
+from WMS.models.Item import Item
+from WMS.models.Order import Order
+from WMS.models.OrderDetail import OrderDetail
+from WMS.models.Place import Place
+from WMS.models.Reservation import Reservation
