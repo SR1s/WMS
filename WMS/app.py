@@ -4,8 +4,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 from flask import Flask, render_template, session, redirect, url_for
-from WMS.models import db
-from WMS.models.Income import Income
+from WMS.models import db   
 from WMS.config import app_config
 
 from WMS.views.accounts import accounts
