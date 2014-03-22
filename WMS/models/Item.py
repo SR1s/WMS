@@ -17,6 +17,7 @@ class Item(db.Model):
     amount4 = db.Column(db.Integer)
     amount5 = db.Column(db.Integer)
     amount6 = db.Column(db.Integer)
+    details = db.relationship("Reservation", backref="item", lazy='dynamic')
     place = db.Column(db.Integer, db.ForeignKey('place.id'))
     last_update = db.Column(db.DateTime, default=datetime.utcnow)
 
