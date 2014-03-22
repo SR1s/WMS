@@ -1,0 +1,24 @@
+{% extends "basic.html" %}
+{% block body %}
+<div class="login-form">
+  <h1>登录</h1>
+  <hr/>
+  <form method="post">
+    <ul>
+      <li><span>name：</span><input type="text" name="name" /></li>
+      <li><span>contact：</span><input type="text" name="contact" /></li>
+      <li><span>address</span><input type="text" name="address" /></li>
+      <li><span>note</span><input type="text" name="note" /></li>
+      <li><span>amount</span><input type="text" name="amount" /></li>
+      <li>
+        <span>item_id</span>
+        <select name="item_id">
+          {% for item in items %}
+          <option value="{{ item.id }}">{{ item.number }}</option>
+          {% endfor %}
+        </select>
+      </li>
+      <li><button type="submit">Record</button></li>
+    </ul>
+</form>
+{% endblock %}

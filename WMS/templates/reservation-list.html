@@ -1,0 +1,16 @@
+{% extends "basic.html" %}
+{% block body %}
+<div class="content">
+  <h1>ALL订单</h1>
+  <hr/>
+    {% for reservation in reservations %}
+    <div class="order-item">
+      <div><span>Custom Name: </span><span>{{ reservation.name }}</span></div>
+      <div><span>Date: </span><span>{{ reservation.date }}</span></div>
+      <div><span>Address: </span><span>{{ reservation.address }}</span></div>
+      <div><span>Good: </span><span>{{ reservation.item.number }}</span></div>
+      <div><span>Note: </span><span>{{ reservation.note }}</span></div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
