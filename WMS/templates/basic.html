@@ -33,7 +33,11 @@
     <div class="main">
       <div class="message">
         {% for status, message in get_flashed_messages(with_categories=True) %}
-        <div class="item {{ status }}">{{ message }}</div>
+        {% if status == "error" %}
+        <div class="item error">{{ message }}</div>
+        {% else %}
+        <div class="item">{{ message }}</div>
+        {% endif %}
         {% endfor %}
       </div>
       {% block body %}{% endblock %}
