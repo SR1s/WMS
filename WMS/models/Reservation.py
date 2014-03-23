@@ -8,10 +8,10 @@ class Reservation(db.Model):
     address = db.Column(db.String(255))
     note = db.Column(db.Text)
     date = db.Column(db.DateTime, default=datetime.utcnow)
-    item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
     amount = db.Column(db.Integer)
     # 0: not finish ; 1: finish; -1: can't finish, also means delete
     status = db.Column(db.Integer, default=0)
+    item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
 
     def __init__(self, name, contact, address, item_id, amount, note=None):
         self.name = name

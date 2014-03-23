@@ -3,17 +3,23 @@ from datetime import datetime
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    order_no = db.Column(db.String(255), unique=True)
     date = db.Column(db.DateTime,default=datetime.utcnow)
+    no = db.Column(db.String(255), unique=True)
+    # 0: unfinished; 1: finished
+    status = db.Column(db.Integer, default=0)
+    place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
     details = db.relationship("OrderDetail", backref="order", lazy='dynamic')
     incomes = db.relationship("Income", backref="order", lazy='dynamic')
-    isFinished = db.Column(db.Integer, default=0)
 
-    def __init__(self, order_no, date=None):
-        self.order_no = order_no
-        if date :
-            self.date = date
+    def __init__(self, no=None, date=None, place_id=None):
+        if no and place_id:
+            self.no = no
+            self.place_id = place_id
+            if date:
+                self.date = date
+        else:
+            raise ValueError
 
     def __repr__(self):
-        return "[Order no: %s \n Date : %s \n]" % \
-                (self.order_no, self.date)
+        return '{ Order Object: %s , %s }' % \
+                (self.no, self.date)

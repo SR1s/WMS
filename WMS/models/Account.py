@@ -1,5 +1,5 @@
-from WMS.models import db
 from datetime import datetime
+from WMS.models import db
 from WMS.utils import md5
 
 class Account(db.Model):
@@ -7,15 +7,22 @@ class Account(db.Model):
     user_no = db.Column(db.String(255), unique=True)
     user_ps = db.Column(db.String(255))
     privilege = db.Column(db.Integer, default=0)
-    default_place = db.Column(db.Integer, db.ForeignKey('place.id'))
     last_login = db.Column(db.DateTime,default=datetime.utcnow)
     last_ip = db.Column(db.String(255))
+    place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
 
-    def __init__(self, user_no, user_ps, default_place):
-        self.user_no = user_no
-        self.user_ps = md5(user_ps)
-        self.default_place = default_place
+    def __init__(self, user_no=None, user_ps=None, 
+                 privilege=None, place_id=None):
+        if user_no and user_ps and place_id:
+            self.user_no = user_no
+            self.user_ps = md5(user_ps)
+            self.place_id = place_id
+            if privilege:
+                self.privilege = privilege
+        else:
+            raise ValueError
 
     def __repr__(self):
-        return "<--- Account Object ---> \n no: %s \n ps: %s" % \
-                (self.user_no, self.user_ps)
+        return '{ Account Object: %s , %s , %s , %s }' % \
+                (self.user_no, self.user_ps, \
+                 self.privilege, self.place_id)

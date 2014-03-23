@@ -1,13 +1,18 @@
 from WMS.models import db
-from datetime import datetime 
 
 class Place(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     place = db.Column(db.String(255), unique=True)
     person = db.relationship("Account", backref="place", lazy='dynamic')
+    storage = db.relationship("Storage", backref="place", lazy='dynamic')
+    order = db.relationship("Order", backref="place", lazy='dynamic')
 
-    def __init__(self, place):
-        self.place = place
+    def __init__(self, place=None):
+        if place:
+        	self.place = place
+        else:
+            raise ValueError
 
     def __repr__(self):
-        return "<-- Place Object: %s -->" % self.place
+        return '{ Place Object: %s , %s }' % \
+               (self.id, self.place)
