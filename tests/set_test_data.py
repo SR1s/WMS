@@ -2,49 +2,39 @@ from WMS.models import Place, Account, Item, Order, OrderDetail
 
 def set_up_data(db):
     # add 4 places
-    shenzhen = Place("Shenzhen")
+    shenzhen = Place(place='Shenzhen')
     db.session.add(shenzhen)
-    guangzhou = Place("guangzhou")
+    guangzhou = Place(place='guangzhou')
     db.session.add(guangzhou)
-    hongkong = Place("hongkong")
+    hongkong = Place(place='hongkong')
     db.session.add(hongkong)
-    shanghai = Place("shanghai")
+    shanghai = Place(place='shanghai')
     db.session.add(shanghai)
     db.session.commit()
 
     # add 4 users
-    a_shenzhen = Account("a_shenzhen", "a_shenzhen", shenzhen.id)
+    a_shenzhen = Account(user_no ='a_shenzhen', user_ps='a_shenzhen', \
+                         place_id=shenzhen.id)
     db.session.add(a_shenzhen)
-    a_guangzhou = Account("a_guangzhou", "a_guangzhou", guangzhou.id)
+    a_guangzhou = Account(user_no ='a_guangzhou', user_ps='a_guangzhou', \
+                          place_id=guangzhou.id)
     db.session.add(a_guangzhou)
-    a_hongkong = Account("a_hongkong", "a_hongkong", hongkong.id)
+    a_hongkong = Account(user_no ='a_hongkong', user_ps='a_hongkong', \
+                         place_id=hongkong.id)
     db.session.add(a_hongkong)
-    a_shanghai = Account("a_shanghai", "a_shanghai", shanghai.id)
+    a_shanghai = Account(user_no ='a_shanghai', user_ps='a_shanghai', \
+                         place_id=shanghai.id)
     db.session.add(a_shanghai)
     db.session.commit()
 
-    i1 = Item("G75189", "AFA A SHO", \
-              "XS", 0, "S", 2, "M", 2, \
-              "L", 1, "XL", 1, "XXL", 0, \
-              shenzhen.id)
-    i2 = Item("G74569", "AFA F JSY", \
-              "XS", 0, "S", 10, "M", 10, \
-              "L", 5, "XL", 3, "XXL", 1, \
-              guangzhou.id)
-    i3 = Item("G75185", "AFA H JSY W", \
-              "XS", 10, "S", 10, "M", 5, \
-              "L", 1, "XL", 0, "XXL", 0, \
-              shanghai.id)
+    # add 4 item
+    i1 = Item(number="G75189", description="AFA A SHO")
+    i2 = Item(number="G74569", description="AFA F JSY")
+    i3 = Item(number="G75185", description="AFA H JSY W")
+    i4 = Item(number="G75188", description="AFA H JSY W GG")
 
     db.session.add(i1)
     db.session.add(i2)
     db.session.add(i3)
-    db.session.commit()
-
-    order = Order("10000")
-    db.session.add(order)
-    db.session.commit()
-
-    od_1 = OrderDetail("G75187", "S", "AFA A JSY", 4, order.id)
-    db.session.add(od_1)
+    db.session.add(i4)
     db.session.commit()
