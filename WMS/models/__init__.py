@@ -10,3 +10,4 @@ from WMS.models.Order import Order
 from WMS.models.OrderDetail import OrderDetail
 from WMS.models.Place import Place
 from WMS.models.Reservation import Reservation
+from WMS.models.Storage import Storage
