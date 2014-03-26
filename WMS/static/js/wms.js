@@ -29,47 +29,43 @@ function add_SML(obj, type){
 }
 
 function get_details(){
-  var data = $("#details").children();
+  var rows = $("#details").children();
   var size1, size2, size3, size4, size5, size6;
   var postdata = new Array();
-  for (var i=0;i<data.length;i++)
+  for (var i=0;i<rows.length;i++)
   {
-    if($(data[i]).prop("class")=="size customs"){
-      size1 = $($($(data[i]).children()[1]).children()[0]).val();
-      size2 = $($($(data[i]).children()[2]).children()[0]).val();
-      size3 = $($($(data[i]).children()[3]).children()[0]).val();
-      size4 = $($($(data[i]).children()[4]).children()[0]).val();
-      size5 = $($($(data[i]).children()[5]).children()[0]).val();
-      size6 = $($($(data[i]).children()[6]).children()[0]).val();
-    }else if($(data[i]).prop("class")=="size"){
-      size1 = $($(data[i]).children()[1]).text();
-      size2 = $($(data[i]).children()[2]).text();
-      size3 = $($(data[i]).children()[3]).text();
-      size4 = $($(data[i]).children()[4]).text();
-      size5 = $($(data[i]).children()[5]).text();
-      size6 = $($(data[i]).children()[6]).text();
-    }else if ($(data[i]).prop("class")=="data"){
+    columns = new Array()
+    if($(rows[i]).prop("class")=="size customs"){
       d = new Object();
-      d["number"] = $($($(data[i]).children()[0]).children()[0]).val();
-      d["description"] = $($($(data[i]).children()[1]).children()[0]).val();
-      d["size1"] = size1;
-      d["size2"] = size2;
-      d["size3"] = size3;
-      d["size4"] = size4;
-      d["size5"] = size5;
-      d["size6"] = size6;
-      d['amount1'] = $($($(data[i]).children()[2]).children()[0]).val();
-      d['amount2'] = $($($(data[i]).children()[3]).children()[0]).val();
-      d['amount3'] = $($($(data[i]).children()[4]).children()[0]).val();
-      d['amount4'] = $($($(data[i]).children()[5]).children()[0]).val();
-      d['amount5'] = $($($(data[i]).children()[6]).children()[0]).val();
-      d['amount6'] = $($($(data[i]).children()[7]).children()[0]).val();
-      d["retail"] = $($($(data[i]).children()[9]).children()[0]).val();
-      d["whole"] = $($($(data[i]).children()[10]).children()[0]).val();
-      d["total"] = $($($(data[i]).children()[11]).children()[0]).val();
       postdata.push(d);
+      d['columns'] = new Array();
+      for (var j=1;j<=6;j++) {
+        var item = new Object();
+        item['size'] = $($($(rows[i]).children()[j]).children()[0]).val();
+        d['columns'].push(item);
+      }
+    }else if($(rows[i]).prop("class")=="size"){
+      d = new Object();
+      postdata.push(d);
+      d['columns'] = new Array();
+      for (var j=1;j<=6;j++) {
+        var item = new Object();
+        item['size'] = $($(rows[i]).children()[j]).text();
+        d['columns'].push(item);
+      }
+    }else if ($(rows[i]).prop("class")=="data"){
+      d=postdata[postdata.length-1];
+      for(var j=0;j<6;j++){
+        d['columns'][j]['amount'] = $($($(rows[i]).children()[j+2]).children()[0]).val();
+      }
+      d["number"] = $($($(rows[i]).children()[0]).children()[0]).val();
+      d["description"] = $($($(rows[i]).children()[1]).children()[0]).val();
+      d["retail"] = $($($(rows[i]).children()[9]).children()[0]).val();
+      d["whole"] = $($($(rows[i]).children()[10]).children()[0]).val();
+      d["total"] = $($($(rows[i]).children()[11]).children()[0]).val();
     }
   }
   console.log(JSON.stringify(postdata));
   $("#details-data").val(JSON.stringify(postdata));
+  return false;
 }
