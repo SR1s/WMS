@@ -7,16 +7,15 @@
     <div>
       <span>订单号：</span>
       <select name="order_no">
-        <option disabled="true" selected="true">Pls choose an order below</option>
+        <option disabled="true" selected="true" value='0'>Pls choose an order below</option>
         <optgroup label="Pls chose a order">
           {% for order in orders %}
-          <option value="{{ order.order_no }}">{{ order.order_no }}</option>
+          <option value="{{ order.id }}">{{ order.no }}</option>
           {% endfor %}
         </optgroup>
       </select>
-      <span>时间：</span><input type="text" name="order_date" />
       <hr/>
-      <table width="100%">
+      <table width="100%" class='table'>
         <thead>
           <tr>
             <td width="10%">商品编号</td>

@@ -1,136 +1,115 @@
 from flask import Blueprint, render_template, abort, request, \
                   session, redirect, flash, url_for
 from WMS.app import db
-from WMS.models import Item, Income, Order, IncomeDetail
+from WMS.models import Item, Income, Order, OrderDetail, IncomeDetail
 from WMS.views import verify_login
 import json
 
 
 income = Blueprint("income", __name__)
 
+# list all income
 @income.route("/list")
 @verify_login
 def list():
-    incomes = Income.query.all()
+    incomes = Income.query.order_by(Income.id.desc()).all()
+    incomes = [dict(no=i.order.no, date=str(i.date.date()), \
+                    id=i.id) \
+               for i in incomes]
     return render_template("income-list.html", incomes=incomes)
 
+# store the income record
 @income.route('/create')
 @verify_login
 def create():
-    orders = Order.query.all()
-    return render_template('income-create.html', orders=orders)
-
-@income.route('/detail/<int:income_id>')
-def detail(income_id):
-    income = Income.query.filter_by(id=income_id).first()
-    return render_template('income-detail.html', income=income)
+    orders = Order.query.filter_by(status=0).order_by(Order.date.desc()).all()
+    if orders and len(orders)>0:
+         return render_template('income-create.html', orders=orders)
+    flash('No unfinish order!', 'error')
+    return redirect(url_for('index'))
 
 
 # need rework
 @income.route('/create', methods=['POST'])
 @verify_login
 def perform_create():
-    date = request.form['order_date']
     no = request.form['order_no']
-    details_in = json.loads(request.form['details'])
+    postdata = json.loads(request.form['details'])
 
     # check if order exist
-    order = Order.query.filter_by(order_no=no).first()
+    order = Order.query.filter_by(id=no).first()
     if order == None:
         flash('Error! Order did not exist!')
         return redirect(url_for('income.create'))
 
     # select details from order and store in an array using dictionary
-    details_raw = [ dict(number=detail.number, \
-                    size1=detail.size1, amount1=detail.amount1, \
-                    size2=detail.size2, amount2=detail.amount2, \
-                    size3=detail.size3, amount3=detail.amount3, \
-                    size4=detail.size4, amount4=detail.amount4, \
-                    size5=detail.size5, amount5=detail.amount5, \
-                    size6=detail.size6, amount6=detail.amount6, ) \
-                    for detail in order.details.all() ]
+    details_order = [dict(size=d.size, amount=d.amount, number=d.item.number, id=d.item.id) \
+                     for d in OrderDetail.query.filter_by(order_id=no).all()]
+
     # select income record
-    incomes = Income.query.filter_by(order_no=no)
+    incomes = Income.query.filter_by(order_id=no).all()
     # check how many order details need to be income  
     for income in incomes:
         # select exist detail from income
-        details_exit = [ dict(number=detail.number, \
-                    size1=detail.size1, amount1=detail.amount1, \
-                    size2=detail.size2, amount2=detail.amount2, \
-                    size3=detail.size3, amount3=detail.amount3, \
-                    size4=detail.size4, amount4=detail.amount4, \
-                    size5=detail.size5, amount5=detail.amount5, \
-                    size6=detail.size6, amount6=detail.amount6, ) \
-                    for detail in income.details.all() ]
-        # calculating... 
-        for detail_exit in details_exit:
-            for detail_raw in details_raw:
-                if detail_exit['number'] == detail_raw['number']:
-                    i, j = 1, 1
-                    for i in range(1,7):
-                        for j in range(1,7):
-                            size1 = "size"+str(i)
-                            size2 = "size"+str(j)
-                            amount1 = "amount"+str(i)
-                            amount2 = "amount"+str(j)
-                            if detail_raw[size1] == detail_exit[size2]:
-                                detail_raw[amount1] = \
-                                    detail_raw[amount1] - detail_exit[amount2]
-    
+        details_income = IncomeDetail.query.filter_by(income_id=income.id).all()
+        details_income = [dict(size=d.size, amount=d.amount, number=d.item.number) \
+                          for d in details_income]
+        for detail_income in details_income:
+            for detail_order in details_order:
+                if detail_income['number'] == detail_order['number'] and \
+                   detail_income['size'] == detail_order['size']:
+                    detail_order['amount'] = detail_order['amount'] - detail_income['amount']
     # check is the income amount match the need
     vaild = dict()
-    for detail_in in details_in:
-        vaild[detail_in['number']] = False
-        for detail_raw in details_raw:
-            if detail_in['number'] == detail_raw['number']:
-                vaild[detail_in['number']] = True
-                i, j = 1, 1
-                for i in range(1,7):
-                    for j in range(1, 7):
-                        size1 = "size"+str(i)
-                        size2 = "size"+str(j)
-                        amount1 = "amount"+str(i)
-                        amount2 = "amount"+str(j)
-                        if detail_raw[size1] == detail_in[size2]:
-                            detail_raw[amount1] = \
-                                detail_raw[amount1] - int(detail_in[amount2])
-                            isMatch = True
-                            if detail_raw[amount1] < 0:
-                                flash("Error! Amount not match!")
-                                return redirect(url_for('income.create'))
+    for d in postdata:
+        vaild[d['number']] = False
+        for detail_order in details_order:
+            if d['number'] == detail_order['number']:
+                d['id'] = detail_order['id']
+                for detail in d['columns']:
+                    if detail['size'] == detail_order['size']:
+                        detail_order['amount'] = detail_order['amount'] - int(detail['amount'])
+                    vaild[d['number']] = True
+
     # if some is not in order items
+    haveError = False
     for (key, value) in vaild.items():
         if value == False:
-            flash("Error, %s not in order!" % key)
-            return redirect(url_for('income.create'))
+            haveError = True
+            flash("Error, %s not in order!" % key, 'error')
+    for detail in details_order:
+        if detail['amount']<0:
+            flash('Item %s:%s amount Error' % (detail['number'], detail['size']), 'error')
+            haveError = True
+    if haveError:
+        return redirect(url_for('income.create'))
+
     # store income and income details
-    income = Income(order.order_no)
+    income = Income(no)
     db.session.add(income)
     db.session.commit()
-    for detail_in in details_in:
-        d = IncomeDetail(detail_in['number'], \
-                         detail_in['description'], \
-                         income.id, \
-                         detail_in['size1'], detail_in['amount1'], \
-                         detail_in['size2'], detail_in['amount2'], \
-                         detail_in['size3'], detail_in['amount3'], \
-                         detail_in['size4'], detail_in['amount4'], \
-                         detail_in['size5'], detail_in['amount5'], \
-                         detail_in['size6'], detail_in['amount6'] )
-        db.session.add(d)
+    for d in postdata:
+        for detail in d['columns']:
+            inde = IncomeDetail(item_id=d['id'], income_id=income.id, \
+                                size=detail['size'], amount=detail['amount'])
+            db.session.add(inde)
     db.session.commit()
+
     # then check if the order is finished
     isFinished = True
-    for detail_raw in details_raw:
-        i = 1
-        for i in range(1, 7):
-            if detail_raw['amount'+str(i)] > 0:
-                isFinished = False
-    order = Order.query.filter_by(order_no=no).first()
+    for detail_order in details_order:
+        if detail_order['amount']>0:
+            isFinished = False
+    order = Order.query.filter_by(id=no).first()
     if isFinished:
-        flash('Order: %s is Finished!' % order.order_no)
-        order.isFinished = 1
+        flash('Order: %s is Finished!' % order.no)
+        order.status = 1
     else:
-        order.isFinished = 0
+        order.status = 0
     db.session.commit()
     return redirect(url_for('order.list_all'))
+
+@income.route('/detail/<int:income_id>')
+def detail(income_id):
+    income = Income.query.filter_by(id=income_id).first()
+    return render_template('income-detail.html', income=income)
