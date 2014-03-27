@@ -6,6 +6,8 @@ from WMS.models import Place, Account
 from WMS.utils import md5
 from WMS.views import verify_login
 
+from datetime import datetime
+
 accounts = Blueprint("accounts",__name__)
 
 @accounts.route("/login")
@@ -26,6 +28,7 @@ def perform_login():
             status = "normal"
             session["user_no"] = user_no
             session["user_id"] = user.id
+            session["time"] = datetime.utcnow()
             session["status"] = "logined"
             message = "You have logined!"
     flash(message, category=status)
