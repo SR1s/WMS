@@ -25,6 +25,7 @@ def perform_login():
         if user:
             status = "normal"
             session["user_no"] = user_no
+            session["user_id"] = user.id
             session["status"] = "logined"
             message = "You have logined!"
     flash(message, category=status)
