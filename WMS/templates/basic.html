@@ -4,9 +4,14 @@
     <title>5291进销存管理系统</title>
     <link rel="stylesheet" type="text/css" href='{{ url_for("static",filename="css/reset.css") }}'>
     <link rel="stylesheet" type="text/css" href='{{ url_for("static",filename="css/wms.css") }}'>
+    <link rel="stylesheet" type="text/css" href='{{ url_for("static",filename="css/jquery-ui.css") }}'>
     <script type="text/javascript" src='{{ url_for("static",filename="js/jquery-1.11.0.min.js") }}'></script>
+    <script type="text/javascript" src='{{ url_for("static",filename="js/jquery-ui.js") }}'></script>
     <script type="text/javascript" src='{{ url_for("static",filename="js/wms.js") }}'></script>
     <script type="text/javascript">
+      $(function() {
+        $("#datepicker").datepicker();
+      });
       $(document).ready(function(){
         close_message();
       });
