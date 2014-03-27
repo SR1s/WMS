@@ -287,7 +287,7 @@ input {
 }
 
 
-table {
+table.table {
     width: 100%;
     padding: 5px;
     text-align: center;
@@ -298,7 +298,7 @@ table {
     border-width: 1px;
 }
 
-td {
+table.table td {
     padding: 5px;
     text-align: center;
     vertical-align: middle;
@@ -309,11 +309,11 @@ td {
     border-style: solid;
 }
 
-thead td, tr.size td {
+table.table thead td, tr.size td {
     background-color: #fff8c8;
 }
 
-td:last-child {
+table.table td:last-child {
     padding: 5px;
     text-align: center;
     vertical-align: middle;
@@ -322,7 +322,7 @@ td:last-child {
     border-style: solid;
 }
 
-tr:last-child td{
+table.table tr:last-child td{
     padding: 5px;
     text-align: center;
     vertical-align: middle;
@@ -331,7 +331,7 @@ tr:last-child td{
     border-style: solid;
 }
 
-tr:last-child td:last-child{
+table.table tr:last-child td:last-child{
     padding: 5px;
     text-align: center;
     vertical-align: middle;
