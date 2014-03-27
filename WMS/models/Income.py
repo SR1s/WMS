@@ -7,8 +7,8 @@ class Income(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     details = db.relationship("IncomeDetail", backref="order", lazy='dynamic')
 
-    def __init__(self, order_no, date=None):
-        self.order_no = order_no
+    def __init__(self, order_id, date=None):
+        self.order_id = order_id
         if date:
             self.date = date
             
