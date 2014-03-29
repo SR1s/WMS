@@ -29,7 +29,6 @@ def perform_login():
             session["user_no"] = user_no
             session["user_id"] = user.id
             session["time"] = datetime.utcnow()
-            session["status"] = "logined"
             message = "You have logined!"
     flash(message, category=status)
     return redirect(url_for("index"))
@@ -42,7 +41,8 @@ def create():
 
 @accounts.route("/logout")
 def logout():
-    session["status"] = None
+    session["user_id"] = None
     session["user_no"] = None
+    session["time"] = None
     return "you have logout!\n status: %s \n user_no: %s \n" % \
             (session["status"], session["user_no"])
