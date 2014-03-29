@@ -28,6 +28,7 @@ def perform_login():
             status = "normal"
             session["user_no"] = user_no
             session["user_id"] = user.id
+            session["place_id"] = user.place.id
             session["time"] = datetime.utcnow()
             message = "You have logined!"
     flash(message, category=status)
