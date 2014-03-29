@@ -3,7 +3,7 @@
 <div class="item-list">
     <h1>库存状态</h1>
     <hr/>
-    <table>
+    <table class="table">
       <thead>
         <tr>
           <td width="15%">商品编号</td>
@@ -14,28 +14,22 @@
         </tr>
       </thead>
       <tbody>
-        {% for item in items %}
+        {% for item in storage['items'] %}
         <tr class="size">
           <td colspan="2"></td>
-          <td width="5%">{{ item.size1 }}</td>
-          <td width="5%">{{ item.size2 }}</td>
-          <td width="5%">{{ item.size3 }}</td>
-          <td width="5%">{{ item.size4 }}</td>
-          <td width="5%">{{ item.size5 }}</td>
-          <td width="5%">{{ item.size6 }}</td>
+          {% for i in storage['items'][item]['columns'] %}
+          <td width="5%">{{ i.size }}</td>
+          {% endfor %}
           <td colspan="2"></td>
         </tr>
         <tr>
-          <td>{{ item.number }}</td>
-          <td>{{ item.description }}</td>
-          <td>{{ item.amount1 }}</td>
-          <td>{{ item.amount2 }}</td>
-          <td>{{ item.amount3 }}</td>
-          <td>{{ item.amount4 }}</td>
-          <td>{{ item.amount5 }}</td>
-          <td>{{ item.amount6 }}</td>
-          <td>{{ item.amount1 + item.amount2 + item.amount3 + item.amount4 + item.amount5 + item.amount6 }}</td>
-          <td>{{ item.last_update }}</td>
+          <td>{{ storage['items'][item]['number'] }}</td>
+          <td>{{ storage['items'][item]['description'] }}</td>
+          {% for i in storage['items'][item]['columns'] %}
+          <td width="5%">{{ i.amount }}</td>
+          {% endfor %}
+          <td>{{ storage['items'][item]['sum']}}</td>
+          <td>{{ storage['items'][item]['last_update'] }}</td>
         </tr>
         {% endfor%}
       </tbody>

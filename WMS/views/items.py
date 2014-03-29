@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, abort, request, \
                   session, redirect, url_for, flash 
 from WMS.app import db
-from WMS.models import Item
-from WMS.views import verify_login
+from WMS.models import Item, Storage
+from WMS.views import verify_login, mycmp, cal_all
 
 import json
 
@@ -12,8 +12,26 @@ items = Blueprint('items', __name__)
 @items.route("/list")
 @verify_login
 def list_all():
-    items_raw = Item.query.order_by(Item.number.desc()).all()
-    return render_template("item-list.html", items=items_raw)
+    storage = dict()
+    storage['items'] = dict()
+    for s in Storage.query.filter_by(place_id=1).all():
+        item = storage['items'].setdefault(s.item.number, dict())
+        item['number'] = s.item.number
+        item['description'] = s.item.description
+        item['last_update'] = str(s.item.last_update.date())
+        columns = item.setdefault('columns', list())
+        columns.append(dict(size=s.size, amount=s.amount))
+    for item in storage['items']:
+        c = storage['items'][item]['columns']
+        if len(c)<6:
+            n = 7-len(c)
+            for x in range(0,n):
+                c.append(dict(size='-',amount=0))
+        c.sort(mycmp)
+        storage['items'][item]['sum'] = cal_all(c)
+        
+    #return json.dumps(storage)
+    return render_template("item-list.html", storage=storage)
 
 @items.route('/sell')
 def create():
