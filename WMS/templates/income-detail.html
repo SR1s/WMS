@@ -4,10 +4,10 @@
   <h1>订单</h1>
   <hr/>
     <div>
-      <span>Belong订单号：{{ income.order_no }}</span>
+      <span>Belong订单号：{{ income.no }}</span>
       <span>income时间：{{ income.date }}</span>
       <hr/>
-      <table width="100%">
+      <table width="100%" class="table">
         <thead>
           <tr>
             <td width="10%">商品编号</td>
@@ -20,30 +20,24 @@
           </tr>
         </thead>
         <tbody id="details">
-          {% for detail in income.details.all() %}
+          {% for detail in income.details %}
           <tr class="size">
             <td colspan="2"></td>
-            <td width="5%">{{ detail.size1 }}</td>
-            <td width="5%">{{ detail.size2 }}</td>
-            <td width="5%">{{ detail.size3 }}</td>
-            <td width="5%">{{ detail.size4 }}</td>
-            <td width="5%">{{ detail.size5 }}</td>
-            <td width="5%">{{ detail.size6 }}</td>
+            {% for item in income.details[detail].columns %}
+            <td width="5%">{{ item.size }}</td>
+            {% endfor %}
             <td colspan="4"></td>
           </tr>
           <tr class="data">
-            <td>{{ detail.number }}</td>
-            <td>{{ detail.description }}</td>
-            <td>{{ detail.amount1 }}</td>
-            <td>{{ detail.amount2 }}</td>
-            <td>{{ detail.amount3 }}</td>
-            <td>{{ detail.amount4 }}</td>
-            <td>{{ detail.amount5 }}</td>
-            <td>{{ detail.amount6 }}</td>
-            <td>{{ detail.amount1 + detail.amount2 + detail.amount3 + detail.amount4 + detail.amount5 + detail.amount6 }}</td>
-            <td>{{ detail.retail_price }}</td>
-            <td>{{ detail.whole_sell_price }}</td>
-            <td>{{ detail.total }}</td>
+            <td>{{ detail }}</td>
+            <td>{{ income.details[detail]['description'] }}</td>
+            {% for item in income.details[detail].columns %}
+            <td width="5%">{{ item.amount }}</td>
+            {% endfor %}
+            <td>{{ income.details[detail]['sum'] }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
           {% endfor %}
          </tbody>

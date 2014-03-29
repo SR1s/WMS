@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, abort, request, \
                   session, redirect, flash, url_for
 from WMS.app import db
 from WMS.models import Item, Income, Order, OrderDetail, IncomeDetail
-from WMS.views import verify_login
+from WMS.views import verify_login, mycmp, cal_all
 import json
 
 
@@ -11,7 +11,7 @@ income = Blueprint("income", __name__)
 # list all income
 @income.route("/list")
 @verify_login
-def list():
+def list_all():
     incomes = Income.query.order_by(Income.id.desc()).all()
     incomes = [dict(no=i.order.no, date=str(i.date.date()), \
                     id=i.id) \
@@ -27,7 +27,6 @@ def create():
          return render_template('income-create.html', orders=orders)
     flash('No unfinish order!', 'error')
     return redirect(url_for('index'))
-
 
 # need rework
 @income.route('/create', methods=['POST'])
@@ -109,7 +108,31 @@ def perform_create():
     db.session.commit()
     return redirect(url_for('order.list_all'))
 
+
 @income.route('/detail/<int:income_id>')
 def detail(income_id):
     income = Income.query.filter_by(id=income_id).first()
+    if income == None:
+        flash('Order not exist!')
+        return redirect('index')
+    income = dict(date=str(income.date.date()), \
+                  no=income.order.no, \
+                  details=income.details)
+    details = dict()
+    for d in income['details']:
+        detail = details.setdefault(d.item.number,dict())
+        detail['number'] = d.item.number
+        detail['description'] = d.item.description
+        columns = detail.setdefault('columns', list())
+        columns.append(dict(size=d.size, amount=d.amount))
+    for d in details:
+        c = details[d]['columns']
+        if len(c)<6:
+            n = 7-len(c)
+            for x in range(0,n):
+                c.append(dict(size='-',amount=0))
+        c.sort(mycmp)
+        details[d]['sum'] = cal_all(c)
+    income['details'] = details
+    #return json.dumps(income)
     return render_template('income-detail.html', income=income)
