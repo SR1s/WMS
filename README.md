@@ -11,6 +11,7 @@ REQUIRE
 1. Flask
 1. Flask-SQLAlchemy
 1. Flask-WTF
+1. xlrd
 
 CONFIG
 ===
