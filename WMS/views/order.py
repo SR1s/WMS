@@ -1,9 +1,10 @@
+#coding: utf8
 from flask import Blueprint, render_template, abort, \
                   request, session, flash, redirect, url_for
 from WMS.app import db
 from WMS.models import Order, OrderDetail, Account, Item
 from WMS.models import str2datetime
-from WMS.views import verify_login, chkstatus, cal_all, mycmp
+from WMS.views import verify_login, chkstatus, cal_all, mycmp, chkstatus
 
 import json
 
@@ -17,13 +18,7 @@ def list_all():
     orders = list()
     for o in orders_raw:
         order = dict(no=o.no, date=str(o.date.date()), \
-                     place=o.place.place, id=o.id)
-        if o.status == 0:
-            order['status'] = 'unfinish'
-        elif o.status == 1:
-            order['status'] = 'finished'
-        else:
-            continue
+                     place=o.place.place, id=o.id, status=chkstatus(o.status))
         orders.append(order)
     return render_template("order-list.html", orders=orders)
 
@@ -47,11 +42,11 @@ def detail(order_id):
                 v['sum']=cal_all(v['columns'])
                 v['columns'].sort(mycmp)
         else:
-            flash('Order not Exist!')
+            flash('不存在此订单')
             return redirect(url_for('items.list_all'))
         #return json.dumps(order)
         return render_template("order-detail.html", order=order)
-    return redirect(url_for('accounts.login')) 
+    return redirect(url_for('accounts.login'))
 
 # show create page
 @order.route('/create')
@@ -68,7 +63,7 @@ def perform_create():
     details = json.loads(request.form['details'])
 
     if Order.query.filter_by(no=no).first():
-        flash('Order Exist','error')
+        flash('编号%s的订单已存在' % no,'error')
         return redirect(url_for('order.create'))
 
     # create an new order

@@ -1,3 +1,4 @@
+#-*-coding: utf-8
 from flask import session, render_template, url_for, redirect
 import functools
 from datetime import datetime, timedelta
@@ -40,9 +41,9 @@ def cal_all(c):
 
 def chkstatus(status_code):
     if status_code==0:
-        return 'UnFinish'
+        return u'尚未到货完毕'
     elif status_code==1:
-        return 'Finished'
+        return u'到货完毕'
     elif status_code==-1:
-        return 'Deleted'
-    return 'Unknow Status'
+        return u'订单已删除'
+    return '状态异常'

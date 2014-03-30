@@ -1,5 +1,6 @@
+#coding: utf8
 from flask import Blueprint, render_template, abort, request, \
-                  session, redirect, url_for, flash 
+                  session, redirect, url_for, flash
 from sqlalchemy import and_
 from WMS.app import db
 from WMS.models import Item, Storage
@@ -53,12 +54,12 @@ def perform_create():
                 rest = have - int(c['amount'])
                 if rest<0:
                     isOk=False
-                    flash('Item:%s is not enough.have:%s, require:%s' %\
-                          (detail['number'], have, c['amount']))
+                    flash('编号:%s 尺寸:%s的货物库存不足，剩余:%s，需要:%s' %\
+                          (detail['number'], c['size'], have, c['amount']))
                 store.append(dict(item_id=item.id, amount=rest, size=c['size']))
         else:
             isOk = False
-            flash('item: %s not exist' % detail['number'], category='error')
+            flash('不存在编号%s的货物' % detail['number'], category='error')
         #return json.dumps(store)
     if isOk:
         for s in store:
@@ -68,5 +69,5 @@ def perform_create():
             change.amount=s['amount']
             db.session.add(change)
         db.session.commit()
-        flash('successfully sell', 'normal')
+        flash('出货成功', 'normal')
     return redirect(url_for('items.list_all'))

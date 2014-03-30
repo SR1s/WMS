@@ -1,3 +1,5 @@
+#coding: utf8
+
 from flask import Blueprint, render_template, abort, flash, \
                     request, session, redirect, url_for
 from WMS.app import db
@@ -19,7 +21,7 @@ def login():
 def perform_login():
     form = LoginForm(request.form)
     status = "error"
-    message = "Error! Wrong username or password."
+    message = "帐号/密码错误。"
     if form.validate():
         user_no = request.form['user_no']
         user_ps = md5(request.form['user_ps'])
@@ -30,7 +32,7 @@ def perform_login():
             session["user_id"] = user.id
             session["place_id"] = user.place.id
             session["time"] = datetime.utcnow()
-            message = "You have logined!"
+            message = "登录成功"
     flash(message, category=status)
     return redirect(url_for("index"))
 
@@ -45,5 +47,5 @@ def logout():
     session["user_id"] = None
     session["user_no"] = None
     session["time"] = None
-    return "you have logout!\n status: %s \n user_no: %s \n" % \
-            (session["status"], session["user_no"])
+    flash('注销成功！')
+    return redirect(url_for('accounts.login'))

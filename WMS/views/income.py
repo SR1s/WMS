@@ -1,3 +1,4 @@
+#coding: utf8
 from flask import Blueprint, render_template, abort, request, \
                   session, redirect, flash, url_for
 from WMS.app import db
@@ -25,7 +26,7 @@ def create():
     orders = Order.query.filter_by(status=0).order_by(Order.date.desc()).all()
     if orders and len(orders)>0:
          return render_template('income-create.html', orders=orders)
-    flash('No unfinish order!', 'error')
+    flash('目前没有未到货完毕的订单', 'error')
     return redirect(url_for('index'))
 
 # need rework
@@ -38,7 +39,7 @@ def perform_create():
     # check if order exist
     order = Order.query.filter_by(id=no).first()
     if order == None:
-        flash('Error! Order did not exist!')
+        flash('订单不存在')
         return redirect(url_for('income.create'))
 
     # select details from order and store in an array using dictionary
@@ -47,7 +48,7 @@ def perform_create():
 
     # select income record
     incomes = Income.query.filter_by(order_id=no).all()
-    # check how many order details need to be income  
+    # check how many order details need to be income
     for income in incomes:
         # select exist detail from income
         details_income = IncomeDetail.query.filter_by(income_id=income.id).all()
@@ -75,10 +76,10 @@ def perform_create():
     for (key, value) in vaild.items():
         if value == False:
             haveError = True
-            flash("Error, %s not in order!" % key, 'error')
+            flash("订单不存在货物%s!" % key, 'error')
     for detail in details_order:
         if detail['amount']<0:
-            flash('Item %s:%s amount Error' % (detail['number'], detail['size']), 'error')
+            flash('货号%s:尺寸%s的货物到货数量大于未到货数量' % (detail['number'], detail['size']), 'error')
             haveError = True
     if haveError:
         return redirect(url_for('income.create'))
@@ -101,7 +102,7 @@ def perform_create():
             isFinished = False
     order = Order.query.filter_by(id=no).first()
     if isFinished:
-        flash('Order: %s is Finished!' % order.no)
+        flash('订单号为 %s 的订单已到货完毕' % order.no)
         order.status = 1
     else:
         order.status = 0
@@ -113,7 +114,7 @@ def perform_create():
 def detail(income_id):
     income = Income.query.filter_by(id=income_id).first()
     if income == None:
-        flash('Order not exist!')
+        flash('不存在此订单')
         return redirect('index')
     income = dict(date=str(income.date.date()), \
                   no=income.order.no, \
