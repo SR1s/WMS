@@ -28,6 +28,7 @@ def readXls(file_path):
             if table.cell(row,0).ctype==0 \
                and table.cell(row,1).ctype==0 \
                and table.cell(row,2).ctype!=0:
+                size_list = list()
                 for n in range(2,8):
                     size_list.append(table.cell(row,n).value)
             elif table.cell(row,0).ctype!=0:
@@ -44,7 +45,7 @@ def readXls(file_path):
                     item['columns'] = list()
                     for n in range(2,8):
                         if table.cell(row,n).ctype == 0:
-                            value=0
+                            continue
                         else:
                             value=table.cell(row,n).value
                         size=size_list[n-2]
