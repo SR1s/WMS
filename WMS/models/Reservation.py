@@ -1,5 +1,5 @@
 from WMS.models import db
-from datetime import datetime 
+from datetime import datetime
 
 class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,6 +18,7 @@ class Reservation(db.Model):
         self.contact = contact
         self.address = address
         self.item_id = item_id
+        self.amount = amount
         if note:
         	self.note = note
 
