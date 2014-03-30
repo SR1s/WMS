@@ -37,3 +37,12 @@ def cal_all(c):
     for k in c:
         sum = sum + k['amount']
     return sum
+
+def chkstatus(status_code):
+    if status_code==0:
+        return 'UnFinish'
+    elif status_code==1:
+        return 'Finished'
+    elif status_code==-1:
+        return 'Deleted'
+    return 'Unknow Status'
