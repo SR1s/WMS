@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, abort, \
 from WMS.app import db
 from WMS.models import Order, OrderDetail, Account, Item
 from WMS.models import str2datetime
-from WMS.views import verify_login
+from WMS.views import verify_login, chkstatus, cal_all, mycmp
 
 import json
 
@@ -30,22 +30,26 @@ def list_all():
 # show order details
 @order.route('/detail/<order_id>')
 def detail(order_id):
-    if session["status"] == "logined":
-        order_raw = Order.query.filter_by(id=order_id).first()
-        order = dict()
-        order['no'] = order_raw.no
-        order['date'] = str(order_raw.date)
-        if order_raw.status == 0:
-            order['status'] = 'unfinish'
-        elif order_raw.status == 1:
-            order['status'] = 'finished'
+    if True:
+        order = Order.query.filter_by(id=order_id).first()
+        if order:
+            details = OrderDetail.query.filter_by(order_id=order.id).all()
+            order=dict(number=order.no, date=str(order.date.date()), \
+                       status=chkstatus(order.status))
+            order['details'] = dict()
+            for d in details:
+                detail = order['details'].setdefault(d.item.number, dict())
+                detail['number'] = d.item.number
+                detail['description'] = d.item.description
+                columns = detail.setdefault('columns', list())
+                columns.append(dict(size=d.size, amount=d.amount))
+            for (k, v) in order['details'].items():
+                v['sum']=cal_all(v['columns'])
+                v['columns'].sort(mycmp)
         else:
-            order['status'] = 'delete'
-        order['place'] = order_raw.place.place
-        order['details'] = list()
-        for d in order_raw.details:
-            pass
-
+            flash('Order not Exist!')
+            return redirect(url_for('items.list_all'))
+        #return json.dumps(order)
         return render_template("order-detail.html", order=order)
     return redirect(url_for('accounts.login')) 
 
