@@ -38,8 +38,8 @@ def cal_all(c):
     sum = 0
     for k in c:
         sum = sum + k['amount']
-    if len(c)<7:
-        for n in range(7-len(c)):
+    if len(c)<6:
+        for n in range(6-len(c)):
             c.append(dict(size='-', amount=0))
     return sum
 
