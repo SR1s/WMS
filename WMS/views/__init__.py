@@ -27,6 +27,7 @@ def mycmp(x, y):
     order1['L']=3
     order1['XL']=4
     order1['XXL']=5
+    order1['-']=6
     if order1[x['size']]-order1[y['size']] != 0:
         return order1[x['size']]-order1[y['size']]
     if order2[x['size']]-order2[y['size']] != 0:
@@ -37,6 +38,9 @@ def cal_all(c):
     sum = 0
     for k in c:
         sum = sum + k['amount']
+    if len(c)<7:
+        for n in range(7-len(c)):
+            c.append(dict(size='-', amount=0))
     return sum
 
 def chkstatus(status_code):
