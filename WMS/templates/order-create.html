@@ -6,7 +6,7 @@
   <form method="post">
     <div>
       <span>订单号：</span><input type="text" name="order_no" />
-      <span>时间：</span><input type="text" id="datepicker" name="order_date" />
+      <span>时间：</span><input type="text" id="datepicker" name="order_date" value="点击选择时间"/>
       <hr/>
       <table width="100%" class='table'>
         <thead>
@@ -57,7 +57,7 @@
       <div style="display:none;">
         <textarea name="details" id="details-data"></textarea>
       </div>
-      <button type="submit" onclick="get_details()">提交订单</button>
+      <button type="submit" onclick="get_details()">创建订单</button>
     </div>
   </form>
   <div id="template-area">

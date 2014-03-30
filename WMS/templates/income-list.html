@@ -1,13 +1,13 @@
 {% extends "basic.html" %}
 {% block body %}
 <div class="content">
-  <h1>ALL Incomes</h1>
+  <h1>全部到货记录</h1>
   <hr/>
     {% for income in incomes %}
     <a href="{{ url_for('income.detail', income_id=income.id) }}">
       <div class="order-item">
-        <div><span>Order No: </span><span>{{ income.no }}</span></div>
-        <div><span>Income Date: </span><span>{{ income.date }}</span></div>
+        <div><span>所属订单号: </span><span>{{ income.no }}</span></div>
+        <div><span>记录创建时间：</span><span>{{ income.date }}</span></div>
       </div>
     </a>
     {% endfor %}

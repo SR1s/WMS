@@ -1,7 +1,7 @@
 {% extends "basic.html" %}
 {% block body %}
 <div class="content">
-  <h1>手动导入订单</h1>
+  <h1>出货</h1>
   <hr/>
   <form method="post">
     <div><!--
@@ -23,9 +23,9 @@
             <td width="20%">商品名称</td>
             <td colspan="6">尺寸</td>
             <td width="10%">总量</td>
-            <td width="10%">销售价(RMB)</td>
-            <td width="10%">进货价(RMB)</td>
-            <td width="10%">总计(RMB)</td>
+            <td width="10%">-</td>
+            <td width="10%">-</td>
+            <td width="10%">-</td>
           </tr>
         </thead>
         <tbody id="details">
@@ -65,7 +65,7 @@
       <div style="display:none;">
         <textarea name="details" id="details-data"></textarea>
       </div>
-      <button type="submit" onclick="get_details()">提交订单</button>
+      <button type="submit" onclick="get_details()">出货</button>
     </div>
   </form>
   <div id="template-area">

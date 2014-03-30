@@ -1,24 +1,25 @@
 {% extends "basic.html" %}
 {% block body %}
 <div class="login-form">
-  <h1>登录</h1>
+  <h1>添加客户预约</h1>
   <hr/>
   <form method="post">
     <ul>
-      <li><span>name：</span><input type="text" name="name" /></li>
-      <li><span>contact：</span><input type="text" name="contact" /></li>
-      <li><span>address</span><input type="text" name="address" /></li>
-      <li><span>note</span><input type="text" name="note" /></li>
-      <li><span>amount</span><input type="text" name="amount" /></li>
+      <li><span>客户姓名：</span><input type="text" name="name" /></li>
+      <li><span>联系方式：</span><input type="text" name="contact" /></li>
+      <li><span>地址：</span><input type="text" name="address" /></li>
       <li>
-        <span>item_id</span>
+        <span>货物编号：</span>
         <select name="item_id">
           {% for item in items %}
           <option value="{{ item.id }}">{{ item.number }}</option>
           {% endfor %}
         </select>
       </li>
-      <li><button type="submit">Record</button></li>
+      <li><span>预约数量：</span><input type="text" name="amount" /></li>
+      <li><span>备注：</span><input type="text" name="note" /></li>
+      <li><button type="submit">添加预约</button></li>
     </ul>
-</form>
+  </form>
+</div>
 {% endblock %}
