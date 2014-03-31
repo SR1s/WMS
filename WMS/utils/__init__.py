@@ -4,7 +4,7 @@ def md5(str):
     m.update(str)
     return m.hexdigest()
     
-def readXls(file_path):
+def readXls(file_path,mode=1):
     import json, xlrd
     from datetime import datetime
     info = dict()
@@ -56,4 +56,7 @@ def readXls(file_path):
             else:
                 break
             row = row + 1
-    return json.dumps(info)
+    if mode==0:
+        return info
+    elif mode==1: 
+        return json.dumps(info)
