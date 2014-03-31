@@ -1,11 +1,24 @@
 {% extends "basic.html" %}
-{% block body %}
+{% block bodyleft %}
+<div class='well well-sm'>
+  <h3>基本信息</h3>
+  <hr/>
+  <h4>
+    商品条目：{{ basic['all-items'] }}
+  </h4>
+  <h4>
+    库存总量：{{ basic['all-storages'] }}
+  </h4>
+</div>
+{% endblock %}
+
+{% block bodyright %}
 <div class="item-list">
-    <h1>[{{ place }}] 库存状态</h1>
+    <h1>库存状态</h1>
     <hr/>
-    <table class="table">
+    <table class="table table-bordered table-hover table-condensed">
       <thead>
-        <tr>
+        <tr class='success'>
           <td width="15%">商品编号</td>
           <td width="20%">商品名称</td>
           <td colspan="6">尺码</td>
@@ -15,7 +28,7 @@
       </thead>
       <tbody>
         {% for item in storage['items'] %}
-        <tr class="size">
+        <tr class="size success">
           <td colspan="2"></td>
           {% for i in storage['items'][item]['columns'] %}
           <td width="5%">{{ i.size }}</td>
