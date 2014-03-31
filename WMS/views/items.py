@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, abort, request, \
 from sqlalchemy import and_
 from WMS.app import db
 from WMS.models import Item, Storage
-from WMS.views import verify_login, mycmp, cal_all
+from WMS.views import verify_login, sort_cal_all
 
 import json
 
@@ -29,8 +29,7 @@ def list_all():
             n = 7-len(c)
             for x in range(0,n):
                 c.append(dict(size='-',amount=0))
-        c.sort(mycmp)
-        storage['items'][item]['sum'] = cal_all(c)
+        storage['items'][item]['sum'] = sort_cal_all(c)
         
     #return json.dumps(storage)
     return render_template("item-list.html", storage=storage)

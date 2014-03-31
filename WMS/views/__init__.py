@@ -28,13 +28,16 @@ def mycmp(x, y):
     order1['XL']=4
     order1['XXL']=5
     order1['-']=6
-    if order1[x['size']]-order1[y['size']] != 0:
+
+    order2=dict()
+    if order1.get(x['size'], 6)-order1.get(y['size'], 6) != 0:
         return order1[x['size']]-order1[y['size']]
-    if order2[x['size']]-order2[y['size']] != 0:
+    if order2.get(x['size'], 6)-order2.get(y['size'], 6) != 0:
         return order2[x['size']]-order2[y['size']]
     return cmp(x['size'], y['size'])
 
-def cal_all(c):
+def sort_cal_all(c):
+    c.sort(mycmp)
     sum = 0
     for k in c:
         sum = sum + k['amount']

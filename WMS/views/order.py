@@ -1,12 +1,15 @@
 #coding: utf8
+from datetime import datetime
+import json
+
 from flask import Blueprint, render_template, abort, \
                   request, session, flash, redirect, url_for
 from WMS.app import db
 from WMS.models import Order, OrderDetail, Account, Item
 from WMS.models import str2datetime
-from WMS.views import verify_login, chkstatus, cal_all, mycmp, chkstatus
+from WMS.utils import readXls
+from WMS.views import verify_login, chkstatus, sort_cal_all, chkstatus
 
-import json
 
 order = Blueprint('order', __name__)
 
@@ -39,8 +42,7 @@ def detail(order_id):
                 columns = detail.setdefault('columns', list())
                 columns.append(dict(size=d.size, amount=d.amount))
             for (k, v) in order['details'].items():
-                v['sum']=cal_all(v['columns'])
-                v['columns'].sort(mycmp)
+                v['sum']=sort_cal_all(v['columns'])
         else:
             flash('不存在此订单')
             return redirect(url_for('items.list_all'))
@@ -58,9 +60,30 @@ def create():
 @order.route('/create', methods=['POST'])
 @verify_login
 def perform_create():
-    date = str2datetime(request.form['order_date'])
-    no = request.form['order_no']
-    details = json.loads(request.form['details'])
+    info = dict()
+    info['number'] = request.form['order_no']
+    info['date'] = str2datetime(request.form['order_date'])
+    if info['date']==None:
+        info['date']=datetime.utcnow()
+    info['items'] = json.loads(request.form['details'])
+    return _handle_create_request(info)
+
+@order.route('/create_by_upload', methods=['POST'])
+def create_by_upload():
+    if request.files['file'].filename.split('.')[-1] not in ('xls', 'xlsx'):
+        flash('Upload File illegal!')
+        return redirect(url_for('index'))
+    request.files['file'].save('temp.xls')
+    return _handle_create_request(readXls('temp.xls', 0))
+
+def _handle_create_request(info):
+    if info.setdefault('status', 'normal')=='error':
+        flash('data incorrect.')
+        return redirect(url_for('order.create'))
+
+    no = info['number']
+    date = info['date']
+    details = info['items']
 
     if Order.query.filter_by(no=no).first():
         flash('编号%s的订单已存在' % no,'error')
@@ -72,16 +95,16 @@ def perform_create():
     db.session.add(order)
     db.session.commit()
     # add order details
-    for d in details:
+    for (number, d) in details.items():
         number = d['number']
-        description = d['description']
+        description = d.get('description', '')
         # found the item or create a new item
         item = Item.query.filter_by(number=number).first()
         if not item:
             item = Item(number=number,description=description)
         # update the retail and whole price
-        item.retail = d['retail']
-        item.whole = d['whole']
+        item.retail = d.get('retail', 0)
+        item.whole = d.get('whole', 0)
         db.session.add(item)
         db.session.commit()
 

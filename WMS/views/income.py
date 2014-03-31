@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, abort, request, \
                   session, redirect, flash, url_for
 from WMS.app import db
 from WMS.models import Item, Income, Order, OrderDetail, IncomeDetail
-from WMS.views import verify_login, mycmp, cal_all
+from WMS.views import verify_login, sort_cal_all
 import json
 
 
@@ -132,8 +132,7 @@ def detail(income_id):
             n = 7-len(c)
             for x in range(0,n):
                 c.append(dict(size='-',amount=0))
-        c.sort(mycmp)
-        details[d]['sum'] = cal_all(c)
+        details[d]['sum'] = sort_cal_all(c)
     income['details'] = details
     #return json.dumps(income)
     return render_template('income-detail.html', income=income)
