@@ -31,38 +31,38 @@ function add_SML(obj, type){
 function get_details(){
   var rows = $("#details").children();
   var size1, size2, size3, size4, size5, size6;
-  var postdata = new Array();
+  var postdata = new Object();
   for (var i=0;i<rows.length;i++)
   {
     columns = new Array()
+    var size_list;
     if($(rows[i]).prop("class")=="size customs"){
-      d = new Object();
-      postdata.push(d);
-      d['columns'] = new Array();
+      size_list = new Array();
       for (var j=1;j<=6;j++) {
-        var item = new Object();
-        item['size'] = $($($(rows[i]).children()[j]).children()[0]).val();
-        d['columns'].push(item);
+        size = $($($(rows[i]).children()[j]).children()[0]).val();
+        size_list.push(size);
       }
     }else if($(rows[i]).prop("class")=="size"){
-      d = new Object();
-      postdata.push(d);
-      d['columns'] = new Array();
+      size_list = new Array();
       for (var j=1;j<=6;j++) {
-        var item = new Object();
-        item['size'] = $($(rows[i]).children()[j]).text();
-        d['columns'].push(item);
+        size = $($(rows[i]).children()[j]).text();
+        size_list.push(size);
       }
     }else if ($(rows[i]).prop("class")=="data"){
-      d=postdata[postdata.length-1];
-      for(var j=0;j<6;j++){
-        d['columns'][j]['amount'] = $($($(rows[i]).children()[j+2]).children()[0]).val();
-      }
+      d = new Object();
       d["number"] = $($($(rows[i]).children()[0]).children()[0]).val();
       d["description"] = $($($(rows[i]).children()[1]).children()[0]).val();
       d["retail"] = $($($(rows[i]).children()[9]).children()[0]).val();
       d["whole"] = $($($(rows[i]).children()[10]).children()[0]).val();
       d["total"] = $($($(rows[i]).children()[11]).children()[0]).val();
+      d['columns'] = new Array();
+      for(var j=0;j<6;j++){
+        col = new Object();
+        col['size'] = size_list[j];
+        col['amount'] = $($($(rows[i]).children()[j+2]).children()[0]).val();
+        d['columns'].push(col);
+      }
+      postdata[d['number']] = d;
     }
   }
   console.log(JSON.stringify(postdata));
