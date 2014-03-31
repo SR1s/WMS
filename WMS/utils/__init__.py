@@ -15,7 +15,10 @@ def readXls(file_path,mode=1):
     date = xlrd.xldate_as_tuple(table.cell(3, 11).value, data.datemode)
 
     info['number'] = number
-    info['date'] = str(datetime(*date).date())
+    if mode==1:
+        info['date'] = str(datetime(*date).date())
+    elif mode==0:
+        info['date'] = datetime(*date)
     info['items'] = dict()
     if table.cell(12,0).value != 'Item Number':
         info['error'] = True
