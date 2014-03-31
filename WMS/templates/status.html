@@ -1,17 +1,45 @@
 {% extends "basic.html" %}
-{% block body %}
+{% block bodyleft %}
+<div class='well'>
+  <h3>基本信息</h3>
+  <hr/>
+  <h4>
+    商品条目：{{ basic['all-items'] }}
+  </h4>
+  <h4>
+    库存总量：{{ basic['all-storages'] }}
+  </h4>
+</div>
+{% endblock %}
+
+{% block bodyright %}
 <div class="all-status">
   <div class="item">
-    <h1>库存状态</h1>
-    <hr/> 
+    <h1>库存清单</h1>
+    <hr/>
+    <div>
+      <a class='button' href='/items/list'>view storage</a>
+    </div>
+    <div>
+      <a class='button' href='/items/sell'>create sell record</a>
+    </div>
   </div>
   <div class="item">
-    <h1>未完成订单</h1>
-    <hr/> 
+    <h1>订单</h1>
+    <hr/>
+    <a href='/income/create'>add income record</a>
+    <a href='/income/list'>view income record</a>
+    <form action='/order/create_by_upload' method='post' enctype='multipart/form-data'>
+      <input type='file' name='file' text='create_by_upload'/>
+      <input type='submit' name='upload'/>
+      <a href='/order/create'>manul by manul</a>
+    </form>
   </div>
   <div class="item">
-    <h1>客户预约数</h1>
-    <hr/> 
+    <h1>预约</h1>
+    <hr/>
+    <a href='/reservation/list'>view reservations</a>
+    <a href='/reservation/create'>add reservation</a>
   </div>
 </div>
 {% endblock %}

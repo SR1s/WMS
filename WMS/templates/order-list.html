@@ -1,16 +1,47 @@
 {% extends "basic.html" %}
-{% block body %}
+{% block bodyleft %}
+<div class='panel panel-info'>
+  <div class="panel-heading">基本信息</div>
+  <div class="panel-body">
+    <p>订单总数：{{ basic['all-items'] }}</p>
+    <p>未完成数：{{ basic['all-storages'] }}</p>
+    <hr/>
+    <a class='btn btn-success' href='/order/create'>上传进货单</a>
+    <a class='btn btn-primary' href='/order/create'>填写进货单</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block bodyright %}
 <div class="content">
   <h1>订单列表</h1>
   <hr/>
-    {% for order in orders %}
-    <a href='{{ url_for("order.detail", order_id=order.id) }}'>
-      <div class="order-item">
-        <div><span>订单号：</span><span>{{ order.no }}</span></div>
-        <div><span>下单时间：</span><span>{{ order.date }}</span></div>
-        <div><span>订单状态：</span><span>{{ order.status }}</span></div>
-      </div>
-    </a>
-    {% endfor %}
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+        <tr class='success' align='center'>
+          <td width='22%'>订单号</td>
+          <td width='22%'>下单时间</td>
+          <td width='22%'>订单状态</td>
+          <td width='34%'>操作</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr align='center'>
+          <td width='22%'><a href='{{ url_for("order.detail", order_id=order.id) }}'>{{ order.no }}</a></td>
+          <td width='22%'>{{ order.date }}</td>
+          <td width='22%'>{{ order.status }}</td>
+          <td width='34%'>
+            <a href='{{ url_for("order.detail", order_id=order.id) }}'>查看详细</a>
+            <a href='{{ url_for("income.create") }}'>添加到货记录</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr align='center'>
+          <td colspan='4'>暂无记录</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 </div>
 {% endblock %}

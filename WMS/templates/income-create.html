@@ -1,12 +1,12 @@
 {% extends "basic.html" %}
-{% block body %}
+{% block bodyright %}
 <div class="content">
   <h1>手动导入订单</h1>
   <hr/>
   <form method="post">
     <div>
       <span>订单号：</span>
-      <select name="order_no">
+      <select name="order_no" class='form-control'>
         <option disabled="true" selected="true" value='0'>请选择一个订单</option>
         <optgroup label="订单号：">
           {% for order in orders %}
@@ -15,7 +15,7 @@
         </optgroup>
       </select>
       <hr/>
-      <table width="100%" class='table'>
+      <table class="table table-bordered table-hover table-condensed">
         <thead>
           <tr>
             <td width="10%">商品编号</td>
@@ -67,7 +67,7 @@
       <button type="submit" onclick="get_details()">提交到货记录</button>
     </div>
   </form>
-  <div id="template-area">
+  <div id="template-area" style='display:none;'>
     <textarea class="add_clothes">
       <tr class="size">
         <td colspan="2"></td>

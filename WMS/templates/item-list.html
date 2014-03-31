@@ -1,14 +1,15 @@
 {% extends "basic.html" %}
 {% block bodyleft %}
-<div class='well well-sm'>
-  <h3>基本信息</h3>
-  <hr/>
-  <h4>
-    商品条目：{{ basic['all-items'] }}
-  </h4>
-  <h4>
-    库存总量：{{ basic['all-storages'] }}
-  </h4>
+<div class='panel panel-info'>
+  <div class="panel-heading">基本信息</div>
+  <div class="panel-body">
+    <p>
+      商品条目：{{ basic['all-items'] }}
+    </p>
+    <p>
+      库存总量：{{ basic['all-storages'] }}
+    </p>
+  </div>
 </div>
 {% endblock %}
 
@@ -18,7 +19,7 @@
     <hr/>
     <table class="table table-bordered table-hover table-condensed">
       <thead>
-        <tr class='success'>
+        <tr class='success' align='center'>
           <td width="15%">商品编号</td>
           <td width="20%">商品名称</td>
           <td colspan="6">尺码</td>
@@ -28,14 +29,14 @@
       </thead>
       <tbody>
         {% for item in storage['items'] %}
-        <tr class="size success">
+        <tr class="size success" align='center'>
           <td colspan="2"></td>
           {% for i in storage['items'][item]['columns'] %}
           <td width="5%">{{ i.size }}</td>
           {% endfor %}
           <td colspan="2"></td>
         </tr>
-        <tr>
+        <tr align='center'>
           <td>{{ storage['items'][item]['number'] }}</td>
           <td>{{ storage['items'][item]['description'] }}</td>
           {% for i in storage['items'][item]['columns'] %}
