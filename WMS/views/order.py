@@ -23,7 +23,7 @@ def list_all():
         order = dict(no=o.no, date=str(o.date.date()), \
                      place=o.place.place, id=o.id, status=chkstatus(o.status))
         orders.append(order)
-    return render_template("order-list.html", orders=orders)
+    return render_template("order-list.html", orders=orders, basic=dict())
 
 # show order details
 @order.route('/detail/<order_id>')

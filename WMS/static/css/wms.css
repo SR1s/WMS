@@ -195,13 +195,13 @@ div.login-form ul>li:hover {
 }
 
 div.all-status{
-
+    margin-top: 10px;
 } 
 
 div.all-status .item:first-child {
     background-color: #fff;
     width: 33%;
-    height: 100px;
+    height: 400px;
     float: left;
     border-width: 1px;
     border-style: solid;
@@ -212,8 +212,9 @@ div.all-status .item {
     padding: 10px;
     background-color: #fff;
     width: 30%;
-    height: 100px;
+    height: 400px;
     float: left;
+    margin-bottom: 5px;
     border-width: 1px 1px 1px 0;
     border-style: solid;
     border-color: #bcbcbc;
@@ -221,6 +222,17 @@ div.all-status .item {
 
 div.all-status .item h1{
     text-align: center;
+}
+
+div.all-status .item a.button{
+    width: 80%;
+    text-align: center;
+    background-color: #2980B9;
+    color: #fff;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 3px;
+    text-decoration: none;
 }
 
 div.item-list {

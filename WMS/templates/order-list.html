@@ -6,10 +6,36 @@
     <p>订单总数：{{ basic['all-items'] }}</p>
     <p>未完成数：{{ basic['all-storages'] }}</p>
     <hr/>
-    <a class='btn btn-success' href='/order/create'>上传进货单</a>
+    <button class='btn btn-success' data-toggle="modal" data-target="#myModal">上传进货单</button>
     <a class='btn btn-primary' href='/order/create'>填写进货单</a>
   </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">上传进货单</h4>
+      </div>
+      <form action='{{ url_for("order.create_by_upload") }}' class='form-horizontal' method='post' enctype='multipart/form-data'>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class='col-sm-3 control-label'>进货单文件：</label>
+            <div class="col-sm-3">
+              <input type='file' class='btn' name='file' title='点击选择进货单文件' data-filename-placement="inside"/>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary">上传</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 {% endblock %}
 
 {% block bodyright %}

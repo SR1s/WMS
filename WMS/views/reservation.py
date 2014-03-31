@@ -17,7 +17,7 @@ def create():
 @verify_login
 def list_all():
     reservations = Reservation.query.all()
-    return render_template('reservation-list.html', reservations = reservations)
+    return render_template('reservation-list.html', reservations = reservations, basic=dict())
 
 @reservation.route('/create', methods=['POST'])
 @verify_login

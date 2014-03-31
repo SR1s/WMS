@@ -1,75 +1,87 @@
 {% extends "basic.html" %}
 {% block bodyright %}
 <div class="content">
-  <h1>手动导入订单</h1>
+  <h1>手动导入到货记录</h1>
   <hr/>
-  <form method="post">
-    <div>
-      <span>订单号：</span>
-      <select name="order_no" class='form-control'>
-        <option disabled="true" selected="true" value='0'>请选择一个订单</option>
-        <optgroup label="订单号：">
-          {% for order in orders %}
-          <option value="{{ order.id }}">{{ order.no }}</option>
-          {% endfor %}
-        </optgroup>
-      </select>
-      <hr/>
-      <table class="table table-bordered table-hover table-condensed">
-        <thead>
-          <tr>
-            <td width="10%">商品编号</td>
-            <td width="20%">商品名称</td>
-            <td colspan="6">尺寸</td>
-            <td width="10%">总量</td>
-            <td width="10%">销售价(RMB)</td>
-            <td width="10%">进货价(RMB)</td>
-            <td width="10%">总计(RMB)</td>
-          </tr>
-        </thead>
-        <tbody id="details">
-          <tr class="size">
-            <td colspan="2"></td>
-            <td width="5%">XS</td>
-            <td width="5%">S</td>
-            <td width="5%">M</td>
-            <td width="5%">L</td>
-            <td width="5%">XL</td>
-            <td width="5%">XXL</td>
-            <td colspan="4"></td>
-          </tr>
-          <tr class="data">
-            <td><input type="text" name=""/></td>
-            <td><input type="text" name=""/></td>
-            <td><input type="text" name=""/></td>
-            <td><input type="text" name=""/></td>
-            <td><input type="text" name=""/></td>
-            <td><input type="text" name=""/></td>
-            <td><input type="text" name=""/></td>
-            <td><input type="text" name=""/></td>
-            <td></td>
-            <td><input type="text" name=""/></td>
-            <td><input type="text" name=""/></td>
-            <td><input type="text" name=""/></td>
-          </tr>
-          <tr>
-            <td colspan="12">
-              <button type="button" onclick="add_SML(this, 'clothes')">添加服饰栏目</button>
-              <button type="button" onclick="add_SML(this, 'shoes')">添加鞋靴栏目</button>
-              <button type="button" onclick="add_SML(this, 'customs')">添加自定义栏目</button>
-            </td>
-          </tr>
-         </tbody>
-      </table>
-      <div style="display:none;">
-        <textarea name="details" id="details-data"></textarea>
+  <form method="post" class='form-horizontal'>
+    <div class="form-group">
+      <label class='col-sm-1 control-label'>订单号</label>
+      <div class="col-sm-5">
+        <select name="order_no" class='form-control'>
+          <option disabled="true" selected="true" value='0'>请选择一个订单</option>
+          <optgroup label="订单号：">
+            {% for order in orders %}
+            <option value="{{ order.id }}">{{ order.no }}</option>
+            {% endfor %}
+          </optgroup>
+        </select>
       </div>
-      <button type="submit" onclick="get_details()">提交到货记录</button>
+    </div>
+    <table class="table table-bordered table-hover table-condensed">
+      <thead align='center'>
+        <tr class='success'>
+          <td width="10%">商品编号</td>
+          <td width="20%">商品名称</td>
+          <td colspan="6">尺寸</td>
+          <td width="10%">总量</td>
+          <td width="10%">销售价(￥)</td>
+          <td width="10%">进货价(￥)</td>
+          <td width="10%">总计(￥)</td>
+        </tr>
+      </thead>
+      <tbody id="details" align='center'>
+        <tr class="size success">
+          <td colspan="2"></td>
+          <td width="5%">XS</td>
+          <td width="5%">S</td>
+          <td width="5%">M</td>
+          <td width="5%">L</td>
+          <td width="5%">XL</td>
+          <td width="5%">XXL</td>
+          <td colspan="4"></td>
+        </tr>
+        <tr class="data">
+          <td><input type="text" name=""/></td>
+          <td><input type="text" name=""/></td>
+          <td><input type="text" name=""/></td>
+          <td><input type="text" name=""/></td>
+          <td><input type="text" name=""/></td>
+          <td><input type="text" name=""/></td>
+          <td><input type="text" name=""/></td>
+          <td><input type="text" name=""/></td>
+          <td></td>
+          <td><input type="text" name=""/></td>
+          <td><input type="text" name=""/></td>
+          <td><input type="text" name=""/></td>
+        </tr>
+        <tr>
+          <td colspan="12" align='center'>
+            <button class='btn btn-primary' type="button" onclick="add_SML(this, 'clothes')">
+              添加服饰栏目
+            </button>
+            <button class='btn btn-info' type="button" onclick="add_SML(this, 'shoes')">
+              添加鞋靴栏目
+            </button>
+            <button class='btn btn-success' type="button" onclick="add_SML(this, 'customs')">
+              添加自定义栏目
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="display:none;">
+      <textarea name="details" id="details-data"></textarea>
+    </div>
+    <div class="form-group">
+      <label class='col-sm-10 control-label'></label>
+      <div class="col-sm-2">
+        <button class='btn btn-primary' type="submit" onclick="get_details()">提交到货记录</button>
+      </div>
     </div>
   </form>
   <div id="template-area" style='display:none;'>
     <textarea class="add_clothes">
-      <tr class="size">
+      <tr class="size success">
         <td colspan="2"></td>
         <td width="5%">XS</td>
         <td width="5%">S</td>
@@ -94,21 +106,21 @@
         <td><input type="text" /></td>
       </tr>
       <tr>
-        <td colspan="12">
-          <button type="button" onclick="add_SML(this, 'clothes')">
+        <td colspan="12" align='center'>
+          <button class='btn btn-primary' type="button" onclick="add_SML(this, 'clothes')">
             添加服饰栏目
           </button>
-          <button type="button" onclick="add_SML(this, 'shoes')">
+          <button class='btn btn-info' type="button" onclick="add_SML(this, 'shoes')">
             添加鞋靴栏目
           </button>
-          <button type="button" onclick="add_SML(this, 'customs')">
+          <button class='btn btn-success' type="button" onclick="add_SML(this, 'customs')">
             添加自定义栏目
           </button>
         </td>
       </tr>
     </textarea>
     <textarea class="temp_shoes">
-      <tr class="size">
+      <tr class="size success">
         <td colspan="2"></td>
         <td width="5%">3739</td>
         <td width="5%">4042</td>
@@ -133,23 +145,23 @@
         <td><input type="text" /></td>
       </tr>
       <tr>
-        <td colspan="12">
-          <button type="button" onclick="add_SML(this, 'clothes')">
+        <td colspan="12" align='center'>
+          <button class='btn btn-primary' type="button" onclick="add_SML(this, 'clothes')">
             添加服饰栏目
           </button>
-          <button type="button" onclick="add_SML(this, 'shoes')">
+          <button class='btn btn-info' type="button" onclick="add_SML(this, 'shoes')">
             添加鞋靴栏目
           </button>
-          <button type="button" onclick="add_SML(this, 'customs')">
+          <button class='btn btn-success' type="button" onclick="add_SML(this, 'customs')">
             添加自定义栏目
           </button>
         </td>
       </tr>
     </textarea>
     <textarea class="temp_customs">
-      <tr class="size customs">
+      <tr class="size customs success">
         <td colspan="2"></td>
-        <td width="5%"><input type="text" /></td>
+        <td width="5%"><input class='table-input' type="text" /></td>
         <td width="5%"><input type="text" /></td>
         <td width="5%"><input type="text" /></td>
         <td width="5%"><input type="text" /></td>
@@ -172,14 +184,14 @@
         <td><input type="text" /></td>
       </tr>
       <tr>
-        <td colspan="12">
-          <button type="button" onclick="add_SML(this, 'clothes')">
+        <td colspan="12" align='center'>
+          <button class='btn btn-primary' type="button" onclick="add_SML(this, 'clothes')">
             添加服饰栏目
           </button>
-          <button type="button" onclick="add_SML(this, 'shoes')">
+          <button class='btn btn-info' type="button" onclick="add_SML(this, 'shoes')">
             添加鞋靴栏目
           </button>
-          <button type="button" onclick="add_SML(this, 'customs')">
+          <button class='btn btn-success' type="button" onclick="add_SML(this, 'customs')">
             添加自定义栏目
           </button>
         </td>

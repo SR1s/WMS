@@ -32,10 +32,10 @@ def list_all():
         storage['items'][item]['sum'] = sort_cal_all(c)
         
     #return json.dumps(storage)
-    return render_template("item-list.html", storage=storage)
+    return render_template("item-list.html", storage=storage, basic=dict())
 
 @items.route('/sell')
-def create():
+def sell():
     return render_template("sell-create.html")
 
 @items.route('/sell', methods=['POST'])

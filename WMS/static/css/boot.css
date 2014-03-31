@@ -1,0 +1,7 @@
+table tr>td>input {
+  width: 100%;
+  border-width: 0 0 1px 0;
+  border-color: #e8e8e8;
+  border-style: solid;
+  text-align: center;
+}

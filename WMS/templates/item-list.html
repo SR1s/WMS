@@ -9,6 +9,8 @@
     <p>
       库存总量：{{ basic['all-storages'] }}
     </p>
+    <hr/>
+    <a class='btn btn-primary' href='{{ url_for("items.sell") }}'>出货</a>
   </div>
 </div>
 {% endblock %}

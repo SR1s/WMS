@@ -8,12 +8,15 @@
     <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/boot.css') }}">
     <link rel="stylesheet" type="text/css" href='{{ url_for("static",filename="css/jquery-ui.css") }}'>
     <script type="text/javascript" src='{{ url_for("static",filename="js/jquery-ui.js") }}'></script>
     <script type="text/javascript" src='{{ url_for("static",filename="js/wms.js") }}'></script>
+    <script type="text/javascript" src='{{ url_for("static",filename="js/bootstrap.file-input.js") }}'></script>
     <script type="text/javascript">
       $(function() {
         $("#datepicker").datepicker();
+        $('input[type=file]').bootstrapFileInput();
       });
       $(document).ready(function(){
         close_message();
@@ -40,7 +43,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user_no }} <b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">账户操作 <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="/accounts/logout">注销</a></li>
                 <!--<li class="divider"></li>-->
