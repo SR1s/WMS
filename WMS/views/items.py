@@ -16,7 +16,8 @@ items = Blueprint('items', __name__)
 def list_all():
     storage = dict()
     storage['items'] = dict()
-    for s in Storage.query.filter_by(place_id=1).all():
+    place_id = session['place_id']
+    for s in Storage.query.filter_by(place_id=place_id).all():
         item = storage['items'].setdefault(s.item.number, dict())
         item['number'] = s.item.number
         item['description'] = s.item.description
@@ -44,7 +45,7 @@ def perform_create():
     item_result = list()
     isOk = True
     store = list()
-    for detail in details:
+    for (key, detail) in details.items():
         item = Item.query.filter_by(number=detail['number']).first()
         if item:
             place_id = session['place_id']

@@ -60,8 +60,9 @@ def perform_create():
                    detail_income['size'] == detail_order['size']:
                     detail_order['amount'] = detail_order['amount'] - detail_income['amount']
     # check is the income amount match the need
+    
     vaild = dict()
-    for d in postdata:
+    for (k,d) in postdata.items():
         vaild[d['number']] = False
         for detail_order in details_order:
             if d['number'] == detail_order['number']:
@@ -88,7 +89,7 @@ def perform_create():
     income = Income(no)
     db.session.add(income)
     db.session.commit()
-    for d in postdata:
+    for (k,d) in postdata.items():
         for detail in d['columns']:
             inde = IncomeDetail(item_id=d['id'], income_id=income.id, \
                                 size=detail['size'], amount=detail['amount'])

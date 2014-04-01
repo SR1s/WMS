@@ -47,6 +47,10 @@
           <td>{{ storage['items'][item]['sum']}}</td>
           <td>{{ storage['items'][item]['last_update'] }}</td>
         </tr>
+        {% else %}
+        <tr align='center'>
+          <td colspan='10'>暂无数据</td>
+        </tr>
         {% endfor%}
       </tbody>
     </table>
