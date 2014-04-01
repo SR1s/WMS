@@ -1,10 +1,10 @@
 #encoding=utf-8
 import sys, os
-reload(sys)  
+reload(sys)
 sys.setdefaultencoding('utf8')
 
 from flask import Flask, render_template, session, redirect, url_for
-from WMS.models import db   
+from WMS.models import db
 from WMS.config import app_config
 
 from WMS.views.accounts import accounts
@@ -12,6 +12,7 @@ from WMS.views.items import items
 from WMS.views.order import order
 from WMS.views.income import income
 from WMS.views.reservation import reservation
+from WMS.views import verify_login
 
 def create_app(config=None):
     app = Flask(__name__)
@@ -31,11 +32,9 @@ def create_app(config=None):
 
 def set_up(app):
     @app.route('/')
+    @verify_login
     def index():
-        if "status" in session and session["status"] == "logined":
-            return render_template('status.html')
-        else:
-            return redirect(url_for("accounts.login"))
+        return redirect(url_for("items.list_all"))
 
     @app.errorhandler(404)
     def page_not_found(e):
