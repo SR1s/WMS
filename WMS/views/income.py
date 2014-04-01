@@ -2,8 +2,9 @@
 from flask import Blueprint, render_template, abort, request, \
                   session, redirect, flash, url_for
 from WMS.app import db
-from WMS.models import Item, Income, Order, OrderDetail, IncomeDetail
+from WMS.models import Item, Income, Order, OrderDetail, IncomeDetail, Storage
 from WMS.views import verify_login, sort_cal_all
+from sqlalchemy import and_
 import json
 
 
@@ -33,7 +34,11 @@ def create():
 @income.route('/create', methods=['POST'])
 @verify_login
 def perform_create():
-    no = request.form['order_no']
+    place_id = session['place_id']
+    no = request.form.get('order_no', None)
+    if no == None:
+      flash('订单号不能为空')
+      return redirect(url_for('income.create'))
     postdata = json.loads(request.form['details'])
 
     # check if order exist
@@ -59,8 +64,8 @@ def perform_create():
                 if detail_income['number'] == detail_order['number'] and \
                    detail_income['size'] == detail_order['size']:
                     detail_order['amount'] = detail_order['amount'] - detail_income['amount']
+
     # check is the income amount match the need
-    
     vaild = dict()
     for (k,d) in postdata.items():
         vaild[d['number']] = False
@@ -93,6 +98,12 @@ def perform_create():
         for detail in d['columns']:
             inde = IncomeDetail(item_id=d['id'], income_id=income.id, \
                                 size=detail['size'], amount=detail['amount'])
+            storage = Storage.query.filter(and_(Storage.item_id==d['id'], Storage.size==detail['size'], Storage.place_id==place_id)).first()
+            if storage:
+                storage.amount = storage.amount + int(detail['amount'])
+            else:
+                storage = Storage(size=detail['size'], amount=detail['amount'], item_id=d['id'], place_id=place_id)
+            db.session.add(storage)
             db.session.add(inde)
     db.session.commit()
 
