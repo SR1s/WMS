@@ -3,11 +3,10 @@ from flask import Blueprint, render_template, abort, request, \
                   session, redirect, url_for, flash
 from sqlalchemy import and_
 from WMS.app import db
-from WMS.models import Item, Storage
+from WMS.models import Item, Storage, Place
 from WMS.views import verify_login, sort_cal_all
 
 import json
-
 
 items = Blueprint('items', __name__)
 
@@ -33,7 +32,13 @@ def list_all():
         storage['items'][item]['sum'] = sort_cal_all(c)
         
     #return json.dumps(storage)
-    return render_template("item-list.html", storage=storage, basic=dict())
+    basic = dict()
+    basic['place'] = Place.query.filter_by(id=place_id).first().place
+    basic['info'] = info = dict()
+    info['count'] = 0
+    info['amount'] = 0
+    
+    return render_template("item-list.html", storage=storage, basic=basic)
 
 @items.route('/sell')
 def sell():

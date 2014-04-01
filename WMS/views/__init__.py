@@ -7,7 +7,7 @@ def verify_login(func):
     @functools.wraps(func)
     def wrappper():
     	valid_time = timedelta(0, 60*15)
-    	time = session['time']
+    	time = session.get('time', None)
     	if time and \
     	    (datetime.utcnow() - time) < valid_time:
     		session['time'] = datetime.utcnow()

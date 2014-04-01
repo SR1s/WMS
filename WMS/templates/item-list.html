@@ -4,10 +4,10 @@
   <div class="panel-heading">基本信息</div>
   <div class="panel-body">
     <p>
-      商品条目：{{ basic['all-items'] }}
+      商品条目：{{ basic['info']['count'] }}
     </p>
     <p>
-      库存总量：{{ basic['all-storages'] }}
+      库存总量：{{ basic['info']['amount'] }}
     </p>
     <hr/>
     <a class='btn btn-primary' href='{{ url_for("items.sell") }}'>出货</a>
@@ -17,7 +17,7 @@
 
 {% block bodyright %}
 <div class="item-list">
-    <h1>库存状态</h1>
+    <h1>库存状态 - {{basic['place']}}</h1>
     <hr/>
     <table class="table table-bordered table-hover table-condensed">
       <thead>
