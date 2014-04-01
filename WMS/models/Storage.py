@@ -3,7 +3,7 @@ from datetime import datetime
 
 class Storage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    size = db.Column(db.String(255), unique=True)
+    size = db.Column(db.String(255))
     amount = db.Column(db.Integer)
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
