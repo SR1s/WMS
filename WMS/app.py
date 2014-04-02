@@ -11,6 +11,7 @@ from WMS.views.accounts import accounts
 from WMS.views.items import items
 from WMS.views.order import order
 from WMS.views.income import income
+from WMS.views.place import place
 from WMS.views.reservation import reservation
 from WMS.views import verify_login
 
@@ -20,6 +21,7 @@ def create_app(config=None):
     app.register_blueprint(items, url_prefix="/items")
     app.register_blueprint(order, url_prefix="/order")
     app.register_blueprint(income, url_prefix="/income")
+    app.register_blueprint(place, url_prefix="/place")
     app.register_blueprint(reservation, url_prefix="/reservation")
     app.config.from_object(app_config)
     
