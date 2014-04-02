@@ -62,10 +62,21 @@ def list_all():
     return render_template('account-list.html', \
                             basic=basic, accounts=accounts, places=places)
 
-@accounts.route("/create")
+@accounts.route("/create", methods=['POST'])
 @verify_login
 def create():
-    return session['status']
+    user_no = request.form['user_no']
+    user_ps = request.form['user_ps']
+    role = request.form['role']
+    place = request.form['place']
+    if Account.query.filter_by(user_no=user_no).first():
+        flash('工号：%s的帐号已经存在' % user_no, 'error')
+    else:
+        account = Account(user_no=user_no, user_ps=md5(user_ps),
+                          privilege=role, place_id=place)
+        db.session.add(account)
+        db.session.commit()
+    return redirect(url_for('accounts.list_all'))
 
 @accounts.route("/logout")
 def logout():
