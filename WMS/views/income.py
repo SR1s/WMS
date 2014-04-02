@@ -48,7 +48,8 @@ def perform_create():
         return redirect(url_for('income.create'))
 
     # select details from order and store in an array using dictionary
-    details_order = [dict(size=d.size, amount=d.amount, number=d.item.number, id=d.item.id) \
+    details_order = [dict(size=d.size, amount=d.amount, \
+                          number=d.item.number, id=d.item.id) \
                      for d in OrderDetail.query.filter_by(order_id=no).all()]
 
     # select income record
@@ -85,7 +86,8 @@ def perform_create():
             flash("订单不存在货物%s!" % key, 'error')
     for detail in details_order:
         if detail['amount']<0:
-            flash('货号%s:尺寸%s的货物到货数量大于未到货数量' % (detail['number'], detail['size']), 'error')
+            flash('货号%s:尺寸%s的货物到货数量大于未到货数量' % \
+                  (detail['number'], detail['size']), 'error')
             haveError = True
     if haveError:
         return redirect(url_for('income.create'))
@@ -98,11 +100,14 @@ def perform_create():
         for detail in d['columns']:
             inde = IncomeDetail(item_id=d['id'], income_id=income.id, \
                                 size=detail['size'], amount=detail['amount'])
-            storage = Storage.query.filter(and_(Storage.item_id==d['id'], Storage.size==detail['size'], Storage.place_id==place_id)).first()
+            storage = Storage.query.filter(and_(Storage.item_id==d['id'], \
+                                                Storage.size==detail['size'], \
+                                                Storage.place_id==place_id)).first()
             if storage:
                 storage.amount = storage.amount + int(detail['amount'])
             else:
-                storage = Storage(size=detail['size'], amount=detail['amount'], item_id=d['id'], place_id=place_id)
+                storage = Storage(size=detail['size'], amount=detail['amount'],\
+                                  item_id=d['id'], place_id=place_id)
             db.session.add(storage)
             db.session.add(inde)
     db.session.commit()

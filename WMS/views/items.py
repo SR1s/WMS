@@ -55,7 +55,9 @@ def perform_create():
         if item:
             place_id = session['place_id']
             for c in detail['columns']:
-                have = Storage.query.filter(and_(Storage.item_id==item.id,Storage.place_id==place_id, Storage.size==c['size'])).first().amount
+                have = Storage.query.filter(and_(Storage.item_id==item.id, \
+                                                 Storage.place_id==place_id, \
+                                                 Storage.size==c['size'])).first().amount
                 rest = have - int(c['amount'])
                 if rest<0:
                     isOk=False
