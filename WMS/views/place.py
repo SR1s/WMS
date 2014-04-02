@@ -11,6 +11,7 @@ from WMS.views import verify_login
 place = Blueprint('place', __name__)
 
 @place.route('/add', methods=['POST'])
+@verify_login
 def add():
     place = Place(request.form['place'])
     db.session.add(place)
