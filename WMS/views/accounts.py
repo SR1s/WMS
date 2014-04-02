@@ -33,7 +33,6 @@ def perform_login():
             session["place_id"] = user.place.id
             session["time"] = datetime.utcnow()
             message = "登录成功"
-            
             if user.last_date1>user.last_date2:
                 user.last_date2 = datetime.utcnow()
                 user.last_ip2 = request.remote_addr
@@ -54,7 +53,8 @@ def list_all():
     basic['account'] = _user_basic_info()
     staff = _query_user_amount(0)
     manager = _query_user_amount(1)
-    basic['admin'] = dict(staff=staff, manager=manager)
+    place = len(Place.query.all())
+    basic['admin'] = dict(staff=staff, manager=manager, place=place)
     account = dict()
     return render_template('account-list.html', basic=basic, account=account)
 
