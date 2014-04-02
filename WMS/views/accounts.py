@@ -55,8 +55,12 @@ def list_all():
     manager = _query_user_amount(1)
     place = len(Place.query.all())
     basic['admin'] = dict(staff=staff, manager=manager, place=place)
-    account = dict()
-    return render_template('account-list.html', basic=basic, account=account)
+    accounts = Account.query.all()
+    accounts = [_user_basic_info(a.id)
+                for a in accounts]
+    places = Place.query.all()
+    return render_template('account-list.html', \
+                            basic=basic, accounts=accounts, places=places)
 
 @accounts.route("/create")
 @verify_login
@@ -77,14 +81,16 @@ def _query_user_amount(pid):
     return len(user) if user else 0
 
 # query login user basic info
-def _user_basic_info():
-    user_id = session['user_id']
+def _user_basic_info(user_id=None):
+    if user_id==None:
+        user_id = session['user_id']
     info=dict()
     user = Account.query.filter_by(id=user_id).first()
     if user:
         info=dict()
         info['user_no'] = user.user_no
         info['place'] = user.place.place
+        info['role'] = _user_role(user.privilege)
         if user.last_date1>=user.last_date2:
             info['last_date'] = user.last_date1
             info['last_ip'] = user.last_ip1
@@ -93,3 +99,10 @@ def _user_basic_info():
             info['last_ip'] = user.last_ip2
         return info
     return None
+    
+def _user_role(role_id):
+    roles = {'0':'普通员工', '1':'经理', '255':'管理员'}
+    if str(role_id) in roles:
+        return roles[str(role_id)]
+    else:
+        return '未定义身份'
