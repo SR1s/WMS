@@ -6,12 +6,15 @@ class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_no = db.Column(db.String(255), unique=True)
     user_ps = db.Column(db.String(255))
+    # 0: staff ; 1: manager; 255: administrator
     privilege = db.Column(db.Integer, default=0)
-    last_login = db.Column(db.DateTime,default=datetime.utcnow)
-    last_ip = db.Column(db.String(255))
+    last_date1 = db.Column(db.DateTime,default=datetime.utcnow)
+    last_date2 = db.Column(db.DateTime,default=datetime.utcnow)
+    last_ip1 = db.Column(db.String(255))
+    last_ip2 = db.Column(db.String(255))
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
 
-    def __init__(self, user_no=None, user_ps=None, 
+    def __init__(self, user_no=None, user_ps=None,
                  privilege=None, place_id=None):
         if user_no and user_ps and place_id:
             self.user_no = user_no
