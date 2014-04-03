@@ -1,4 +1,5 @@
 #coding: utf8
+import json
 
 from flask import Blueprint, render_template, abort, flash, \
                     request, session, redirect, url_for
@@ -95,6 +96,11 @@ def delete():
         return redirect(url_for('accounts.list_all'))
     flash('操作无效')
     return redirect(url_for('accounts.list_all'))
+
+@accounts.route('/alter', methods=['POST'])
+@verify_login
+def alter():
+    return json.dumps(request.form)
     
 
 @accounts.route("/create", methods=['POST'])
@@ -137,7 +143,9 @@ def _user_basic_info(user_id=None):
         info=dict()
         info['user_no'] = user.user_no
         info['place'] = user.place.place
+        info['pid'] = user.place.id
         info['role'] = _user_role(user.privilege)
+        info['rid'] = user.privilege
         if user.last_date1>=user.last_date2:
             info['last_date'] = user.last_date1
             info['last_ip'] = user.last_ip1

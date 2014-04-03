@@ -133,7 +133,7 @@
           <td width='20%'>{{ account['last_date'] }}</td>
           <td width='20%'>{{ account['last_ip'] }}</td>
           <td width='30%'>
-            <button class='btn btn-primary btn-xs' onclick=''>更改</button>
+            <button class='btn btn-primary btn-xs' onclick='alter_account("{{ account["user_no"] }}", {{ account["pid"] }}, {{ account["rid"] }})'>更改</button>
             <button class='btn btn-danger btn-xs' onclick='disable_account("{{ account["user_no"] }}")'>禁用</button>
             <button class='btn btn-danger btn-xs' onclick='delete_account("{{ account["user_no"] }}")'>删除</button>
           </td>
@@ -157,6 +157,21 @@
         $('#delete_account_val').val(user_no);
         $('#myDelete').modal('show');
     }
+    function alter_account(user_no, pid, rid){
+        $('#alter_account_no').val(user_no);
+        $('#alter_account_val_no').val(user_no);
+        console.log($('#myAlter select[name="place"] option[value='+pid+']'));
+        $('#myAlter select[name="place"] option[value='+pid+']').attr('selected',"selected");
+        $('#myAlter select[name="role"] option[value='+rid+']').attr('selected',"selected");
+        $('#myAlter').modal('show');
+    }
+    function disable_button(obj, message){
+        button = $(obj).find('button[type="submit"]');
+        $(button).attr('disabled', true);
+        $(button).text(message);
+        console.log(button);
+        return true;
+    }
 </script>
 
 <!-- Modal -->
@@ -167,7 +182,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">确认操作</h4>
       </div>
-      <form action='{{ url_for("accounts.disable") }}' class='form-horizontal' method='post' enctype='multipart/form-data'>
+      <form action='{{ url_for("accounts.disable") }}' class='form-horizontal' method='post' enctype='multipart/form-data' onSubmit='return disable_button(this,"操作中..")'>
         <div class="modal-body">
           <input type='hidden' class='form-control' name='user_no' id='disable_account_val'/>
           <p>确认禁用此账户：<span id='disable_account_no'></span></p>
@@ -189,7 +204,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">确认操作</h4>
       </div>
-      <form action='{{ url_for("accounts.delete") }}' class='form-horizontal' method='post' enctype='multipart/form-data'>
+      <form action='{{ url_for("accounts.delete") }}' class='form-horizontal' method='post' enctype='multipart/form-data' onSubmit='return disable_button(this,"操作中..")'>
         <div class="modal-body">
           <input type='hidden' class='form-control' name='user_no' id='delete_account_val'/>
           <p>确认删除此账户：<span id='delete_account_no'></span></p>
@@ -197,6 +212,52 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
           <button type="submit" class="btn btn-danger">删除</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="myAlter" tabindex="-1" role="dialog" aria-labelledby="myAlter" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">修改用户信息</h4>
+      </div>
+      <form action='{{ url_for("accounts.alter") }}' class='form-horizontal' method='post' enctype='multipart/form-data' onSubmit='return disable_button(this,"操作中..")'>
+        <div class="modal-body">
+          <input type='hidden' class='form-control' name='user_no' id='alter_account_val_no'/>
+          <div class="form-group">
+            <label class='col-sm-3 control-label'>工号：</label>
+            <div class="col-sm-5">
+              <input type='text' class='form-control' id='alter_account_no' disabled='true'/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class='col-sm-3 control-label'>所属仓库：</label>
+            <div class="col-sm-5">
+              <select name='place' class='form-control'>
+                  {% for p in places %}
+                  <option value='{{ p.id }}'>{{ p.place }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class='col-sm-3 control-label'>权限：</label>
+            <div class="col-sm-5">
+              <select name='role' class='form-control'>
+                  <option value='0'>普通员工</option>
+                  <option value='1'>经理</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-warning">确认修改</button>
         </div>
       </form>
     </div><!-- /.modal-content -->
