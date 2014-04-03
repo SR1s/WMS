@@ -100,7 +100,20 @@ def delete():
 @accounts.route('/alter', methods=['POST'])
 @verify_login
 def alter():
-    return json.dumps(request.form)
+    user_no = request.form['user_no']
+    place = request.form['place']
+    role = request.form['role']
+    user = Account.query.filter(and_(Account.user_no==user_no, \
+                                     Account.privilege>-1)).first()
+    if user:
+        user.privilege = role
+        user.place_id = place
+        db.session.add(user)
+        db.session.commit()
+        flash('更改用户%s信息成功!' % user_no, 'normal')
+    else:
+        flash('操作失败', 'error')
+    return redirect(url_for('accounts.list_all'))
     
 
 @accounts.route("/create", methods=['POST'])
