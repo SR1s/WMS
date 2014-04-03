@@ -133,7 +133,9 @@
           <td width='20%'>{{ account['last_date'] }}</td>
           <td width='20%'>{{ account['last_ip'] }}</td>
           <td width='30%'>
-            <a href='#'>修改</a>
+            <button class='btn btn-primary btn-xs' onclick=''>更改</button>
+            <button class='btn btn-danger btn-xs' onclick='disable_account("{{ account["user_no"] }}")'>禁用</button>
+            <button class='btn btn-danger btn-xs' onclick='delete_account("{{ account["user_no"] }}")'>删除</button>
           </td>
         </tr>
         {% else %}
@@ -144,4 +146,60 @@
       </tbody>
     </table>
 </div>
+<script>
+    function disable_account(user_no){
+        $('#disable_account_no').text(user_no);
+        $('#disable_account_val').val(user_no);
+        $('#myDisable').modal('show');
+    }
+    function delete_account(user_no){
+        $('#delete_account_no').text(user_no);
+        $('#delete_account_val').val(user_no);
+        $('#myDelete').modal('show');
+    }
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="myDisable" tabindex="-1" role="dialog" aria-labelledby="myDisable" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">确认操作</h4>
+      </div>
+      <form action='{{ url_for("accounts.disable") }}' class='form-horizontal' method='post' enctype='multipart/form-data'>
+        <div class="modal-body">
+          <input type='hidden' class='form-control' name='user_no' id='disable_account_val'/>
+          <p>确认禁用此账户：<span id='disable_account_no'></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-danger">禁用</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="myDelete" tabindex="-1" role="dialog" aria-labelledby="myDelete" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">确认操作</h4>
+      </div>
+      <form action='{{ url_for("accounts.delete") }}' class='form-horizontal' method='post' enctype='multipart/form-data'>
+        <div class="modal-body">
+          <input type='hidden' class='form-control' name='user_no' id='delete_account_val'/>
+          <p>确认删除此账户：<span id='delete_account_no'></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-danger">删除</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}

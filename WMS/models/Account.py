@@ -6,7 +6,7 @@ class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_no = db.Column(db.String(255), unique=True)
     user_ps = db.Column(db.String(255))
-    # 0: staff ; 1: manager; 255: administrator
+    # 0: staff ; 1: manager; 255: administrator; -1: disabled; -2; deleted
     privilege = db.Column(db.Integer, default=0)
     last_date1 = db.Column(db.DateTime,default=datetime.utcnow)
     last_date2 = db.Column(db.DateTime,default=datetime.utcnow)

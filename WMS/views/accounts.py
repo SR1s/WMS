@@ -8,6 +8,8 @@ from WMS.models import Place, Account
 from WMS.utils import md5
 from WMS.views import verify_login
 
+from sqlalchemy import and_
+
 from datetime import datetime
 
 accounts = Blueprint("accounts",__name__)
@@ -25,7 +27,9 @@ def perform_login():
     if form.validate():
         user_no = request.form['user_no']
         user_ps = md5(request.form['user_ps'])
-        user = Account.query.filter_by(user_no=user_no,user_ps=user_ps).first()
+        user = Account.query.filter(and_(Account.user_no==user_no, \
+                                         Account.user_ps==user_ps, \
+                                         Account.privilege>-1)).first()
         if user:
             status = "normal"
             session["user_no"] = user_no
@@ -55,12 +59,43 @@ def list_all():
     manager = _query_user_amount(1)
     place = len(Place.query.all())
     basic['admin'] = dict(staff=staff, manager=manager, place=place)
-    accounts = Account.query.all()
+    accounts = Account.query.filter(Account.privilege>-2).all()
     accounts = [_user_basic_info(a.id)
                 for a in accounts]
     places = Place.query.all()
     return render_template('account-list.html', \
                             basic=basic, accounts=accounts, places=places)
+
+@accounts.route('/disable', methods=['POST'])
+@verify_login
+def disable():
+    user_no = request.form['user_no']
+    account = Account.query.filter(and_(Account.user_no==user_no, \
+                                        Account.privilege>=0)).first()
+    if account:
+        account.privilege=-1
+        db.session.add(account)
+        db.session.commit()
+        flash('账户%s已禁用' % user_no)
+        return redirect(url_for('accounts.list_all'))
+    flash('操作无效')
+    return redirect(url_for('accounts.list_all'))
+
+@accounts.route('/delete', methods=['POST'])
+@verify_login
+def delete():
+    user_no = request.form['user_no']
+    account = Account.query.filter(and_(Account.user_no==user_no, \
+                                        Account.privilege>=-1)).first()
+    if account:
+        account.privilege=-2
+        db.session.add(account)
+        db.session.commit()
+        flash('账户%s已删除' % user_no)
+        return redirect(url_for('accounts.list_all'))
+    flash('操作无效')
+    return redirect(url_for('accounts.list_all'))
+    
 
 @accounts.route("/create", methods=['POST'])
 @verify_login
@@ -69,7 +104,8 @@ def create():
     user_ps = request.form['user_ps']
     role = request.form['role']
     place = request.form['place']
-    if Account.query.filter_by(user_no=user_no).first():
+    if Account.query.filter(and_(Account.user_no==user_no, \
+                                 Account.privilege!=-2)).first():
         flash('工号：%s的帐号已经存在' % user_no, 'error')
     else:
         account = Account(user_no=user_no, user_ps=md5(user_ps),
@@ -80,7 +116,7 @@ def create():
 
 @accounts.route("/logout")
 def logout():
-    session["user_id"] = None
+    session["user_id"] = None0
     session["user_no"] = None
     session["time"] = None
     flash('注销成功！')
@@ -112,7 +148,9 @@ def _user_basic_info(user_id=None):
     return None
     
 def _user_role(role_id):
-    roles = {'0':'普通员工', '1':'经理', '255':'管理员'}
+    roles = {'0':'普通员工', '1':'经理', \
+             '-1': '已禁用', '-2': '已删除', \
+             '255':'管理员'}
     if str(role_id) in roles:
         return roles[str(role_id)]
     else:
