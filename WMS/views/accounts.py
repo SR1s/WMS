@@ -79,7 +79,22 @@ def disable():
         db.session.commit()
         flash('账户%s已禁用' % user_no)
         return redirect(url_for('accounts.list_all'))
-    flash('操作无效')
+    flash('操作无效', 'error')
+    return redirect(url_for('accounts.list_all'))
+
+@accounts.route('/enable', methods=['POST'])
+@verify_login
+def enable():
+    user_no = request.form['user_no']
+    account = Account.query.filter(and_(Account.user_no==user_no, \
+                                        Account.privilege==-1)).first()
+    if account:
+        account.privilege = 0
+        db.session.add(account)
+        db.session.commit()
+        flash('账户%s已启用' % user_no)
+    else:
+        flash('操作无效', 'error')
     return redirect(url_for('accounts.list_all'))
 
 @accounts.route('/delete', methods=['POST'])
@@ -135,7 +150,7 @@ def create():
 
 @accounts.route("/logout")
 def logout():
-    session["user_id"] = None0
+    session["user_id"] = None
     session["user_no"] = None
     session["time"] = None
     flash('注销成功！')

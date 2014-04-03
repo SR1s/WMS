@@ -133,8 +133,15 @@
           <td width='20%'>{{ account['last_date'] }}</td>
           <td width='20%'>{{ account['last_ip'] }}</td>
           <td width='30%'>
+            {% if account['rid'] >-1 %}
             <button class='btn btn-primary btn-xs' onclick='alter_account("{{ account["user_no"] }}", {{ account["pid"] }}, {{ account["rid"] }})'>更改</button>
             <button class='btn btn-danger btn-xs' onclick='disable_account("{{ account["user_no"] }}")'>禁用</button>
+            {% else %}
+            <form action='{{ url_for("accounts.enable") }}' method='POST' style='display:inline-block;'>
+              <input type='hidden' name='user_no' value='{{ account["user_no"] }}' />
+              <button class='btn btn-warning btn-xs' href='{{ url_for("accounts.enable", user_no=account["user_no"]) }}'>启用</button>
+            </form>
+            {% endif %}
             <button class='btn btn-danger btn-xs' onclick='delete_account("{{ account["user_no"] }}")'>删除</button>
           </td>
         </tr>
