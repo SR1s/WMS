@@ -20,4 +20,15 @@ class OrderDetail(db.Model):
     def __repr__(self):
         return '{ OrderDetail Object: %s , %s , %s , %s }' % \
                 (self.item_id, self.order_id, self.size, self.amount)
-
+                
+    def to_dict(self, extra=False):
+        temp =  dict(
+                    size=self.size,
+                    amount=self.amount,
+                    item_id=self.item_id,
+                    order_id=self.order_id,
+                    )
+        if extra:
+            temp.setDefault('item', self.item.to_dict())
+            temp.setDefault('order', self.order.to_dict())
+        return temp

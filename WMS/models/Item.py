@@ -30,3 +30,14 @@ class Item(db.Model):
     def __repr__(self):
         return '{ Item Object: %s , %s , %s }' % \
                (self.number, self.description, self.last_update)
+
+    def to_dict(self, extra=False):
+        temp = dict(
+                    id=self.id,
+                    number=self.number,
+                    description=self.description,
+                    retail=retail,
+                    whole=whole,
+                    last_update=last_update,
+                    )
+        return temp
