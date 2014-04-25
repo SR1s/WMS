@@ -1,24 +1,24 @@
 {% extends "basic.html" %}
 {% block bodyright %}
 <div class="login-form">
-  <h1>登录</h1>
+  <h1 style="margin-left: 6em;">登录</h1>
   <hr/>
    <form class='form-horizontal' method='post'>
     {{ form.hidden_tag() }}
     <div class="form-group">
-      <label class='col-sm-1 control-label'>工号：</label>
+      <label class='col-sm-2 control-label'>工号：</label>
       <div class="col-sm-4">
         <input typt='text' class='form-control' name='user_no'/>
       </div>
     </div>
     <div class="form-group">
-      <label class='col-sm-1 control-label'>密码：</label>
+      <label class='col-sm-2 control-label'>密码：</label>
       <div class="col-sm-4">
         <input type='password' class='form-control' name='user_ps'/>
       </div>
     </div>
     <div class="form-group">
-      <label class='col-sm-1 control-label'></label>
+      <label class='col-sm-2 control-label'></label>
       <div class="col-sm-4">
         <button type="submit" class='btn btn-primary'>登录系统</button>
       </div>
