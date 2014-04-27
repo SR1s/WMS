@@ -33,7 +33,7 @@ def detail(order_id):
         if order:
             details = OrderDetail.query.filter_by(order_id=order.id).all()
             order=dict(number=order.no, date=str(order.date.date()), \
-                       status=chkstatus(order.status))
+                       status=chkstatus(order.status), id=order.id)
             order['details'] = dict()
             for d in details:
                 detail = order['details'].setdefault(d.item.number, dict())
@@ -55,6 +55,18 @@ def detail(order_id):
 @verify_login
 def create():
     return render_template("order-create.html")
+
+@order.route('/remain')
+@verify_login
+def remain():
+    order_id = request.args.get('id', -1)
+    if order_id == -1 :
+        raise ValueError
+    order = Order.query.filter_by(id=order_id).first()
+    order = dict(number=order.no, date=str(order.date.date()), \
+                status=chkstatus(order.status), id=order.id)
+    order['details'] = Order.query_order_remain(order_id)
+    return render_template('order-remain.html', order=order)
 
 # answer the quest to store data
 @order.route('/create', methods=['POST'])
