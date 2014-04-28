@@ -17,12 +17,8 @@ order = Blueprint('order', __name__)
 @order.route('/list')
 @verify_login
 def list_all():
-    orders_raw = Order.query.order_by(Order.date.desc()).all()
-    orders = list()
-    for o in orders_raw:
-        order = dict(no=o.no, date=str(o.date.date()), \
-                     place=o.place.place, id=o.id, status=chkstatus(o.status))
-        orders.append(order)
+    orders = [ order.to_dict() 
+               for order in Order.query.order_by(Order.date.desc()).all()]
     return render_template("order-list.html", orders=orders, basic=dict())
 
 # show order details
