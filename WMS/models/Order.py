@@ -1,3 +1,5 @@
+#coding: utf-8
+
 from datetime import datetime
 
 from sqlalchemy import and_
@@ -5,7 +7,7 @@ from sqlalchemy import and_
 from WMS.models import db
 from WMS.models import Income, IncomeDetail
 from WMS.models.OrderDetail import OrderDetail
-from WMS.views import chkstatus, sort_cal_all
+from WMS.views import sort_cal_all
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -32,9 +34,11 @@ class Order(db.Model):
                 
     def to_dict(self, extra=False):
         temp =  dict(
+                    number = self.no,
                     date=str(self.date.date()),
-                    no = self.no,
                     status = chkstatus(self.status),
+                    status_code = self.status,
+                    id = self.id,
                     place_id = self.place_id,
                     )
         if extra:
@@ -47,11 +51,9 @@ class Order(db.Model):
         if date==None:
             date = datetime.utcnow()
 
-
-
     # return : dict
     @staticmethod    
-    def query_order_remain(order_id):
+    def query_order_remain(order_id, raw=False, with_order=False):
         order = Order.query.filter_by(id=order_id).first()
         if order == None:
             raise ValueError
@@ -71,6 +73,13 @@ class Order(db.Model):
                                 )).first()
                 if income_item:
                     d.amount -= income_item.amount
+        if raw:
+            if with_order:
+                results = order.to_dict()
+                results['details'] = [d.to_dict() for d in or_details]
+            else:
+                results = [d.to_dict() for d in or_details]
+            return results
         results = dict()
         for d in or_details:
             detail = results.setdefault(d.item.number, dict())
@@ -80,4 +89,48 @@ class Order(db.Model):
             columns.append(dict(size=d.size, amount=d.amount))
         for (k, v) in results.items():
             v['sum']=sort_cal_all(v['columns'])
+        if with_order:
+            order = order.to_dict()
+            order['details'] = results
+            results = order
+        return results 
+
+    # return : dict
+    @staticmethod    
+    def query_order(order_id, raw=False, with_order=False):
+        order = Order.query.filter_by(id=order_id).first()
+        if order == None:
+            raise ValueError
+
+        or_details = OrderDetail.query.filter_by(order_id=order_id).all()
+        
+        if raw:
+            if with_order:
+                results = order.to_dict()
+                results['details'] = [d.to_dict() for d in or_details]
+            else:
+                results = [d.to_dict() for d in or_details]
+            return results
+        results = dict()
+        for d in or_details:
+            detail = results.setdefault(d.item.number, dict())
+            detail['number'] = d.item.number
+            detail['description'] = d.item.description
+            columns = detail.setdefault('columns', list())
+            columns.append(dict(size=d.size, amount=d.amount))
+        for (k, v) in results.items():
+            v['sum']=sort_cal_all(v['columns'])
+        if with_order:
+            order = order.to_dict()
+            order['details'] = results
+            results = order
         return results
+
+def chkstatus(status_code):
+    if status_code==0:
+        return u'尚未到货完毕'
+    elif status_code==1:
+        return u'到货完毕'
+    elif status_code==-1:
+        return u'订单已删除'
+    return '状态异常'

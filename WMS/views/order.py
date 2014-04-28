@@ -31,22 +31,10 @@ def detail(order_id):
     if True:
         order = Order.query.filter_by(id=order_id).first()
         if order:
-            details = OrderDetail.query.filter_by(order_id=order.id).all()
-            order=dict(number=order.no, date=str(order.date.date()), \
-                       status=chkstatus(order.status), id=order.id)
-            order['details'] = dict()
-            for d in details:
-                detail = order['details'].setdefault(d.item.number, dict())
-                detail['number'] = d.item.number
-                detail['description'] = d.item.description
-                columns = detail.setdefault('columns', list())
-                columns.append(dict(size=d.size, amount=d.amount))
-            for (k, v) in order['details'].items():
-                v['sum']=sort_cal_all(v['columns'])
+            order = Order.query_order(order.id, with_order=True)
         else:
             flash('不存在此订单')
             return redirect(url_for('items.list_all'))
-        #return json.dumps(order)
         return render_template("order-detail.html", order=order)
     return redirect(url_for('accounts.login'))
 
@@ -62,10 +50,7 @@ def remain():
     order_id = request.args.get('id', -1)
     if order_id == -1 :
         raise ValueError
-    order = Order.query.filter_by(id=order_id).first()
-    order = dict(number=order.no, date=str(order.date.date()), \
-                status=chkstatus(order.status), id=order.id)
-    order['details'] = Order.query_order_remain(order_id)
+    order = Order.query_order_remain(order_id, with_order=True)
     return render_template('order-remain.html', order=order)
 
 # answer the quest to store data
