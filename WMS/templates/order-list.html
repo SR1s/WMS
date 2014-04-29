@@ -54,7 +54,7 @@
       <tbody>
         {% for order in orders %}
         <tr align='center'>
-          <td width='22%'><a href='{{ url_for("order.detail", order_id=order.id) }}'>{{ order.no }}</a></td>
+          <td width='22%'><a href='{{ url_for("order.detail", order_id=order.id) }}'>{{ order.number }}</a></td>
           <td width='22%'>{{ order.date }}</td>
           <td width='22%'>{{ order.status }}</td>
           <td width='34%'>
