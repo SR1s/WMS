@@ -51,7 +51,10 @@ def readXls(file_path,mode=1):
                and table.cell(row,2).ctype!=0:
                 size_list = list()
                 for n in range(2,8):
-                    size_list.append(table.cell(row,n).value)
+                    size = table.cell(row,n).value
+                    if table.cell(row,n).ctype == 2:
+                        size = int(size)
+                    size_list.append(size)
             elif table.cell(row,0).ctype!=0:
                 if len(size_list)<=0:
                     info['error_message'] = 'table format incorrect'
@@ -59,10 +62,10 @@ def readXls(file_path,mode=1):
                 else:
                     number=table.cell(row,0).value
                     description=table.cell(row,1).value
-                    item=dict()
+                    item = info['items'].setdefault(number, dict())
                     item['number'] = number
                     item['description']=description
-                    item['columns'] = list()
+                    item.setdefault('columns', dict())
                     for n in range(2,8):
                         if table.cell(row,n).ctype == 0:
                             continue
@@ -70,9 +73,8 @@ def readXls(file_path,mode=1):
                             value=table.cell(row,n).value
                         size=size_list[n-2]
                         amount=int(value)
-                        col = dict(size=size, amount=amount)
-                        item['columns'].append(col)
-                    info['items'].setdefault(number, item)
+                        item['columns'].setdefault(size, 0)
+                        item['columns'][size] += amount 
             else:
                 break
             row = row + 1
