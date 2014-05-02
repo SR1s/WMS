@@ -55,12 +55,15 @@ function get_details(){
       d["retail"] = $($($(rows[i]).children()[9]).children()[0]).val();
       d["whole"] = $($($(rows[i]).children()[10]).children()[0]).val();
       d["total"] = $($($(rows[i]).children()[11]).children()[0]).val();
-      d['columns'] = [];
+      d['columns'] = {};
       for(j=0;j<6;j++){
-        col = {};
-        col['size'] = size_list[j];
-        col['amount'] = $($($(rows[i]).children()[j+2]).children()[0]).val();
-        d['columns'].push(col);
+        size = size_list[j];
+        amount = $($($(rows[i]).children()[j+2]).children()[0]).val();
+        if (!d['columns'][size]){
+          d['columns'][size] = amount;
+        }else{
+          d['columns'][size] += int(amount);
+        }
       }
       postdata[d['number']] = d;
     }
