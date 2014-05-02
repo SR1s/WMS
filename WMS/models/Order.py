@@ -50,7 +50,23 @@ class Order(db.Model):
             raise ValueError
         if date==None:
             date = datetime.utcnow()
+    '''
+    @param
+        order_id: Integer
+            id of order
+        raw: Boolean
+            return list of data which's structure close to database if set to true;
+            else return dict of data which structure close to front end.
+            default set to Flase.
+        with_order: Boolean
+             if set to True, will return with order's information.
+             default set to Flase.
 
+    @return
+        if raw is true and with_order is False:
+            data: list()
+                IncomeDetail.to_dict()
+    '''
     @staticmethod    
     def query_order_remain(order_id, raw=False, with_order=False):
         order = Order.query.filter_by(id=order_id).first()
@@ -79,6 +95,7 @@ class Order(db.Model):
             else:
                 results = [d.to_dict() for d in or_details]
             return results
+
         results = dict()
         for d in or_details:
             detail = results.setdefault(d.item.number, dict())
@@ -110,6 +127,7 @@ class Order(db.Model):
             else:
                 results = [d.to_dict() for d in or_details]
             return results
+
         results = dict()
         for d in or_details:
             detail = results.setdefault(d.item.number, dict())
