@@ -32,7 +32,7 @@ def readXls(file_path,mode=1):
     number = table.cell(0,8).value.split()[-1]
     date = xlrd.xldate_as_tuple(table.cell(3, 11).value, data.datemode)
 
-    info['number'] = number
+    info['order_no'] = number
     info['error'] = True
     if mode==1:
         info['date'] = str(datetime(*date).date())
