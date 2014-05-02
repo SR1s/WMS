@@ -57,9 +57,15 @@ function get_details(){
       d["whole"] = $($($(rows[i]).children()[10]).children()[0]).val();
       d["total"] = $($($(rows[i]).children()[11]).children()[0]).val();
       d['columns'] = {};
+      if(!d["number"]){
+        continue;
+      }
       for(j=0;j<6;j++){
         size = size_list[j];
         amount = $($($(rows[i]).children()[j+2]).children()[0]).val();
+        if (!size){
+          continue;
+        }
         if (!d['columns'][size]){
           d['columns'][size] = 0;
         }
