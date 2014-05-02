@@ -41,6 +41,7 @@ function get_details(){
       for (var j=1;j<=6;j++) {
         size = $($($(rows[i]).children()[j]).children()[0]).val();
         size_list.push(size);
+        console.log(size);
       }
     }else if($(rows[i]).prop("class")=="size success"){
       size_list = [];
@@ -60,10 +61,9 @@ function get_details(){
         size = size_list[j];
         amount = $($($(rows[i]).children()[j+2]).children()[0]).val();
         if (!d['columns'][size]){
-          d['columns'][size] = amount;
-        }else{
-          d['columns'][size] += int(amount);
+          d['columns'][size] = 0;
         }
+        d['columns'][size] += parseInt(amount);
       }
       postdata[d['number']] = d;
     }
