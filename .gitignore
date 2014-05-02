@@ -1,6 +1,10 @@
 # virtual environment
 venv
 
+# temp
+temp*.xls
+temp*.xlsx
+
 *.py[cod]
 
 # virtual environment
