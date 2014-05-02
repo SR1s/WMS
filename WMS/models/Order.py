@@ -51,7 +51,6 @@ class Order(db.Model):
         if date==None:
             date = datetime.utcnow()
 
-    # return : dict
     @staticmethod    
     def query_order_remain(order_id, raw=False, with_order=False):
         order = Order.query.filter_by(id=order_id).first()

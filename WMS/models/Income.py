@@ -15,3 +15,13 @@ class Income(db.Model):
     def __repr__(self):
         return '{ Income Object: %s , %s }' % \
                 (self.date, self.order_id)
+
+    def to_dict(self, extra=False):
+        temp =  dict(
+                    id = self.id,
+                    date=str(self.date.date()),
+                    order_id = self.order_id,
+                    )
+        if extra:
+            temp.setDefault('details', self.details.to_dict())
+        return temp

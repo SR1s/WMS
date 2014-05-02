@@ -20,3 +20,15 @@ class IncomeDetail(db.Model):
     def __repr__(self):
         return '{ IncomeDetail Object: %s , %s , %s , %s }' % \
                 (self.item_id, self.income_id, self.size, self.amount)
+
+    def to_dict(self, extra=False):
+        temp =  dict(
+                    id = self.id,
+                    size=self.size,
+                    amount = self.amount,
+                    item_id = self.item_id,
+                    income_id = self.income_id,
+                    )
+        if extra:
+            pass
+        return temp
