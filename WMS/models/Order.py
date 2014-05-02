@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import and_
 
 from WMS.models import db
-from WMS.models import Income, IncomeDetail
+from WMS.models import Income, IncomeDetail, Item
 from WMS.models.OrderDetail import OrderDetail
 from WMS.views import sort_cal_all
 
@@ -21,7 +21,7 @@ class Order(db.Model):
 
     def __init__(self, no=None, date=None, place_id=None):
         if no and place_id:
-            self.no = no
+            self.no = no.upper()
             self.place_id = place_id
             if date:
                 self.date = date
@@ -142,6 +142,52 @@ class Order(db.Model):
             order['details'] = results
             results = order
         return results
+
+
+    '''
+    @param data [dict] eg.
+        - require:
+            data['order_no']:String[unique]
+            data['place_id']:Integer
+            data['items'] : dict
+                 detial['number']: String[upper]
+                 detial['description']: String
+                 detial['retail']: Float
+                 detial['whole']: Float
+                 detial[columns]: dict
+                    key => amount: Integer
+        - optional
+            data['date']:datetime
+
+    @return order_id if success
+    '''
+    @staticmethod
+    def create_an_order(data):
+        number = data['order_no']
+        place_id = data['place_id']
+        date = data.get('date', datetime.utcnow())
+        order = Order(number, date, place_id)
+        db.session.add(order)
+        db.session.commit()
+
+        order_id = order.id
+        for (number, det) in data['items'].items():
+            item = Item.query.filter_by(number=det['number'].upper()).first()
+            if item == None:
+                number = det['number']
+                description = det['description']
+                item = Item(number, description)
+            item.retail = det.get('retail', 0)
+            item.whole = det.get('whole', 0)
+            item.last_update = date
+            db.session.add(item)
+            db.session.commit()
+            item_id = item.id
+            for (size, amount) in det['columns'].items():
+                detail = OrderDetail(item_id, order_id, size, amount)
+                db.session.add(detail)
+            db.session.commit()
+        return order_id
 
 def chkstatus(status_code):
     if status_code==0:

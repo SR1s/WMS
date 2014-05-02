@@ -16,7 +16,7 @@ class Item(db.Model):
     def __init__(self, number=None, description=None, \
                  last_update=None, retail = None, whole = None):
         if number and description != None:
-            self.number = number
+            self.number = number.upper()
             self.description = description
             if last_update:
                 self.last_update = last_update

@@ -5,7 +5,7 @@ import json
 from flask import ( Blueprint, render_template, abort, 
                     request, session, flash, redirect, url_for, )
 from WMS.app import db
-from WMS.models import Order, OrderDetail, Account, Item
+from WMS.models import Account, Income, Item, Order, OrderDetail
 from WMS.utils import readXls, str2datetime
 from WMS.views import verify_login, chkstatus, sort_cal_all, chkstatus
 
@@ -30,7 +30,13 @@ def detail(order_id):
         else:
             flash('不存在此订单')
             return redirect(url_for('items.list_all'))
-        return render_template("order-detail.html", order=order)
+        keys = sorted(order['details'].keys())
+        incomes = [ i.to_dict() \
+                    for i in Income.query.filter_by(order_id=order_id).all()]
+        return render_template("order-detail.html", 
+                                order=order,
+                                keys=keys,
+                                incomes=incomes)
     return redirect(url_for('accounts.login'))
 
 # show create page
@@ -66,7 +72,15 @@ def create_by_upload():
         flash('Upload File illegal!')
         return redirect(url_for('index'))
     request.files['file'].save('temp.xls')
-    return _handle_create_request(readXls('temp.xls', 0))
+    data = readXls('temp.xls', 0)
+    if data['error'] \
+       or Order.query.filter_by(no=data['order_no'].upper()).first():
+        flash('Excel file format is not correct Or Order already Exist', 'error')
+        return redirect(url_for('order.list_all'))
+    data['place_id'] = session['place_id']
+    Order.create_an_order(data)
+    flash('Success adding order')
+    return redirect(url_for('order.list_all'))
 
 def _handle_create_request(info):
     if info.setdefault('status', 'normal')=='error':

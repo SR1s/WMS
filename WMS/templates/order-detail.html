@@ -7,10 +7,18 @@
     <p>下单时间：{{ order.date }}</p>
     <p>订单状态：{{ order.status }}</p>
     {% if order.status_code == 0 %}
+    <a class='btn btn-success' href="{{ url_for("order.remain",id=order.id) }}">到货清单</a>
     <a class="btn btn-primary" href="{{ url_for("order.remain",id=order.id) }}">未到货清单</a>
     {% endif %}
     <hr/>
     <h4>到货记录</h4>
+    {% for income in incomes %}
+      <p>
+        <a href='{{ url_for("income.detail", income_id=income.id) }}'>{{ income.date }}</a>
+      </p>
+    {% else %}
+      <p>尚无记录</p>
+    {% endfor%}
     <hr/>
     {% if order.status_code == 0 %}
     <button class='btn btn-success' data-toggle="modal" data-target="#myModal">上传到货清单</button>
@@ -29,6 +37,7 @@
       <form action='{{ url_for("income.create_by_upload") }}' class='form-horizontal' method='post' enctype='multipart/form-data'>
         <div class="modal-body">
           <div class="form-group">
+            <input type='hidden' name='id' value="{{ order.id }}" />
             <label class='col-sm-3 control-label'>到货单文件：</label>
             <div class="col-sm-3">
               <input type='file' class='btn' name='file' title='点击选择到货单文件' data-filename-placement="inside"/>
@@ -62,21 +71,21 @@
       </tr>
     </thead>
     <tbody id="details">
-      {% for (d, v) in order['details'].items() %}
+      {% for number in keys %}
       <tr class="success" align='center'>
         <td colspan="2"></td>
-        {% for c in v['columns'] %}
+        {% for c in order['details'][number]['columns'] %}
         <td width="5%">{{ c.size }}</td>
         {% endfor %}
         <td colspan="4"></td>
       </tr>
       <tr class="data" align='center'>
-        <td>{{ v.number }}</td>
-        <td>{{ v.description }}</td>
-        {% for c in v['columns'] %}
+        <td>{{ order['details'][number].number }}</td>
+        <td>{{ order['details'][number].description }}</td>
+        {% for c in order['details'][number]['columns'] %}
         <td>{{ c.amount }}</td>
         {% endfor %}
-        <td>{{ v.sum }}</td>
+        <td>{{ order['details'][number].sum }}</td>
         <td></td>
         <td></td>
         <td></td>
