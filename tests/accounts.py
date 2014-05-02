@@ -1,3 +1,4 @@
+# coding: utf-8
 import os
 import unittest
 import tempfile
@@ -39,4 +40,4 @@ class AccountsTest(unittest.TestCase):
                 user_ps=case["ps"]
             ), follow_redirects=True)
             print "test with data: %s " % str(case)
-            self.assertTrue('You have logined' in rv.data)
+            self.assertTrue('登录成功' in rv.data)

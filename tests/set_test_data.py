@@ -1,4 +1,4 @@
-from WMS.models import Place, Account, Item, Order, OrderDetail
+from WMS.models import Place, Account, Item, Order, OrderDetail, Storage
 
 def set_up_data(db):
     # add 4 places
@@ -29,12 +29,26 @@ def set_up_data(db):
 
     # add 4 item
     i1 = Item(number="G75189", description="AFA A SHO")
-    i2 = Item(number="G74569", description="AFA F JSY")
-    i3 = Item(number="G75185", description="AFA H JSY W")
-    i4 = Item(number="G75188", description="AFA H JSY W GG")
-
     db.session.add(i1)
+    i2 = Item(number="G74569", description="AFA F JSY")
     db.session.add(i2)
+    i3 = Item(number="G75185", description="AFA H JSY W")
     db.session.add(i3)
+    i4 = Item(number="G75188", description="AFA H JSY W GG")
     db.session.add(i4)
+    db.session.commit()
+
+    # add storage
+    s1 = Storage(size='XS', amount=10,item_id=i1.id, place_id=shenzhen.id)
+    s2 = Storage(size='S', amount=10,item_id=i1.id, place_id=shenzhen.id)
+    s3 = Storage(size='M', amount=10,item_id=i1.id, place_id=shenzhen.id)
+    s4 = Storage(size='L', amount=10,item_id=i1.id, place_id=shenzhen.id)
+    s5 = Storage(size='XL', amount=10,item_id=i1.id, place_id=shenzhen.id)
+    s6 = Storage(size='XXL', amount=10,item_id=i1.id, place_id=shenzhen.id)
+    db.session.add(s1)
+    db.session.add(s2)
+    db.session.add(s3)
+    db.session.add(s4)
+    db.session.add(s5)
+    db.session.add(s6)
     db.session.commit()
