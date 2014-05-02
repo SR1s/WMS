@@ -2,12 +2,11 @@
 from datetime import datetime
 import json
 
-from flask import Blueprint, render_template, abort, \
-                  request, session, flash, redirect, url_for
+from flask import ( Blueprint, render_template, abort, 
+                    request, session, flash, redirect, url_for, )
 from WMS.app import db
 from WMS.models import Order, OrderDetail, Account, Item
-from WMS.models import str2datetime
-from WMS.utils import readXls
+from WMS.utils import readXls, str2datetime
 from WMS.views import verify_login, chkstatus, sort_cal_all, chkstatus
 
 

@@ -1,8 +1,26 @@
+from datetime import datetime
+
 def md5(str):
     import hashlib
     m = hashlib.md5()
     m.update(str)
     return m.hexdigest()
+
+'''
+@param
+    date_str: String
+        String of date format as 'MM/DD/YYYY'
+
+@return
+    datetime: datetime
+        datetime object
+'''
+def str2datetime(date_str):
+    date_p = date_str.split('/')
+    if len(date_p) == 3:
+        return datetime(int(date_p[2]),int(date_p[0]),int(date_p[1]))
+    else:
+        return None
     
 def readXls(file_path,mode=1):
     import json, xlrd
@@ -15,13 +33,13 @@ def readXls(file_path,mode=1):
     date = xlrd.xldate_as_tuple(table.cell(3, 11).value, data.datemode)
 
     info['number'] = number
+    info['error'] = True
     if mode==1:
         info['date'] = str(datetime(*date).date())
     elif mode==0:
         info['date'] = datetime(*date)
     info['items'] = dict()
     if table.cell(12,0).value != 'Item Number':
-        info['error'] = True
         info['error_message'] = 'table format incorrect'
     else:
         isEnd = False
@@ -36,7 +54,6 @@ def readXls(file_path,mode=1):
                     size_list.append(table.cell(row,n).value)
             elif table.cell(row,0).ctype!=0:
                 if len(size_list)<=0:
-                    info['error'] = True
                     info['error_message'] = 'table format incorrect'
                     break
                 else:
@@ -59,6 +76,7 @@ def readXls(file_path,mode=1):
             else:
                 break
             row = row + 1
+    info['error'] = False
     if mode==0:
         return info
     elif mode==1: 
