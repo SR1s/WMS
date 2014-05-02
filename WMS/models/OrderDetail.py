@@ -26,6 +26,7 @@ class OrderDetail(db.Model):
                     size=self.size,
                     amount=self.amount,
                     item_id=self.item_id,
+                    number=self.item.number,
                     order_id=self.order_id,
                     )
         if extra:
