@@ -44,26 +44,26 @@ class Order(db.Model):
         if extra:
             temp.setDefault('place', self.place.to_dict())
         return temp
-    
-    '''
-    @param
-        order_id: Integer
-            id of order
-        raw: Boolean
-            return list of data which's structure close to database if set to true;
-            else return dict of data which structure close to front end.
-            default set to Flase.
-        with_order: Boolean
-             if set to True, will return with order's information.
-             default set to Flase.
 
-    @return
-        if raw is true and with_order is False:
-            data: list()
-                IncomeDetail.to_dict()
-    '''
     @staticmethod    
-    def query_order_remain(order_id, raw=False, with_order=False):
+    def query_order_remain(order_id, raw=False, with_order=False):    
+        '''
+        @param
+            order_id: Integer
+                id of order
+            raw: Boolean
+                return list of data which's structure close to database if set to true;
+                else return dict of data which structure close to front end.
+                default set to Flase.
+            with_order: Boolean
+                 if set to True, will return with order's information.
+                 default set to Flase.
+
+        @return
+            if raw is true and with_order is False:
+                data: list()
+                    IncomeDetail.to_dict()
+        '''
         order = Order.query.filter_by(id=order_id).first()
         if order == None:
             raise ValueError
@@ -106,16 +106,16 @@ class Order(db.Model):
             results = order
         return results 
 
-    '''
-    @param 
-        order_id: Integer
-        raw: Boolean
-            default to False, same as query_order_remain
-        with_order: Boolean
-            default to False, same as query_order_remain
-    '''
     @staticmethod    
     def query_order(order_id, raw=False, with_order=False):
+        '''
+        @param 
+            order_id: Integer
+            raw: Boolean
+                default to False, same as query_order_remain
+            with_order: Boolean
+                default to False, same as query_order_remain
+        '''
         order = Order.query.filter_by(id=order_id).first()
         if order == None:
             raise ValueError
@@ -146,25 +146,25 @@ class Order(db.Model):
         return results
 
 
-    '''
-    @param data [dict] eg.
-        - require:
-            data['order_no']:String[unique]
-            data['place_id']:Integer
-            data['items'] : dict
-                 detial['number']: String[upper]
-                 detial['description']: String
-                 detial['retail']: Float
-                 detial['whole']: Float
-                 detial[columns]: dict
-                    key => amount: Integer
-        - optional
-            data['date']:datetime
-
-    @return order_id if success
-    '''
     @staticmethod
     def create_an_order(data):
+        '''
+        @param data [dict] eg.
+            - require:
+                data['order_no']:String[unique]
+                data['place_id']:Integer
+                data['items'] : dict
+                     detial['number']: String[upper]
+                     detial['description']: String
+                     detial['retail']: Float
+                     detial['whole']: Float
+                     detial[columns]: dict
+                        key => amount: Integer
+            - optional
+                data['date']:datetime
+
+        @return order_id if success
+        '''
         number = data['order_no']
         place_id = data['place_id']
         date = data.get('date', datetime.utcnow())
