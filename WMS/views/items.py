@@ -26,7 +26,7 @@ def list_all():
     for item in storage['items']:
         c = storage['items'][item]['columns']
         if len(c)<6:
-            n = 7-len(c)
+            n = 6-len(c)
             for x in range(0,n):
                 c.append(dict(size='-',amount=0))
         storage['items'][item]['sum'] = sort_cal_all(c)
