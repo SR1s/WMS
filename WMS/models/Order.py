@@ -45,11 +45,6 @@ class Order(db.Model):
             temp.setDefault('place', self.place.to_dict())
         return temp
     
-    def create(self, number=None, date=None, details=None):
-        if number==None or details==None:
-            raise ValueError
-        if date==None:
-            date = datetime.utcnow()
     '''
     @param
         order_id: Integer
@@ -111,7 +106,14 @@ class Order(db.Model):
             results = order
         return results 
 
-    # return : dict
+    '''
+    @param 
+        order_id: Integer
+        raw: Boolean
+            default to False, same as query_order_remain
+        with_order: Boolean
+            default to False, same as query_order_remain
+    '''
     @staticmethod    
     def query_order(order_id, raw=False, with_order=False):
         order = Order.query.filter_by(id=order_id).first()
