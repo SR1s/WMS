@@ -11,7 +11,7 @@
           <option disabled="true" selected="true" value='0'>请选择一个订单</option>
           <optgroup label="订单号：">
             {% for order in orders %}
-            <option value="{{ order.id }}">{{ order.no }}</option>
+            <option value="{{ order.id }}">{{ order.number }}</option>
             {% endfor %}
           </optgroup>
         </select>
@@ -30,30 +30,6 @@
         </tr>
       </thead>
       <tbody id="details" align='center'>
-        <tr class="size success">
-          <td colspan="2"></td>
-          <td width="5%">XS</td>
-          <td width="5%">S</td>
-          <td width="5%">M</td>
-          <td width="5%">L</td>
-          <td width="5%">XL</td>
-          <td width="5%">XXL</td>
-          <td colspan="4"></td>
-        </tr>
-        <tr class="data">
-          <td><input type="text" name=""/></td>
-          <td><input type="text" name=""/></td>
-          <td><input type="text" name=""/></td>
-          <td><input type="text" name=""/></td>
-          <td><input type="text" name=""/></td>
-          <td><input type="text" name=""/></td>
-          <td><input type="text" name=""/></td>
-          <td><input type="text" name=""/></td>
-          <td></td>
-          <td><input type="text" name=""/></td>
-          <td><input type="text" name=""/></td>
-          <td><input type="text" name=""/></td>
-        </tr>
         <tr>
           <td colspan="12" align='center'>
             <button class='btn btn-primary' type="button" onclick="add_SML(this, 'clothes')">

@@ -20,110 +20,98 @@ def list_all():
                for i in incomes]
     return render_template("income-list.html", incomes=incomes)
 
-# store the income record
+'''
+show the interface to user
+'''
 @income.route('/create')
 @verify_login
 def create():
     orders = Order.query.filter_by(status=0).order_by(Order.date.desc()).all()
+    orders = [ order.to_dict() \
+               for order in orders ]
     if orders and len(orders)>0:
          return render_template('income-create.html', orders=orders)
     flash('目前没有未到货完毕的订单', 'error')
     return redirect(url_for('index'))
 
-# need rework
 @income.route('/create', methods=['POST'])
 @verify_login
 def perform_create():
-    place_id = session['place_id']
-    no = request.form.get('order_no', None)
-    if no == None:
-      flash('订单号不能为空')
-      return redirect(url_for('income.create'))
-    postdata = json.loads(request.form['details'])
-
-    # check if order exist
-    order = Order.query.filter_by(id=no).first()
-    if order == None:
-        flash('订单不存在')
+    ### Data Validity Start ###
+    order_id = request.form.get('order_no', None)
+    if ( order_id == None 
+         or Order.query.filter_by(id=order_id).first() == None):
+        flash('订单号为空 或 订单不存在')
+        return redirect(url_for('income.create'))
+    income_details = json.loads(request.form['details'])
+    if len(income_details)<1:
+        flash('订单为空')
         return redirect(url_for('income.create'))
 
-    # select details from order and store in an array using dictionary
-    details_order = [dict(size=d.size, amount=d.amount, \
-                          number=d.item.number, id=d.item.id) \
-                     for d in OrderDetail.query.filter_by(order_id=no).all()]
+    order_details = Order.query_order_remain(order_id, raw=True)
 
-    # select income record
-    incomes = Income.query.filter_by(order_id=no).all()
-    # check how many order details need to be income
-    for income in incomes:
-        # select exist detail from income
-        details_income = IncomeDetail.query.filter_by(income_id=income.id).all()
-        details_income = [dict(size=d.size, amount=d.amount, number=d.item.number) \
-                          for d in details_income]
-        for detail_income in details_income:
-            for detail_order in details_order:
-                if detail_income['number'] == detail_order['number'] and \
-                   detail_income['size'] == detail_order['size']:
-                    detail_order['amount'] = detail_order['amount'] - detail_income['amount']
+    valid = dict()
+    for detail in order_details:
+        number, size = detail['number'], detail['size']
+        item_id = detail['item_id']
+        income = income_details.get(number)
+        if income:
+            income.setdefault('item_id', item_id)
+            income = income['columns'].get(size, 0)
+        else:
+            income = 0
+        detail['amount'] = detail['amount'] - income
 
-    # check is the income amount match the need
-    vaild = dict()
-    for (k,d) in postdata.items():
-        vaild[d['number']] = False
-        for detail_order in details_order:
-            if d['number'] == detail_order['number']:
-                d['id'] = detail_order['id']
-                for detail in d['columns']:
-                    if detail['size'] == detail_order['size']:
-                        detail_order['amount'] = detail_order['amount'] - int(detail['amount'])
-                    vaild[d['number']] = True
+        flag = valid.setdefault(number, {})
+        flag[size] = detail['amount']
 
-    # if some is not in order items
-    haveError = False
-    for (key, value) in vaild.items():
-        if value == False:
-            haveError = True
-            flash("订单不存在货物%s!" % key, 'error')
-    for detail in details_order:
-        if detail['amount']<0:
-            flash('货号%s:尺寸%s的货物到货数量大于未到货数量' % \
-                  (detail['number'], detail['size']), 'error')
-            haveError = True
-    if haveError:
+    # start to valid if item is not in order
+    # or income amount excel the needed
+    valid_status = True
+    for (number, data) in income_details.items():
+        valid_item = valid.get(number)
+        if valid_item==None:
+            valid_status = False
+            flash("原订单不存在编号: %s 的物品。" % \
+                      (number), 'error')
+            continue
+        for (size, amount) in data['columns'].items():
+            if amount < 1:
+                continue
+            valid_size = valid_item.get(size)
+            if valid_size == None:
+                valid_status = False
+                flash("原订单不存在编号: %s，尺寸: %s 的物品。" % \
+                      (number, size), 'error')
+            elif valid_size<0 :
+                valid_status = False
+                flash("编号: %s，尺寸: %s 物品的到货数量多于未到货数量。" % \
+                      (number, size), 'error')
+
+    #raise ValueError
+    if valid_status == False:
         return redirect(url_for('income.create'))
+    ### Data Validity End ###
 
-    # store income and income details
-    income = Income(no)
-    db.session.add(income)
-    db.session.commit()
-    for (k,d) in postdata.items():
-        for detail in d['columns']:
-            inde = IncomeDetail(item_id=d['id'], income_id=income.id, \
-                                size=detail['size'], amount=detail['amount'])
-            storage = Storage.query.filter(and_(Storage.item_id==d['id'], \
-                                                Storage.size==detail['size'], \
-                                                Storage.place_id==place_id)).first()
-            if storage:
-                storage.amount = storage.amount + int(detail['amount'])
-            else:
-                storage = Storage(size=detail['size'], amount=detail['amount'],\
-                                  item_id=d['id'], place_id=place_id)
-            db.session.add(storage)
-            db.session.add(inde)
-    db.session.commit()
+    ### Assemble Data For Create IncomeOrder Start ###
+    data = dict()
+    data['order_id'] = order_id
+    data['details'] = list()
+    for (number, detail) in income_details.items():
+        item_id = detail['item_id']
+        for (size, amount) in detail['columns'].items():
+            if amount < 1 :
+                continue
+            item = dict(
+                item_id = item_id,
+                size = size,
+                amount = amount,
+            )
+            data['details'].append(item)
+    Income.create_an_order(data)
+    flash('进货记录已添加')
+    ### Assemble Data For Create IncomeOrder End   ###
 
-    # then check if the order is finished
-    isFinished = True
-    for detail_order in details_order:
-        if detail_order['amount']>0:
-            isFinished = False
-    order = Order.query.filter_by(id=no).first()
-    if isFinished:
-        flash('订单号为 %s 的订单已到货完毕' % order.no)
-        order.status = 1
-    else:
-        order.status = 0
-    db.session.commit()
     return redirect(url_for('order.list_all'))
 
 
@@ -153,3 +141,12 @@ def detail(income_id):
     income['details'] = details
     #return json.dumps(income)
     return render_template('income-detail.html', income=income)
+
+@income.route('/create_by_upload', methods=['POST'])
+@verify_login
+def create_by_upload():
+    order_id = request.form.get('id', -1)
+    if order_id == -1:
+        flash('Order Number invaild')
+        return redirect('order.list_all')
+    return 'hello kitty'

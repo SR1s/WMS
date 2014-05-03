@@ -12,7 +12,7 @@ class IncomeDetail(db.Model):
         if item_id and income_id and size and amount:
             self.item_id = item_id
             self.income_id = income_id
-            self.size = size
+            self.size = size    
             self.amount = amount
         else:
             raise ValueError
