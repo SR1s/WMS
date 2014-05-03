@@ -77,7 +77,7 @@ class Income(db.Model):
                             )
             db.session.add(income_detail)
         db.session.commit()
-        Storage.update_storage_bash()
+        Storage.add_batch(data['details'])
         return income_id
 
     @staticmethod
