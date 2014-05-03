@@ -2,6 +2,7 @@ from datetime import datetime
 
 from WMS.models import db
 from WMS.models.IncomeDetail import IncomeDetail
+from WMS.models.Storage import Storage
 
 class Income(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -36,7 +37,7 @@ class Income(db.Model):
                     order_id = self.order_id,
                     )
         if extra:
-            temp.setDefault('details', self.details.to_dict())
+            temp.setdefault('details', self.details.to_dict())
         return temp
 
     @staticmethod 
@@ -47,6 +48,7 @@ class Income(db.Model):
         @param data [dict] eg.
             - require:
                 data['order_id']:Integer
+                data['place_id']:Integer
                 data['details'] : list
                      detail['size']: String [not None and not empty]
                      detail['amount']: Integer [>0]
@@ -56,14 +58,17 @@ class Income(db.Model):
 
         @return income_id if success
         '''
+        if data == None:
+            raise ValueError
         date = data.get('date', datetime.utcnow())
         income = Income(data['order_id'], date)
         db.session.add(income)
         db.session.commit()
 
         income_id = income.id
-
+        place_id = data['place_id']
         for detail in data['details']:
+            detail.setdefault('place_id', place_id)
             income_detail = IncomeDetail(
                                 detail['item_id'],
                                 income_id,
@@ -72,6 +77,7 @@ class Income(db.Model):
                             )
             db.session.add(income_detail)
         db.session.commit()
+        Storage.update_storage_bash()
         return income_id
 
     @staticmethod

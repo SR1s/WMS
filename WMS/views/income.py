@@ -39,8 +39,8 @@ def create():
 def perform_create():
     ### Data Validity Start ###
     order_id = request.form.get('order_no', None)
-    if ( order_id == None 
-         or Order.query.filter_by(id=order_id).first() == None):
+    order = Order.query.filter_by(id=order_id).first()
+    if ( order_id == None or order == None ):
         flash('订单号为空 或 订单不存在')
         return redirect(url_for('income.create'))
     income_details = json.loads(request.form['details'])
@@ -96,6 +96,7 @@ def perform_create():
     ### Assemble Data For Create IncomeOrder Start ###
     data = dict()
     data['order_id'] = order_id
+    data['place_id'] = order.place_id
     data['details'] = list()
     for (number, detail) in income_details.items():
         item_id = detail['item_id']
