@@ -36,8 +36,8 @@ class Item(db.Model):
                     id=self.id,
                     number=self.number,
                     description=self.description,
-                    retail=retail,
-                    whole=whole,
-                    last_update=last_update,
+                    retail=self.retail,
+                    whole=self.whole,
+                    last_update=self.last_update,
                     )
         return temp
