@@ -15,7 +15,8 @@
       <input type="text" placeholder='商品编号...'/>
     </form>
     <hr/>
-    <a class='btn btn-primary' href='{{ url_for("items.sell") }}'>出货</a>
+    <a class='btn btn-success' href='{{ url_for("sell.create") }}'>出货</a>
+    <a class='btn btn-primary' href='{{ url_for("items.transfer") }}'>调仓</a>
   </div>
 </div>
 {% endblock %}

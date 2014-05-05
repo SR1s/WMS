@@ -12,6 +12,7 @@ class Item(db.Model):
     order_details = db.relationship("OrderDetail", backref="item", lazy='dynamic')
     income_details = db.relationship("IncomeDetail", backref="item", lazy='dynamic')
     reservations = db.relationship("Reservation", backref="item", lazy='dynamic')
+    sell_details = db.relationship("SellDetail", backref="item", lazy='dynamic')
 
     def __init__(self, number=None, description=None, \
                  last_update=None, retail = None, whole = None):

@@ -9,7 +9,6 @@ from WMS.app import db
 from WMS.models import Item, Storage, Place
 from WMS.views import verify_login, sort_cal_all
 
-
 items = Blueprint('items', __name__)
 
 @items.route("/list")
@@ -63,3 +62,8 @@ def perform_create():
         db.session.commit()
         flash('出货成功', 'normal')
     return redirect(url_for('items.list_all'))
+
+@items.route('/transfer')
+@verify_login
+def transfer():
+    pass
