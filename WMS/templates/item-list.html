@@ -43,7 +43,7 @@
         <tr class="size {% if is_even %}warning{% endif %}" align='center'>
           <td rowspan="{{ items['details']|length * 2 }}" style="vertical-align:middle;">{{ number }}</td>
           <td rowspan="{{ items['details']|length * 2 }}" style="vertical-align:middle;">{{ items['description'] }}</td>
-          <td rowspan="2" style="vertical-align:middle;">{{ items['las_update'] }}</td>
+          <td rowspan="2" style="vertical-align:middle;">{{ storage['place'] }}</td>
           {% for item in storage['items'] %}
           <td width="5%">{{ item['size'] }}</td>
           {% endfor %}
