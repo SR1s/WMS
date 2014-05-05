@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy import and_
 
 from WMS.models import db
+from WMS.views import sort_cal_all
 
 class Storage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,6 +26,20 @@ class Storage(db.Model):
         return '{ Storage Object: %s , %s , %s , %s }' % \
                (self.size, self.amount, \
                 self.item_id, self.place_id)
+
+    def to_dict(self, extra=False):
+        temp = dict(
+                    id=self.id,
+                    size=self.size,
+                    amount=self.amount,
+                    number=self.item.number,
+                    description=self.item.description,
+                    retail=self.item.retail,
+                    whole=self.item.whole,
+                    last_update=str(self.item.last_update.date()),
+                    place=self.place.place,
+                    )
+        return temp
 
     @staticmethod
     def add_batch(data):
@@ -58,3 +73,41 @@ class Storage(db.Model):
             storage.amount = storage.amount + amount
             db.session.add(storage)
         db.session.commit()
+
+    @staticmethod
+    def query_all_storage():
+        '''
+        @date: 14-05-04
+
+        @return: list of all storage, data structure like:
+            data: dict
+                number => storage: dict
+                    'number': String 
+                    'description': String
+                    'last_update': String
+                    'details': list
+                        place => detail: dict
+                            'place': String
+                            'sum': Integer
+                            'items': list
+                                item['size']
+                                item['amount']
+        '''
+        storages = Storage.query.order_by(Storage.item_id).all()
+        data=dict()
+        for storage in storages:
+            storage = storage.to_dict()
+            item = data.setdefault(storage['number'], dict())
+            item.setdefault('number', storage['number'])
+            item.setdefault('description', storage['description'])
+            item.setdefault('last_update', storage['last_update'])
+            details = item.setdefault('details', dict())
+            detail = details.setdefault(storage['place'], dict())
+            detail.setdefault('place', storage['place'])
+            items = detail.setdefault('items', list())
+            items.append(dict(size=storage['size'], amount=storage['amount']))
+        for (number, storage) in data.items():
+            for (place, place_detail) in storage['details'].items():
+                items = place_detail['items']
+                place_detail['sum'] = sort_cal_all(items)
+        return data

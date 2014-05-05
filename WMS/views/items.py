@@ -1,44 +1,29 @@
 #coding: utf8
-from flask import Blueprint, render_template, abort, request, \
-                  session, redirect, url_for, flash
+import json
+
+from flask import (Blueprint, render_template, abort, request, 
+                   session, redirect, url_for, flash )
 from sqlalchemy import and_
+
 from WMS.app import db
 from WMS.models import Item, Storage, Place
 from WMS.views import verify_login, sort_cal_all
 
-import json
 
 items = Blueprint('items', __name__)
 
 @items.route("/list")
 @verify_login
 def list_all():
-    storage = dict()
-    storage['items'] = dict()
+    storages = Storage.query_all_storage()   
+    #return json.dumps(storage, indent=2)
     place_id = session['place_id']
-    for s in Storage.query.filter_by(place_id=place_id).all():
-        item = storage['items'].setdefault(s.item.number, dict())
-        item['number'] = s.item.number
-        item['description'] = s.item.description
-        item['last_update'] = str(s.item.last_update.date())
-        columns = item.setdefault('columns', list())
-        columns.append(dict(size=s.size, amount=s.amount))
-    for item in storage['items']:
-        c = storage['items'][item]['columns']
-        if len(c)<6:
-            n = 6-len(c)
-            for x in range(0,n):
-                c.append(dict(size='-',amount=0))
-        storage['items'][item]['sum'] = sort_cal_all(c)
-        
-    #return json.dumps(storage)
     basic = dict()
     basic['place'] = Place.query.filter_by(id=place_id).first().place
     basic['info'] = info = dict()
     info['count'] = 0
-    info['amount'] = 0
-    
-    return render_template("item-list.html", storage=storage, basic=basic)
+    info['amount'] = 0 
+    return render_template("item-list.html", storages=storages, basic=basic)
 
 @items.route('/sell')
 def sell():

@@ -10,6 +10,11 @@
       库存总量：{{ basic['info']['amount'] }}
     </p>
     <hr/>
+    <form class='form'>
+      <label>查找库存信息:</label>
+      <input type="text" placeholder=''/>
+    </form>
+    <hr/>
     <a class='btn btn-primary' href='{{ url_for("items.sell") }}'>出货</a>
   </div>
 </div>
@@ -17,41 +22,60 @@
 
 {% block bodyright %}
 <div class="item-list">
-    <h1>库存状态 - {{basic['place']}}</h1>
+    <h1>库存状态</h1>
     <hr/>
     <table class="table table-bordered table-hover table-condensed">
       <thead>
         <tr class='success' align='center'>
-          <td width="15%">商品编号</td>
-          <td width="20%">商品名称</td>
+          <td width="10%">商品编号</td>
+          <td width="15%">商品名称</td>
+          <td width="15%">所属仓库</td>
           <td colspan="6">尺码</td>
           <td width="15%">总量</td>
           <td width="20%">上次进货时间</td>
         </tr>
       </thead>
       <tbody>
-        {% for item in storage['items'] %}
-        <tr class="size success" align='center'>
-          <td colspan="2"></td>
-          {% for i in storage['items'][item]['columns'] %}
-          <td width="5%">{{ i.size }}</td>
+      {% for (number, items) in storages.items() %}
+        {% set is_even = loop.index % 2 == 0 %}
+        {% for (place, storage) in items['details'].items() %}
+        {% if loop.first %}
+        <tr class="size {% if is_even %}warning{% endif %}" align='center'>
+          <td rowspan="{{ items['details']|length * 2 }}" style="vertical-align:middle;">{{ number }}</td>
+          <td rowspan="{{ items['details']|length * 2 }}" style="vertical-align:middle;">{{ items['description'] }}</td>
+          <td rowspan="2" style="vertical-align:middle;">{{ items['las_update'] }}</td>
+          {% for item in storage['items'] %}
+          <td width="5%">{{ item['size'] }}</td>
           {% endfor %}
-          <td colspan="2"></td>
+          <td rowspan="2" style="vertical-align:middle;">{{ storage['sum'] }}</td>
+          <td rowspan="{{ items['details']|length * 2 }}" style="vertical-align:middle;">{{ items['last_update'] }}</td>
         </tr>
-        <tr align='center'>
-          <td>{{ storage['items'][item]['number'] }}</td>
-          <td>{{ storage['items'][item]['description'] }}</td>
-          {% for i in storage['items'][item]['columns'] %}
-          <td width="5%">{{ i.amount }}</td>
+        <tr class="size {% if is_even %}warning{% endif %}" align='center'>
+          {% for item in storage['items'] %}
+          <td width="5%">{{ item['amount'] }}</td>
           {% endfor %}
-          <td>{{ storage['items'][item]['sum']}}</td>
-          <td>{{ storage['items'][item]['last_update'] }}</td>
         </tr>
         {% else %}
-        <tr align='center'>
-          <td colspan='10'>暂无数据</td>
+        <tr class="size {% if is_even %}warning{% endif %}" align='center'>
+          {% for item in storage['items'] %}
+          <td width="5%">{{ item['size'] }}</td>
+          {% endfor %}
+          <td colspan="2"></td>
         </tr>
-        {% endfor%}
+        <tr class="size {% if is_even %}warning{% endif %}" align='center'>
+          {% for item in storage['items'] %}
+          <td width="5%">{{ item['amount'] }}</td>
+          {% endfor %}
+          <td></td>
+          <td></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <tr align='center'>
+          <td colspan='11'>暂无数据</td>
+        </tr>
+      {% endfor %}
       </tbody>
     </table>
 </div>
