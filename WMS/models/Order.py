@@ -154,11 +154,11 @@ class Order(db.Model):
                 data['order_no']:String[unique]
                 data['place_id']:Integer
                 data['items'] : dict
-                     detial['number']: String[upper]
-                     detial['description']: String
-                     detial['retail']: Float
-                     detial['whole']: Float
-                     detial[columns]: dict
+                     detail['number']: String[upper]
+                     detail['description']: String
+                     detail['retail']: Float
+                     detail['whole']: Float
+                     detail[columns]: dict
                         key => amount: Integer
             - optional
                 data['date']:datetime
