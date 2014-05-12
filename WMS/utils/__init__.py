@@ -83,3 +83,24 @@ def readXls(file_path,mode=1):
         return info
     elif mode==1: 
         return json.dumps(info)
+
+class Log:
+    '''
+    function set to log data on page or raise error for debug
+    '''
+    @staticmethod
+    def json(data):
+        '''
+        dump data in json format
+        '''
+        if data:
+            return '<pre>%s</pre>' % json.dumps(data, ensure_ascii=False, indent=2)
+        else:
+            return 'no data for log'
+
+    @staticmethod
+    def rasise_error():
+        '''
+        raise error for debug
+        '''
+        raise ValueError
