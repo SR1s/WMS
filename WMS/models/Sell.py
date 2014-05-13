@@ -51,6 +51,7 @@ class Sell(db.Model):
         @return sell_id if success
         '''
         place_id = data['place_id']
+        account_id = data['account_id']
         date = data.get('date', datetime.utcnow())
         sell = Sell(place_id, account_id, date)
         db.session.add(sell)
