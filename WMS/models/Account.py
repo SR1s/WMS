@@ -13,6 +13,7 @@ class Account(db.Model):
     last_ip1 = db.Column(db.String(255))
     last_ip2 = db.Column(db.String(255))
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
+    sell = db.relationship("Sell", backref="account", lazy='dynamic')
 
     def __init__(self, user_no=None, user_ps=None,
                  privilege=None, place_id=None):

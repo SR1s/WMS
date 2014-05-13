@@ -11,11 +11,13 @@ class Sell(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime,default=datetime.utcnow)
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
+    account_id = db.Column(db.Integer, db.ForeignKey('account.id'))
     details = db.relationship("SellDetail", backref="sell", lazy='dynamic')
 
-    def __init__(self, place_id=None, date=None):
-        if place_id:
+    def __init__(self, place_id=None, account_id=None, date=None):
+        if place_id and account_id:
             self.place_id = place_id
+            self.account_id = account_id
         else:
             raise ValueError
         if date:
@@ -28,7 +30,9 @@ class Sell(db.Model):
                     id=self.id,
                     date=str(self.date.date()),
                     place_id=self.place_id,
+                    account_id=self.account_id,
                     place=self.place.place,
+                    account=self.account.user_no,
                     )
         return temp
     @staticmethod
@@ -37,6 +41,7 @@ class Sell(db.Model):
         @param
             data: dict
             data['place_id']: Integer
+            data['account_id']: Integer
             data['date']: datetime[Option]
             data['items'] : dict
                 detail['item_id']: Integer
@@ -47,7 +52,7 @@ class Sell(db.Model):
         '''
         place_id = data['place_id']
         date = data.get('date', datetime.utcnow())
-        sell = Sell(place_id, date)
+        sell = Sell(place_id, account_id, date)
         db.session.add(sell)
         db.session.commit()
 
