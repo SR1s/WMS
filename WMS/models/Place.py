@@ -6,6 +6,7 @@ class Place(db.Model):
     person = db.relationship("Account", backref="place", lazy='dynamic')
     storage = db.relationship("Storage", backref="place", lazy='dynamic')
     order = db.relationship("Order", backref="place", lazy='dynamic')
+    sell = db.relationship("Sell", backref="place", lazy='dynamic')
 
     def __init__(self, place=None):
         if place:

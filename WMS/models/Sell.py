@@ -23,6 +23,14 @@ class Sell(db.Model):
         else:
             self.data = datetime.utcnow()
 
+    def to_dict(self, extra=False):
+        temp = dict(
+                    id=self.id,
+                    date=str(self.date.date()),
+                    place_id=self.place_id,
+                    place=self.place.place,
+                    )
+        return temp
     @staticmethod
     def create_sell_record(data):
         '''
@@ -32,6 +40,7 @@ class Sell(db.Model):
             data['date']: datetime[Option]
             data['items'] : dict
                 detail['item_id']: Integer
+                detail['retail']: Float
                 detail[columns]: dict
                     key => amount: Integer
         @return sell_id if success
@@ -46,16 +55,17 @@ class Sell(db.Model):
         minus_storages = list()
         for (number, item) in data['items'].items():
             item_id = item['item_id']
+            retail = item['retail']
             for (size, amount) in item['columns'].items():
-                detail = SellDetail(item_id, sell_id, size, amount)
+                detail = SellDetail(item_id, sell_id, size, amount, retail)
                 storage = dict(
                                 item_id=item_id,
                                 place_id=place_id,
                                 size=size,
                                 amount=amount,
                           )
+                db.session.add(detail)
                 minus_storages.append(storage)
-            db.session.add(detail)
         db.session.commit()
 
         Storage.minus_batch(minus_storages)
