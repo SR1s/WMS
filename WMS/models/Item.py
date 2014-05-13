@@ -5,6 +5,8 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String(255), unique=True)
     description = db.Column(db.String(255))
+    image = db.Column(db.String(255), default=None)
+    code = db.Column(db.String(255), default=None)
     retail = db.Column(db.Float)
     whole = db.Column(db.Float)
     last_update = db.Column(db.DateTime, default=datetime.utcnow)
@@ -37,6 +39,8 @@ class Item(db.Model):
                     id=self.id,
                     number=self.number,
                     description=self.description,
+                    image=self.image,
+                    code=self.code,
                     retail=self.retail,
                     whole=self.whole,
                     last_update=self.last_update,
