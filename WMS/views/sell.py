@@ -32,7 +32,6 @@ def perform_create():
     account_id = session['user_id']
     date = request.form.get('date', datetime.utcnow())
     details = json.loads(request.form['details'])
-    return Log.json(details)
     valid_data=dict()
     # validation Start-->
     is_data_valid = True
@@ -43,7 +42,12 @@ def perform_create():
             is_data_valid = False
             continue
         retail = detail['retail']
+        item_id = item.id
         for (size, amount) in detail['columns'].items():
+            if amount:
+                pass
+            else:
+                continue
             stor = Storage.query.filter(and_(Storage.place_id== place_id,
                                              Storage.item_id == item_id,
                                              Storage.size    == size)).first()

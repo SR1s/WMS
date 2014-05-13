@@ -17,7 +17,7 @@
         <tr class='success' align='center'>
           <td width="15%">销售时间</td>
           <td width="15%">销售地点</td>
-          <td width="10%"></td>
+          <td width="10%">操作员</td>
           <td colspan="6"></td>
           <td width="15%"></td>
           <td width="20%"></td>
@@ -29,7 +29,7 @@
         <tr class="size {% if is_even %}warning{% endif %}" align='center'>
           <td style="vertical-align:middle;">{{ sell['date'] }}</td>
           <td style="vertical-align:middle;">{{ sell['place'] }}</td>
-          <td></td>
+          <td>{{ sell['account'] }}</td>
           <td colspan="6"></td>
           <td></td>
           <td></td>
