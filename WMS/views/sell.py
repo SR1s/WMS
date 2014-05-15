@@ -17,7 +17,7 @@ sell = Blueprint('sell', __name__)
 @sell.route('/list')
 @verify_login
 def list_all():
-    sells = [ sell.to_dict() for sell in Sell.query.all() ]
+    sells = [ sell.to_dict(extra=True) for sell in Sell.query.all() ]
     return render_template('sell-list.html', sells=sells)
 
 @sell.route('/create')

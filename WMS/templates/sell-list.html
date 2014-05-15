@@ -15,12 +15,12 @@
     <table class="table table-bordered table-hover table-condensed">
       <thead>
         <tr class='success' align='center'>
-          <td width="15%">销售时间</td>
-          <td width="15%">销售地点</td>
+          <td width="15%">时间</td>
+          <td width="15%">仓库</td>
+          <td width="15%">数量</td>
+          <td width="20%">总额</td>
           <td width="10%">操作员</td>
-          <td colspan="6"></td>
-          <td width="15%"></td>
-          <td width="20%"></td>
+          <td width="10%">操作</td>
         </tr>
       </thead>
       <tbody>
@@ -29,10 +29,12 @@
         <tr class="size {% if is_even %}warning{% endif %}" align='center'>
           <td style="vertical-align:middle;">{{ sell['date'] }}</td>
           <td style="vertical-align:middle;">{{ sell['place'] }}</td>
+          <td>{{ sell['amount'] }}</td> 
+          <td>{{ sell['amount_money'] }}</td>
           <td>{{ sell['account'] }}</td>
-          <td colspan="6"></td>
-          <td></td>
-          <td></td>
+          <td>
+            <a class='btn btn-primary btn-xs' href="{{ sell['id'] }}">查看详细</a>
+          </td>
         </tr>
       {% else %}
         <tr align='center'>

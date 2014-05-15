@@ -34,6 +34,12 @@ class Sell(db.Model):
                     place=self.place.place,
                     account=self.account.user_no,
                     )
+        if extra:
+            details = SellDetail.query.filter_by(sell_id=self.id).all()
+            temp['amount'] = len(details)
+            temp['amount_money'] = 0
+            for detail in details:
+                temp['amount_money'] += detail.amount * detail.retail
         return temp
     @staticmethod
     def create_sell_record(data):
