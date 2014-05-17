@@ -30,13 +30,12 @@ def detail(order_id):
         else:
             flash('不存在此订单')
             return redirect(url_for('items.list_all'))
-        keys = sorted(order['details'].keys())
+        order_details_json = json.dumps(order['details'].v, indent=2)
         incomes = [ i.to_dict() \
                     for i in Income.query.filter_by(order_id=order_id).all()]
         return render_template("order-detail.html", 
-                                order=order,
-                                keys=keys,
-                                incomes=incomes)
+                                order_details_json=order_details_json,
+                                incomes=incomes,)
     return redirect(url_for('accounts.login'))
 
 # show create page
