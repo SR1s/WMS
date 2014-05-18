@@ -54,7 +54,7 @@ def perform_create():
             if stor and stor.amount >= amount:
                 valid_detail = valid_data.setdefault(number, dict())
                 valid_detail.setdefault('item_id', item_id)
-                valid_detail.setdefault('retail', item_id)
+                valid_detail.setdefault('retail', retail)
                 columns = valid_detail.setdefault('columns', dict())
                 columns[size] = amount
             else:
