@@ -77,3 +77,13 @@ def perform_create():
     Sell.create_sell_record(data)
 
     return redirect(url_for('items.list_all'))
+
+@sell.route('/detail')
+@verify_login
+def detail():
+    sell_id = request.args.get('id')
+    sell = Sell.query_sell(sell_id, with_order=True)
+    sell_json = json.dumps(sell['details'].values())
+    return render_template('sell-detail.html', 
+                            sell_json=sell_json, 
+                            sell=sell)

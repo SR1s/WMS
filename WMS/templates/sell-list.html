@@ -3,7 +3,10 @@
 <div class='panel panel-info'>
   <div class="panel-heading">基本信息</div>
   <div class="panel-body">
-    
+    <form class='form'>
+      <label>查找库存信息:</label>
+      <input type="text" placeholder='商品编号...'/>
+    </form>
   </div>
 </div>
 {% endblock %}
@@ -33,7 +36,7 @@
           <td>{{ sell['amount_money'] }}</td>
           <td>{{ sell['account'] }}</td>
           <td>
-            <a class='btn btn-primary btn-xs' href="{{ sell['id'] }}">查看详细</a>
+            <a class='btn btn-primary btn-xs' href="{{ url_for('sell.detail',id=sell.id) }}">查看详细</a>
           </td>
         </tr>
       {% else %}
