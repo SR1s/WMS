@@ -64,7 +64,7 @@
   <h1>
     订单：{{ order.number }} 详情
     <span style='float:right;font-size:14px; margin-top:15pt;' >
-      搜索：<input placeholder='商品编号、名称' ng-model='query' />
+      搜索：<input placeholder='商品编号' ng-model='query' />
     </span>
   </h1>
   <hr/>
@@ -81,13 +81,13 @@
       </tr>
     </thead>
     {% raw %}
-    <tbody ng-repeat='detail in data | filter: query | orderBy: ["number"]' id='search_result'>
-      <tr class="success" align='center'>
+    <tbody id='search_result'>
+      <tr class="success" align='center' ng-repeat-start='detail in data | filter: {number:query} | orderBy: ["number"]'>
         <td colspan="2"></td>
         <td width="5%" ng-repeat='c in detail["columns"]'>{{ c['size'] }}</td>
         <td colspan="4"></td>
       </tr>
-      <tr class="data" align='center'>
+      <tr class="data" align='center' ng-repeat-end>
         <td>{{ detail['number'] }}</td>
         <td>{{ detail['description'] }}</td>
         <td width="5%" ng-repeat='c in detail["columns"]'>{{ c['amount'] }}</td>
@@ -95,6 +95,9 @@
         <td></td>
         <td></td>
         <td></td>
+      </tr>
+      <tr align='center' ng-if='data.length==0'>
+        <td colspan='12'>暂无数据</td>
       </tr>
     </tbody>
     {% endraw %}
