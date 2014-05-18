@@ -41,6 +41,7 @@ class Sell(db.Model):
             for detail in details:
                 temp['amount_money'] += detail.amount * detail.retail
         return temp
+
     @staticmethod
     def create_sell_record(data):
         '''
@@ -83,3 +84,43 @@ class Sell(db.Model):
         Storage.minus_batch(minus_storages)
         
         return sell_id
+
+    @staticmethod
+    def query_sell(sell_id, raw=False, with_order=False):
+        '''
+        @param 
+            sell_id: Integer
+            raw: Boolean
+                default to False, same as query_order_remain
+            with_order: Boolean
+                default to False, same as query_order_remain
+        '''
+        sell = Sell.query.filter_by(id=sell_id).first()
+        if sell == None:
+            raise ValueError
+
+        sell_details = SellDetail.query.filter_by(sell_id=sell_id).all()
+        
+        if raw:
+            if with_order:
+                results = sell.to_dict()
+                results['details'] = [s.to_dict() for s in sell_details]
+            else:
+                results = [s.to_dict() for s in sell_details]
+            return results
+
+        results = dict()
+        for d in sell_details:
+            detail = results.setdefault(d.item.number, dict())
+            detail['number'] = d.item.number
+            detail['description'] = d.item.description
+            detail['retail'] = d.retail
+            columns = detail.setdefault('columns', list())
+            columns.append(dict(size=d.size, amount=d.amount))
+        for (k, v) in results.items():
+            v['sum']=sort_cal_all(v['columns'])
+        if with_order:
+            sell = sell.to_dict()
+            sell['details'] = results
+            results = sell
+        return results
