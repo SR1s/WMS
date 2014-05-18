@@ -1,21 +1,31 @@
 #-*-coding: utf-8
-from flask import session, render_template, url_for, redirect
+from flask import session, render_template, url_for, redirect, flash
 import functools
 from datetime import datetime, timedelta
 
 def verify_login(func):
     @functools.wraps(func)
     def wrappper():
-    	valid_time = timedelta(0, 60*15)
-    	time = session.get('time', None)
-    	if time and \
-    	    (datetime.utcnow() - time) < valid_time:
-    		session['time'] = datetime.utcnow()
-    	else:
-    		session['time'] = None
+        valid_time = timedelta(0, 60*15)
+        time = session.get('time', None)
+        if time and \
+            (datetime.utcnow() - time) < valid_time:
+            session['time'] = datetime.utcnow()
+        else:
+            session['time'] = None
         if session['time']:
             return func()
         else:
+            return redirect(url_for('accounts.login'))
+    return wrappper
+
+def verify_admin(func):
+    @functools.wraps(func)
+    def wrappper():
+        if session['privilege'] == 255:
+            return func()
+        else:
+            flash('权限不足，无法访问', 'error')
             return redirect(url_for('accounts.login'))
     return wrappper
 

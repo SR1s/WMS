@@ -7,7 +7,7 @@ from WMS.app import db
 from WMS.forms.accounts import LoginForm
 from WMS.models import Place, Account
 from WMS.utils import md5
-from WMS.views import verify_login
+from WMS.views import verify_login, verify_admin
 
 from sqlalchemy import and_
 
@@ -36,6 +36,7 @@ def perform_login():
             session["user_no"] = user_no
             session["user_id"] = user.id
             session["place_id"] = user.place.id
+            session["privilege"] = user.privilege
             session["time"] = datetime.utcnow()
             message = "登录成功"
             if user.last_date1>user.last_date2:
@@ -52,6 +53,7 @@ def perform_login():
 
 @accounts.route('/list')
 @verify_login
+@verify_admin
 def list_all():
     basic = dict()
     user_no = Account.query.filter_by(id=session['user_id']).first().user_no
@@ -69,6 +71,7 @@ def list_all():
 
 @accounts.route('/disable', methods=['POST'])
 @verify_login
+@verify_admin
 def disable():
     user_no = request.form['user_no']
     account = Account.query.filter(and_(Account.user_no==user_no, \
@@ -84,6 +87,7 @@ def disable():
 
 @accounts.route('/enable', methods=['POST'])
 @verify_login
+@verify_admin
 def enable():
     user_no = request.form['user_no']
     account = Account.query.filter(and_(Account.user_no==user_no, \
@@ -99,6 +103,7 @@ def enable():
 
 @accounts.route('/delete', methods=['POST'])
 @verify_login
+@verify_admin
 def delete():
     user_no = request.form['user_no']
     account = Account.query.filter(and_(Account.user_no==user_no, \
@@ -114,6 +119,7 @@ def delete():
 
 @accounts.route('/alter', methods=['POST'])
 @verify_login
+@verify_admin
 def alter():
     user_no = request.form['user_no']
     place = request.form['place']
@@ -133,6 +139,7 @@ def alter():
 
 @accounts.route("/create", methods=['POST'])
 @verify_login
+@verify_admin
 def create():
     user_no = request.form['user_no']
     user_ps = request.form['user_ps']
