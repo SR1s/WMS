@@ -22,7 +22,7 @@
           <td colspan='4'>预约信息</td>
         </tr>
         <tr align='center'>
-          <td rowspan='5'>{{ reservation.name }}</td>
+          <td rowspan='5' style="vertical-align:middle;">{{ reservation.name }}</td>
           <td width='20%'>联系方式</td>
           <td width='20%'>{{ reservation.contact }}</td>
           <td width='20%'>预约日期</td>
@@ -45,6 +45,13 @@
         <tr align='center'>
           <td>预约状态</td>
           <td colspan='3'>{{ reservation.status }}</td>
+        </tr>
+        <tr align='center'>
+          <td>处理操作</td>
+          <td colspan='4'>
+            <a class='btn btn-success btn-xs' href='{{ url_for("reservation.done", id=reservation.id) }}'>标记为已处理</a>
+            <a class='btn btn-danger btn-xs' href='{{ url_for("reservation.delete", id=reservation.id) }}'>删除预约</a>
+          </td>
         </tr>
         {% else %}
         <tr align='center'>
