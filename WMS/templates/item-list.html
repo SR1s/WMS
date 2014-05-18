@@ -10,74 +10,97 @@
       库存总量：{{ basic['info']['amount'] }}
     </p>
     <hr/>
-    <form class='form'>
-      <label>查找库存信息:</label>
-      <input type="text" placeholder='商品编号...'/>
-    </form>
-    <hr/>
     <a class='btn btn-success' href='{{ url_for("sell.create") }}'>出货</a>
-    <a class='btn btn-primary' href='{{ url_for("items.transfer") }}'>调仓</a>
+    <!--a class='btn btn-primary' href='{{ url_for("items.transfer") }}'>调仓</a-->
   </div>
 </div>
 {% endblock %}
 
 {% block bodyright %}
-<div class="item-list">
-    <h1>库存状态</h1>
-    <hr/>
-    <table class="table table-bordered table-hover table-condensed">
-      <thead>
-        <tr class='success' align='center'>
-          <td width="10%">商品编号</td>
-          <td width="15%">商品名称</td>
-          <td width="15%">所属仓库</td>
-          <td colspan="6">尺码</td>
-          <td width="15%">总量</td>
-          <td width="20%">上次进货时间</td>
-        </tr>
-      </thead>
-      <tbody>
-      {% for (number, items) in storages.items() %}
-        {% set is_even = loop.index % 2 == 0 %}
-        {% for (place, storage) in items['details'].items() %}
-        {% if loop.first %}
-        <tr class="size {% if is_even %}warning{% endif %}" align='center'>
-          <td rowspan="{{ items['details']|length * 2 }}" style="vertical-align:middle;">{{ number }}</td>
-          <td rowspan="{{ items['details']|length * 2 }}" style="vertical-align:middle;">{{ items['description'] }}</td>
-          <td rowspan="2" style="vertical-align:middle;">{{ storage['place'] }}</td>
-          {% for item in storage['items'] %}
-          <td width="5%">{{ item['size'] }}</td>
-          {% endfor %}
-          <td rowspan="2" style="vertical-align:middle;">{{ storage['sum'] }}</td>
-          <td rowspan="{{ items['details']|length * 2 }}" style="vertical-align:middle;">{{ items['last_update'] }}</td>
-        </tr>
-        <tr class="size {% if is_even %}warning{% endif %}" align='center'>
-          {% for item in storage['items'] %}
-          <td width="5%">{{ item['amount'] }}</td>
-          {% endfor %}
-        </tr>
-        {% else %}
-        <tr class="size {% if is_even %}warning{% endif %}" align='center'>
-          {% for item in storage['items'] %}
-          <td width="5%">{{ item['size'] }}</td>
-          {% endfor %}
-          <td colspan="2"></td>
-        </tr>
-        <tr class="size {% if is_even %}warning{% endif %}" align='center'>
-          {% for item in storage['items'] %}
-          <td width="5%">{{ item['amount'] }}</td>
-          {% endfor %}
-          <td></td>
-          <td></td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-        {% else %}
-        <tr align='center'>
-          <td colspan='11'>暂无数据</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+<script type="text/javascript">
+  function item_list_controller($scope){
+    $scope.data = {{ items_json | safe }};
+  }
+</script>
+<div class="item-list" ng-app ng-controller='item_list_controller'>
+  <h1>
+    库存状态
+    <span style='float:right;font-size:14px; margin-top:15pt;' >
+      搜索：<input placeholder='商品编号' ng-model='query' />
+    </span>
+  </h1>
+  <hr/>
+  <table class="table table-bordered table-hover table-condensed">
+    <thead>
+      <tr class='success' align='center'>
+        <td width="10%">商品编号</td>
+        <td width="15%">商品名称</td>
+        <td width="15%">所属仓库</td>
+        <td colspan="6">尺码</td>
+        <td width="15%">总量</td>
+        <td width="20%">上次进货时间</td>
+      </tr>
+    </thead>
+    {% raw %}
+    <tbody ng-repeat='items in data | filter: { number: query } | orderBy: ["number"]' ng-init='is_odd=$odd'>
+      <tr class="size" align='center' ng-class='{ warning: is_odd }'>
+        <td rowspan="{{ items['details'].length * 2 }}" style="vertical-align:middle;">
+          <span>{{ items['number'] }}</span><br/>
+          <button class='btn btn-xs' onclick="showBarcoed(this)">详细</button>
+        </td>
+        <td rowspan="{{ items['details'].length * 2 }}" style="vertical-align:middle;">{{ items['description'] }}</td>
+        <td rowspan="2" style="vertical-align:middle;">{{ items['details'][0]['place'] }}</td>
+        <td width="5%" ng-repeat='col in items["details"][0]["items"]'>{{ col['size'] }}</td>
+        <td rowspan="2" style="vertical-align:middle;">{{ items['details'][0]['sum'] }}</td>
+        <td rowspan="{{ items['details'].length * 2 }}" style="vertical-align:middle;">{{ items['last_update'] }}</td>
+      </tr> 
+      <tr class="size" align='center' ng-class='{ warning: is_odd }'>
+        <td width="5%" ng-repeat='col in items["details"][0]["items"]'>{{ col['amount'] }}</td>
+      </tr>
+      <tr class="size" ng-class='{ warning: is_odd }' align='center' ng-repeat-start='place in items["details"]' ng-if='$index>0'>
+        <td rowspan="2" style="vertical-align:middle;">{{ place['place'] }}</td>
+        <td width="5%" ng-repeat='col in place["items"]'>{{ col['size'] }}</td>
+        <td rowspan="2" style="vertical-align:middle;">{{ place['sum'] }}</td>
+      </tr>
+      <tr class="size" ng-class='{ warning: is_odd }' align='center' ng-repeat-end ng-if='$index>0'>
+        <td width="5%" ng-repeat='col in place["items"]'>{{ col['amount'] }}</td>
+      </tr>
+      <tr align='center' ng-if='data.length==0'>
+        <td colspan='11'>暂无数据</td>
+      </tr>
+    </tbody>
+    {% endraw %}
+  </table>
 </div>
+<script type="text/javascript">
+  function showBarcoed($obj){
+    $number = $($obj).parent().children('span').text();
+    $('#item_detail_number').text($number);
+    $('#item_detail_modal').modal('show');
+  }
+</script>
+<!-- Modal -->
+<div class="modal fade" id="item_detail_modal" tabindex="-1" role="dialog" aria-labelledby="item_detail_modal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">查看条码</h4>
+      </div>
+      <form action='{{ url_for("accounts.create") }}' class='form-horizontal' method='post' enctype='multipart/form-data'>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class='col-sm-3 control-label'>
+              商品编号:
+              <span id='item_detail_number'></span>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}

@@ -20,9 +20,17 @@ def list_all():
     basic = dict()
     basic['place'] = Place.query.filter_by(id=place_id).first().place
     basic['info'] = info = dict()
-    info['count'] = 0
+    info['count'] = len(Item.query.all())
     info['amount'] = 0 
-    return render_template("item-list.html", storages=storages, basic=basic)
+    for storage in Storage.query.all():
+        info['amount'] += storage.amount
+    for number, storage in storages.items():
+        storage['details']=storage['details'].values()            
+    items_json = json.dumps(storages.values(), indent=2)
+    return render_template("item-list.html", 
+                           storages=storages, 
+                           basic=basic,
+                           items_json=items_json)
 
 @items.route('/transfer')
 @verify_login
