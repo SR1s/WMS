@@ -26,13 +26,10 @@ show the interface to user
 @income.route('/create')
 @verify_login
 def create():
-    orders = Order.query.filter_by(status=0).order_by(Order.date.desc()).all()
-    orders = [ order.to_dict() \
-               for order in orders ]
-    if orders and len(orders)>0:
-         return render_template('income-create.html', orders=orders)
-    flash('目前没有未到货完毕的订单', 'error')
-    return redirect(url_for('index'))
+    order_id = request.args.get('id', 0)
+    order = Order.query.filter_by(id=order_id).first()
+    order = order.to_dict()
+    return render_template('income-create.html', order=order)
 
 @income.route('/create', methods=['POST'])
 @verify_login

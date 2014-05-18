@@ -5,17 +5,8 @@
   <hr/>
   <form method="post" class='form-horizontal'>
     <div class="form-group">
-      <label class='col-sm-1 control-label'>订单号</label>
-      <div class="col-sm-5">
-        <select name="order_no" class='form-control'>
-          <option disabled="true" selected="true" value='0'>请选择一个订单</option>
-          <optgroup label="订单号：">
-            {% for order in orders %}
-            <option value="{{ order.id }}">{{ order.number }}</option>
-            {% endfor %}
-          </optgroup>
-        </select>
-      </div>
+      <label class='col-sm-5'>订单号：{{ order.number }}</label>
+      <input type="hidden" name='order_no' value='{{ order.id }}' />
     </div>
     <table class="table table-bordered table-hover table-condensed">
       <thead align='center'>

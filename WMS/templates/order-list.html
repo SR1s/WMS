@@ -59,7 +59,9 @@
           <td width='22%'>{{ order.status }}</td>
           <td width='34%'>
             <a href='{{ url_for("order.detail", order_id=order.id) }}'>查看详细</a>
-            <a href='{{ url_for("income.create") }}'>添加到货记录</a>
+            {% if order.status_code == 0 %}
+            <a href='{{ url_for("income.create", id=order.id) }}'>添加到货记录</a>
+            {% endif %}
           </td>
         </tr>
         {% else %}
