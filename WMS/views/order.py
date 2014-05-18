@@ -16,9 +16,12 @@ order = Blueprint('order', __name__)
 @order.route('/list')
 @verify_login
 def list_all():
+    basic=dict()
+    basic['order-all'] = len(Order.query.all())
+    basic['order-undone'] = len(Order.query.filter_by(status=0).all())
     orders = [ order.to_dict() 
                for order in Order.query.order_by(Order.date.desc()).all()]
-    return render_template("order-list.html", orders=orders, basic=dict())
+    return render_template("order-list.html", orders=orders, basic=basic)
 
 # show order details
 @order.route('/detail/<order_id>')
