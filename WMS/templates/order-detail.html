@@ -7,7 +7,7 @@
     <p>下单时间：{{ order.date }}</p>
     <p>订单状态：{{ order.status }}</p>
     {% if order.status_code == 0 %}
-    <a class='btn btn-success' href="{{ url_for("order.remain",id=order.id) }}">到货清单</a>
+    <!--a class='btn btn-success' href="{{ url_for("order.remain",id=order.id) }}">到货清单</a-->
     <a class="btn btn-primary" href="{{ url_for("order.remain",id=order.id) }}">未到货清单</a>
     {% endif %}
     <hr/>
