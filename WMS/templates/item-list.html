@@ -69,6 +69,11 @@
         <td colspan='11'>暂无数据</td>
       </tr>
     </tbody>
+    <tbody ng-if='data.length==0'>
+      <tr align='center'>
+        <td colspan='11'>商品尚未到货，无库存</td>
+      </tr>
+    </tbody>
     {% endraw %}
   </table>
 </div>
