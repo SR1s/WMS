@@ -109,8 +109,7 @@ def delete():
     account = Account.query.filter(and_(Account.user_no==user_no, \
                                         Account.privilege>=-1)).first()
     if account:
-        account.privilege=-2
-        db.session.add(account)
+        db.session.delete(account)
         db.session.commit()
         flash('账户%s已删除' % user_no)
         return redirect(url_for('accounts.list_all'))
@@ -149,7 +148,7 @@ def create():
                                  Account.privilege!=-2)).first():
         flash('工号：%s的帐号已经存在' % user_no, 'error')
     else:
-        account = Account(user_no=user_no, user_ps=md5(user_ps),
+        account = Account(user_no=user_no, user_ps=user_ps,
                           privilege=role, place_id=place)
         db.session.add(account)
         db.session.commit()
