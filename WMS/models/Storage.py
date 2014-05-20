@@ -211,6 +211,7 @@ class Storage(db.Model):
                 place_detail['place'] = stor_dict['place']
                 items = place_detail.setdefault('items', list())
                 items.append(dict(size=storage.size, amount=storage.amount))
+            result['data'] = result['data'].values()
         else:
             result['status']='error, item no found'
             result['status_code']='0'
