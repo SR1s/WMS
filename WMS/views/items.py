@@ -36,3 +36,17 @@ def list_all():
 @verify_login
 def transfer():
     pass
+
+@items.route('/api/query')
+def api_query():
+    result = dict()
+    number = request.args.get('number', None)
+    if number:
+        result['status'] = 'ok'
+        result['status_code'] = '1'
+        result['number'] = number
+        result['result'] = Storage.query_by_number(number, with_status=True)
+    else:
+        result['status'] = 'error'
+        result['status_code'] = '0'
+    return json.dumps(result, ensure_ascii=False, indent=2)

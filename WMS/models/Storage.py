@@ -1,8 +1,10 @@
 from datetime import datetime
+import json
 
 from sqlalchemy import and_
 
 from WMS.models import db
+from WMS.models.Item import Item
 from WMS.views import sort_cal_all
 
 class Storage(db.Model):
@@ -190,3 +192,27 @@ class Storage(db.Model):
                 items = place_detail['items']
                 place_detail['sum'] = sort_cal_all(items)
         return data
+
+    @staticmethod
+    def query_by_number(number, with_status=False):
+        result=dict()
+        item = Item.query.filter_by(number=number).first()
+        if item:
+            result['status']='ok'
+            result['status_code']='1'
+            result['data'] = dict()
+            result['item_info'] = item.to_dict()
+            result['item_info']['last_update'] = str(result['item_info']['last_update'].date())
+            storages = Storage.query.filter_by(item_id=item.id).all()
+            for storage in storages:
+                stor_dict = storage.to_dict()
+                place_detail = result['data'].setdefault(stor_dict['place'], 
+                                                         dict())
+                place_detail['place'] = stor_dict['place']
+                items = place_detail.setdefault('items', list())
+                items.append(dict(size=storage.size, amount=storage.amount))
+        else:
+            result['status']='error, item no found'
+            result['status_code']='0'
+
+        return result
